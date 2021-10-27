@@ -3,7 +3,7 @@
 /***************************************************************************
  Importer2OSMbasemap
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de 
+ Gestion de Plans d'Aménagement Général du Grand-Duché de
                               -------------------
         begin                : 2015-08-25
         git sha              : $Format:%H$
@@ -51,7 +51,6 @@ xsd_schema = Import2OSMSchema()
 qgis_interface = None
 current_project = Project()
 
-print ("hello")
 class Importer2OSMbasemap(object):
     '''
     QGIS Plugin Implementation.
@@ -270,7 +269,7 @@ class Importer2OSMbasemap(object):
                             callback=self.topoclean_widget.run,
                             status_tip=self.tr(u'Check geometries and fix errors'),
                             parent=self.iface.mainWindow()))
-        
+
         found = False
         for action in self.iface.vectorMenu().actions():
             if action.parent().objectName() == u'qgis_plugin_geometrycheckerplugin':

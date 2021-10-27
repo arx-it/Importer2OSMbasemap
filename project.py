@@ -54,7 +54,6 @@ class Project(QObject):
         # QGIS emits projectRead when creating a new project
         if self.creation_mode:
             return
-        print ("hello")
         # Setting
         filename = QgsProject.instance().fileName()
         self.folder = os.path.normpath(os.path.dirname(filename))
