@@ -216,14 +216,14 @@ th {
   blockquote {
     border: 1px solid #999;
 
-    page-break-inside: avoid;
+    Import2OSMe-break-inside: avoid;
   }
   thead {
     display: table-header-group;
   }
   tr,
   img {
-    page-break-inside: avoid;
+    Import2OSMe-break-inside: avoid;
   }
   img {
     max-width: 100% !important;
@@ -236,7 +236,7 @@ th {
   }
   h2,
   h3 {
-    page-break-after: avoid;
+    Import2OSMe-break-after: avoid;
   }
   .navbar {
     display: none;
@@ -1408,7 +1408,7 @@ a.bg-danger:hover,
 a.bg-danger:focus {
   background-color: #e4b9b9;
 }
-.page-header {
+.Import2OSMe-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
   border-bottom: 1px solid #eee;
@@ -4756,17 +4756,17 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .breadcrumb > .active {
   color: #777;
 }
-.pagination {
+.Import2OSMination {
   display: inline-block;
   padding-left: 0;
   margin: 20px 0;
   border-radius: 4px;
 }
-.pagination > li {
+.Import2OSMination > li {
   display: inline;
 }
-.pagination > li > a,
-.pagination > li > span {
+.Import2OSMination > li > a,
+.Import2OSMination > li > span {
   position: relative;
   float: left;
   padding: 6px 12px;
@@ -4777,115 +4777,115 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   background-color: #fff;
   border: 1px solid #ddd;
 }
-.pagination > li:first-child > a,
-.pagination > li:first-child > span {
+.Import2OSMination > li:first-child > a,
+.Import2OSMination > li:first-child > span {
   margin-left: 0;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.pagination > li:last-child > a,
-.pagination > li:last-child > span {
+.Import2OSMination > li:last-child > a,
+.Import2OSMination > li:last-child > span {
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 }
-.pagination > li > a:hover,
-.pagination > li > span:hover,
-.pagination > li > a:focus,
-.pagination > li > span:focus {
+.Import2OSMination > li > a:hover,
+.Import2OSMination > li > span:hover,
+.Import2OSMination > li > a:focus,
+.Import2OSMination > li > span:focus {
   z-index: 3;
   color: #23527c;
   background-color: #eee;
   border-color: #ddd;
 }
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus {
+.Import2OSMination > .active > a,
+.Import2OSMination > .active > span,
+.Import2OSMination > .active > a:hover,
+.Import2OSMination > .active > span:hover,
+.Import2OSMination > .active > a:focus,
+.Import2OSMination > .active > span:focus {
   z-index: 2;
   color: #fff;
   cursor: default;
   background-color: #337ab7;
   border-color: #337ab7;
 }
-.pagination > .disabled > span,
-.pagination > .disabled > span:hover,
-.pagination > .disabled > span:focus,
-.pagination > .disabled > a,
-.pagination > .disabled > a:hover,
-.pagination > .disabled > a:focus {
+.Import2OSMination > .disabled > span,
+.Import2OSMination > .disabled > span:hover,
+.Import2OSMination > .disabled > span:focus,
+.Import2OSMination > .disabled > a,
+.Import2OSMination > .disabled > a:hover,
+.Import2OSMination > .disabled > a:focus {
   color: #777;
   cursor: not-allowed;
   background-color: #fff;
   border-color: #ddd;
 }
-.pagination-lg > li > a,
-.pagination-lg > li > span {
+.Import2OSMination-lg > li > a,
+.Import2OSMination-lg > li > span {
   padding: 10px 16px;
   font-size: 18px;
   line-height: 1.3333333;
 }
-.pagination-lg > li:first-child > a,
-.pagination-lg > li:first-child > span {
+.Import2OSMination-lg > li:first-child > a,
+.Import2OSMination-lg > li:first-child > span {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 }
-.pagination-lg > li:last-child > a,
-.pagination-lg > li:last-child > span {
+.Import2OSMination-lg > li:last-child > a,
+.Import2OSMination-lg > li:last-child > span {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }
-.pagination-sm > li > a,
-.pagination-sm > li > span {
+.Import2OSMination-sm > li > a,
+.Import2OSMination-sm > li > span {
   padding: 5px 10px;
   font-size: 12px;
   line-height: 1.5;
 }
-.pagination-sm > li:first-child > a,
-.pagination-sm > li:first-child > span {
+.Import2OSMination-sm > li:first-child > a,
+.Import2OSMination-sm > li:first-child > span {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.pagination-sm > li:last-child > a,
-.pagination-sm > li:last-child > span {
+.Import2OSMination-sm > li:last-child > a,
+.Import2OSMination-sm > li:last-child > span {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-.pager {
+.Import2OSMer {
   padding-left: 0;
   margin: 20px 0;
   text-align: center;
   list-style: none;
 }
-.pager li {
+.Import2OSMer li {
   display: inline;
 }
-.pager li > a,
-.pager li > span {
+.Import2OSMer li > a,
+.Import2OSMer li > span {
   display: inline-block;
   padding: 5px 14px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 15px;
 }
-.pager li > a:hover,
-.pager li > a:focus {
+.Import2OSMer li > a:hover,
+.Import2OSMer li > a:focus {
   text-decoration: none;
   background-color: #eee;
 }
-.pager .next > a,
-.pager .next > span {
+.Import2OSMer .next > a,
+.Import2OSMer .next > span {
   float: right;
 }
-.pager .previous > a,
-.pager .previous > span {
+.Import2OSMer .previous > a,
+.Import2OSMer .previous > span {
   float: left;
 }
-.pager .disabled > a,
-.pager .disabled > a:hover,
-.pager .disabled > a:focus,
-.pager .disabled > span {
+.Import2OSMer .disabled > a,
+.Import2OSMer .disabled > a:hover,
+.Import2OSMer .disabled > a:focus,
+.Import2OSMer .disabled > span {
   color: #777;
   cursor: not-allowed;
   background-color: #fff;
@@ -6528,8 +6528,8 @@ button.close {
 .navbar-header:after,
 .navbar-collapse:before,
 .navbar-collapse:after,
-.pager:before,
-.pager:after,
+.Import2OSMer:before,
+.Import2OSMer:after,
 .panel-body:before,
 .panel-body:after,
 .modal-footer:before,
@@ -6549,7 +6549,7 @@ button.close {
 .navbar:after,
 .navbar-header:after,
 .navbar-collapse:after,
-.pager:after,
+.Import2OSMer:after,
 .panel-body:after,
 .modal-footer:after {
   clear: both;

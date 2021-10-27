@@ -3,7 +3,7 @@
 /***************************************************************************
  ImportShpDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+ Gestion de Plans d'Aménagement Général du Grand-Duché de 
                              -------------------
         begin                : 2015-10-23
         git sha              : $Format:%H$
@@ -33,8 +33,8 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 from qgis.core import *
 from qgis.gui import *
 
-import PagLuxembourg.main
-import PagLuxembourg.project
+import Importer2OSMbasemap.main
+import Importer2OSMbasemap.project
 
 from .importer import *
 
@@ -88,7 +88,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # If not valid, don't show the dialog
         if not self.shplayer.isValid():
-            PagLuxembourg.main.qgis_interface.messageBar().pushCritical(
+            Importer2OSMbasemap.main.qgis_interface.messageBar().pushCritical(
                 QCoreApplication.translate('ImportShpDialog', 'Error'),
                 QCoreApplication.translate('ImportShpDialog', 'Shapefile is not valid')
             )
@@ -118,15 +118,15 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         '''
         Loads the QGIS layers into the combobox
         '''
-
         self.qgislayers = list()
 
         # Adds the map layers with same geometry type to the combobox
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in PagLuxembourg.main.qgis_interface.legendInterface().layers():
+        #for layer in Importer2OSMbasemap.main.qgis_interface.legendInterface().layers():
         for layer in layers:
             if layer.type() == QgsMapLayer.VectorLayer and layer.geometryType() == self.shplayer.geometryType():
                 self.qgislayers.append(layer)
+
                 self.cbbLayers.addItem(layer.name(), layer.id())
 
     def _selectedLayerIndexChanged(self, index):
@@ -144,7 +144,6 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
     def _loadMapping(self):
         '''
         Loads a mapping using an existing one or a default one
-
         :param mapping: An existing Mapping
         :type mapping: LayerMapping
         '''
@@ -152,9 +151,9 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         qgis_layer = self.qgislayers[self.cbbLayers.currentIndex()]
 
         # Gets the mapping destination layer
-        for layer in self.qgislayers:
-            if PagLuxembourg.main.current_project.getLayerTableName(layer) == self.mapping.destinationLayerName():
-                qgis_layer = layer
+        #for layer in self.qgislayers:
+            #if Importer2OSMbasemap.main.current_project.getLayerTableName(layer) == self.mapping.destinationLayerName():
+                #qgis_layer = layer
 
         if self.mapping.destinationLayerName() is not None and qgis_layer is None:
             QMessageBox.critical(
@@ -166,23 +165,23 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Loads a config file mapping
         self.is_loading_mapping = True
-        self.cbbLayers.setCurrentIndex(self.qgislayers.index(qgis_layer))
+        #self.cbbLayers.setCurrentIndex(self.qgislayers.index(qgis_layer))
 
         qgis_fields = qgis_layer.dataProvider().fields()
 
         # Clear the table
         self.tabMapping.clearContents()
-        self.tabMapping.setRowCount(len(qgis_fields) - 2)
+        self.tabMapping.setRowCount(len(qgis_fields) - 1)
 
         rowindex = 0
 
         # Fill mapping
         for field in qgis_fields:
             # Skip PK field
-            if field.name() == PagLuxembourg.project.PK:
+            if field.name() == Importer2OSMbasemap.project.PK:
                 continue
             # Skip IMPORT_ID field
-            if field.name() == PagLuxembourg.project.IMPORT_ID:
+            if field.name() == Importer2OSMbasemap.project.IMPORT_ID:
                 continue
 
             source, destination, constant_value, enabled, value_map = self.mapping.getFieldMappingForDestination(field.name())
@@ -359,7 +358,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         qgis_layer = self.qgislayers[self.cbbLayers.currentIndex()]
 
         newmapping = LayerMapping()
-        newmapping.setDestinationLayerName(PagLuxembourg.main.current_project.getLayerTableName(qgis_layer))
+        newmapping.setDestinationLayerName(Importer2OSMbasemap.main.current_project.getLayerTableName(qgis_layer))
 
         for rowindex in range(self.tabMapping.rowCount()):
             qgis_field = self._getCellValue(self.tabMapping, rowindex, 0)
@@ -415,12 +414,12 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         self.close()
 
         # Progress bar + message
-        progressMessageBar = PagLuxembourg.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportShpDialog', 'Importing {}').format(self.shplayer.source()))
+        progressMessageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportShpDialog', 'Importing {}').format(self.shplayer.source()))
         progress = QProgressBar()
         progress.setMaximum(self.shplayer.featureCount())
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
-        PagLuxembourg.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
+        Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
         # Start import session
         self._startImportSession()

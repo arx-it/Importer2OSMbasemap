@@ -45,9 +45,9 @@ XSD_QGIS_GEOMETRYTYPE_MAP = {GeometryType.POINT:QgsWkbTypes.Point,
                              GeometryType.POLYLINE:QgsWkbTypes.LineString,
                              GeometryType.POLYGON:QgsWkbTypes.Polygon}
 
-class PAGSchema(object):
+class Import2OSMSchema(object):
     '''
-    The PAG schema parsed from the XSD
+    The Import2OSM schema parsed from the XSD
     '''
 
     def __init__(self):
@@ -64,7 +64,7 @@ class PAGSchema(object):
         xsd_path = os.path.join(
             main.plugin_dir,
             'assets',
-            'PAGschema.xsd')
+            'Import2OSMschema.xsd')
 
         # Parse as QgsGmlSchema
         file = QFile(xsd_path)
@@ -78,7 +78,7 @@ class PAGSchema(object):
         ns = {'xsd': 'http://www.w3.org/2001/XMLSchema'} # XSD namespace
         xsd = ET.parse(xsd_path)
 
-        topics = list() # Topics : PAG, ARTIKEL17, GESTION
+        topics = list() # Topics : Import2OSM, ARTIKEL17, GESTION
         concrete_typenames = list()
 
         # Loop GML schema type names
@@ -97,12 +97,12 @@ class PAGSchema(object):
 
         self.types = list()
 
-        # Loop concrete type names and parse to PAGType
+        # Loop concrete type names and parse to Import2OSMType
         for typename in concrete_typenames:
             xml_element = xsd.getroot().find('xsd:complexType[@name="{}Type"]'.format(typename),ns)
-            pag_type = PAGType()
-            pag_type.parse(typename, xml_element, ns)
-            self.types.append(pag_type)
+            Import2OSM_type = Import2OSMType()
+            Import2OSM_type.parse(typename, xml_element, ns)
+            self.types.append(Import2OSM_type)
 
         # Add topic to types
         for topic, members in topics:
@@ -144,7 +144,7 @@ class PAGSchema(object):
         '''
         Parse XML node
 
-        :param typename: The type name of the topic (ex : PAGMemberType)
+        :param typename: The type name of the topic (ex : Import2OSMMemberType)
         :type typename: str, QString
 
         :param ns: XSD namespaces
@@ -163,9 +163,9 @@ class PAGSchema(object):
 
         return members
 
-class PAGType(object):
+class Import2OSMType(object):
     '''
-    A PAG XSD type
+    A Import2OSM XSD type
     '''
 
     def __init__(self):
@@ -210,9 +210,9 @@ class PAGType(object):
 
             # Process field
             else:
-                pag_field = PAGField()
-                pag_field.parse(element, ns)
-                self.fields.append(pag_field)
+                Import2OSM_field = Import2OSMField()
+                Import2OSM_field.parse(element, ns)
+                self.fields.append(Import2OSM_field)
 
             self.ordered_field_names.append(element.get('name'))
 
@@ -256,9 +256,9 @@ class PAGType(object):
 
         return None
 
-class PAGField(object):
+class Import2OSMField(object):
     '''
-    A PAG XSD field
+    A Import2OSM XSD field
     '''
 
     def __init__(self):

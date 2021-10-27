@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 '''
 /***************************************************************************
- PagLuxembourg
+ Importer2OSMbasemap
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+ Gestion de Plans d'Aménagement Général du Grand-Duché de 
                               -------------------
         begin                : 2015-08-25
         git sha              : $Format:%H$
@@ -25,7 +25,7 @@ from builtins import object
 from qgis.core import *
 from qgis.PyQt.QtCore import QSettings, QTranslator, qVersion, QCoreApplication
 from qgis.PyQt.QtWidgets import QAction, QPushButton
-from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtGui import QIcon, QPixmap
 # Initialize Qt resources from file resources.py
 from . import resources
 # Import the code for the dialog
@@ -42,16 +42,17 @@ from .widgets.topology.topology import *
 from .widgets.about.about import *
 from .editor import simple_filename, precise_range
 # Schema
-from PagLuxembourg.schema import *
-from PagLuxembourg.project import *
+from Importer2OSMbasemap.schema import *
+from Importer2OSMbasemap.project import *
 
 # Global variables
 plugin_dir = os.path.dirname(__file__)
-'''xsd_schema = PAGSchema()'''
+xsd_schema = Import2OSMSchema()
 qgis_interface = None
 current_project = Project()
 
-class PAGLuxembourg(object):
+print ("hello")
+class Importer2OSMbasemap(object):
     '''
     QGIS Plugin Implementation.
     '''
@@ -88,12 +89,12 @@ class PAGLuxembourg(object):
 
         # Declare instance attributes
         self.actions = []
-        self.pag_actions = [] #PAG actions, disabled if the project is not PAG
-        self.menu = self.tr(u'&PAG Luxembourg')
+        self.Import2OSM_actions = [] #Import2OSM actions, disabled if the project is not Import2OSM
+        self.menu = self.tr(u'&Import2OSM')
 
         # Toolbar initialization
-        self.toolbar = self.iface.addToolBar(u'PagLuxembourg')
-        self.toolbar.setObjectName(u'PagLuxembourg')
+        self.toolbar = self.iface.addToolBar(u'Importer2OSMbasemap')
+        self.toolbar.setObjectName(u'Importer2OSMbasemap')
 
         # QGIS interface hooks
         self.iface.projectRead.connect(current_project.open)
@@ -116,7 +117,7 @@ class PAGLuxembourg(object):
         :rtype: QString
         '''
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('PAGLuxembourg', message)
+        return QCoreApplication.translate('Importer2OSMbasemap', message)
 
 
     def add_action(
@@ -201,16 +202,16 @@ class PAGLuxembourg(object):
         # New project
         self.create_project_widget=CreateProject()
         self.add_action(
-            ':/plugins/PagLuxembourg/widgets/create_project/icon.png',
+            ':/plugins/Importer2OSMbasemap/widgets/create_project/icon.png',
             text=self.tr(u'New project'),
             callback=self.create_project_widget.run,
-            status_tip=self.tr(u'Creates a new PAG project'),
+            status_tip=self.tr(u'Creates a new Import2OSM project'),
             parent=self.iface.mainWindow())
 
         # Import data
         self.import_data_widget = ImportData()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/import_data/icon.png',
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/import_data/icon.png',
             text=self.tr(u'Import data'),
             callback=self.import_data_widget.run,
             status_tip=self.tr(u'Import data from files (GML, SHP, DXF)'),
@@ -218,35 +219,37 @@ class PAGLuxembourg(object):
 
         # Import manager
         self.import_manager_widget = ImportManager()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/import_manager/icon.png',
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/import_manager/icon.png',
             text=self.tr(u'Import manager'),
             callback=self.import_manager_widget.run,
             status_tip=self.tr(u'Open the import manager'),
             parent=self.iface.mainWindow()))
 
         # Export GML
-        '''self.export_gml_widget = ExportGML()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/export_gml/icon.png',
+        """
+        self.export_gml_widget = ExportGML()
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/export_gml/icon.png',
             text=self.tr(u'Export GML'),
             callback=self.export_gml_widget.run,
             status_tip=self.tr(u'Export the current project to a GML file'),
-            parent=self.iface.mainWindow()))'''
-
+            parent=self.iface.mainWindow()))
+        """
         # Apply styles
-        '''self.stylize_project_widget = StylizeProject()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/stylize/icon.png',
+        """
+        self.stylize_project_widget = StylizeProject()
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/stylize/icon.png',
             text=self.tr(u'Apply styles'),
             callback=self.stylize_project_widget.run,
             status_tip=self.tr(u'Apply predefined styles to the project'),
-            parent=self.iface.mainWindow()))'''
-
+            parent=self.iface.mainWindow()))
+        """
         # Topo clean tool
         '''self.topoclean_widget = TopoClean()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/topoclean/icon.png',
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/topoclean/icon.png',
             text=self.tr(u'Clean topology'),
             callback=self.topoclean_widget.run,
             status_tip=self.tr(u'Clean the topology of a layer'),
@@ -261,65 +264,71 @@ class PAGLuxembourg(object):
                     if subaction.text().replace("&", "") == QCoreApplication.translate("QgsGeometryCheckerPlugin", "Check Geometries").replace("&",""):
                         found = True
                         self.topoclean_widget = TopoClean(subaction)
-                        self.pag_actions.append(self.add_action(
-                            ':/plugins/PagLuxembourg/widgets/topoclean/icon.png',
+                        self.Import2OSM_actions.append(self.add_action(
+                            ':/plugins/Importer2OSMbasemap/widgets/topoclean/icon.png',
                             text=self.tr(u'Check geometry'),
                             callback=self.topoclean_widget.run,
                             status_tip=self.tr(u'Check geometries and fix errors'),
                             parent=self.iface.mainWindow()))
-        """
-        '''found = False
+        
+        found = False
         for action in self.iface.vectorMenu().actions():
             if action.parent().objectName() == u'qgis_plugin_geometrycheckerplugin':
                 found = True
                 self.topoclean_widget = TopoClean(action)
-                self.pag_actions.append(self.add_action(
-                    ':/plugins/PagLuxembourg/widgets/topoclean/icon.png',
+                self.Import2OSM_actions.append(self.add_action(
+                    ':/plugins/Importer2OSMbasemap/widgets/topoclean/icon.png',
                     text=self.tr(u'Check geometry'),
                     callback=self.topoclean_widget.run,
                     status_tip=self.tr(u'Check geometries and fix errors'),
-                    parent=self.iface.mainWindow()))'''
-
+                    parent=self.iface.mainWindow()))
+        """
 
         # Topology checker plugin is not enabled, ask the user to install it
-        '''if not found:
+        """
+        if not found:
             self.iface.initializationCompleted.connect(self._showMissingGeometryCheckerPluginMessage)
-
+        """
         # Topology checker
+        """
         found = False
         for action in self.iface.vectorToolBar().actions():
             if action.parent().objectName() == u'qgis_plugin_topolplugin':
                 found = True
                 self.topology_widget = TopologyChecker(action)
-                self.pag_actions.append(self.add_action(
-                    ':/plugins/PagLuxembourg/widgets/topology/icon.png',
+                self.Import2OSM_actions.append(self.add_action(
+                    ':/plugins/Importer2OSMbasemap/widgets/topology/icon.png',
                     text=self.tr(u'Check topology'),
                     callback=self.topology_widget.run,
                     status_tip=self.tr(u'Check layers topology according to predefined rules'),
                     parent=self.iface.mainWindow()))
-
+        """
         # Topology checker plugin is not enabled, ask the user to install it
+        """
         if not found:
             self.iface.initializationCompleted.connect(self._showMissingTopolPluginMessage)
+            """
 
         # Data checker
+        """
         self.data_checker_widget = DataChecker()
-        self.pag_actions.append(self.add_action(
-            ':/plugins/PagLuxembourg/widgets/data_checker/icon.png',
+        self.Import2OSM_actions.append(self.add_action(
+            ':/plugins/Importer2OSMbasemap/widgets/data_checker/icon.png',
             text=self.tr(u'Check data'),
             callback=self.data_checker_widget.run,
             status_tip=self.tr(u'Check project data for errors'),
             parent=self.iface.mainWindow()))
-
+        """
         # About
+        """
         self.about_widget = About()
         self.add_action(
-            ':/plugins/PagLuxembourg/widgets/about/icon.png',
+            ':/plugins/Importer2OSMbasemap/widgets/about/icon.png',
             text=self.tr(u'About'),
             callback=self.about_widget.run,
-            status_tip=self.tr(u'About the PAG plugin'),
-            parent=self.iface.mainWindow())'''
-
+            status_tip=self.tr(u'About the Import2OSM plugin'),
+            parent=self.iface.mainWindow())
+        """
         # Update buttons availability
         self.updateGui()
 
@@ -328,10 +337,10 @@ class PAGLuxembourg(object):
         Updates the plugin GUI
         Disable buttons
         '''
-        enabled = current_project.isPagProject()
+        enabled = current_project.isImport2OSMProject()
         #enabled = True
 
-        for action in self.pag_actions:
+        for action in self.Import2OSM_actions:
                 action.setEnabled(enabled)
 
     def _showMissingTopolPluginMessage(self):
@@ -352,7 +361,7 @@ class PAGLuxembourg(object):
         '''
         Display a message to prompt the user to install the geometry checker plugin
         '''
-        widget = self.iface.messageBar().createMessage(self.tr(u'PAG Luxembourg'), self.tr(u'The "') + plugin + self.tr(u'" plugin is required by the "PAG Luxembourg" plugin, please install it and restart QGIS.'))
+        widget = self.iface.messageBar().createMessage(self.tr(u'Import2OSM'), self.tr(u'The "') + plugin + self.tr(u'" plugin is required by the "Import2OSM " plugin, please install it and restart QGIS.'))
         button = QPushButton(widget)
         button.setText(self.tr(u'Show plugin manager'),)
         button.pressed.connect(self.iface.actionManagePlugins().trigger)
@@ -366,7 +375,7 @@ class PAGLuxembourg(object):
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&PAG Luxembourg'),
+                self.tr(u'&Import2OSM'),
                 action)
             self.iface.removeToolBarIcon(action)
 

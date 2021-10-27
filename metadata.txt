@@ -7,17 +7,17 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=PAG Luxembourg
+name=Importer2OSMbasemap
 qgisMinimumVersion=3.0
-description=Gestion de Plans d'Amenagement General du Grand-Duche de Luxembourg
-version=1.3
+description=Import data into a QGIS Project, with OSM basemap
+version=1.0
 author=arx iT
-email=mba@arxit.com
+email=cgr@arxit.com
 
-about=Gestion de Plans d'Amenagement General du Grand-Duche de Luxembourg
+about=Importer2OSMbasemap create a QGIS Project, with an OSM basemap. It allows to import data (SHP, DXF, geoJSON) 
 
-tracker=https://github.com/Geoportail-Luxembourg/qgis-pag-plugin/issues
-repository=https://github.com/Geoportail-Luxembourg/qgis-pag-plugin
+tracker=https://github.com/Geoportail-/qgis-Import2OSM-plugin/issues
+repository=https://github.com/Geoportail-/qgis-Import2OSM-plugin
 # End of mandatory metadata
 
 # Recommended items:
@@ -26,9 +26,9 @@ repository=https://github.com/Geoportail-Luxembourg/qgis-pag-plugin
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=PAG, Luxembourg, Landuse
+tags=Import2OSM, , Landuse
 
-homepage=https://github.com/Geoportail-Luxembourg/qgis-pag-plugin
+homeImport2OSMe=https://github.com/Geoportail-/qgis-Import2OSM-plugin
 category=Plugins
 icon=icon.png
 # experimental flag

@@ -3,7 +3,7 @@
 /***************************************************************************
  CreateProjectDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+ Gestion de Plans d'Aménagement Général du Grand-Duché de 
                              -------------------
         begin                : 2015-09-09
         git sha              : $Format:%H$
@@ -27,7 +27,7 @@ from qgis.PyQt import QtGui, uic
 from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qgis.PyQt.QtCore import QCoreApplication
 
-import PagLuxembourg.main
+import Importer2OSMbasemap.main
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'create_project_dialog.ui'))
@@ -97,6 +97,6 @@ class CreateProjectDialog(QDialog, FORM_CLASS):
                                  QCoreApplication.translate('CreateProject','Error'),
                                  QCoreApplication.translate('CreateProject','The folder does not exist'))
 
-        PagLuxembourg.main.current_project.create(folder,name)
+        Importer2OSMbasemap.main.current_project.create(folder,name)
 
         self.close()

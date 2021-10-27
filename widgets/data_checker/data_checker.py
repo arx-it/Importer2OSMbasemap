@@ -19,8 +19,8 @@ import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
 
-from PagLuxembourg.schema import *
-import PagLuxembourg.main
+from Importer2OSMbasemap.schema import *
+import Importer2OSMbasemap.main
 
 from .error_summary_dialog import ErrorSummaryDialog
 
@@ -42,25 +42,25 @@ class DataChecker(object):
         :rtype: Boolean
         '''
 
-        project = PagLuxembourg.main.current_project
+        project = Importer2OSMbasemap.main.current_project
 
-        if not project.isPagProject():
+        if not project.isImport2OSMProject():
             return
 
         layer_structure_errors = list()
         data_errors = list()
 
-        # 'MODIFICATION PAG' layer definition
-        layer_PAG = project.getModificationPagLayer()
+        # 'MODIFICATION Import2OSM' layer definition
+        layer_Import2OSM = project.getModificationImport2OSMLayer()
 
-        # 'MODIFICATION PAG' selection definition
-        selection_PAG = layer_PAG.selectedFeatures()
+        # 'MODIFICATION Import2OSM' selection definition
+        selection_Import2OSM = layer_Import2OSM.selectedFeatures()
 
-        # Counting number entities in 'MODIFICATION PAG' selection
-        entity_count_PAG = layer_PAG.selectedFeatureCount()
+        # Counting number entities in 'MODIFICATION Import2OSM' selection
+        entity_count_Import2OSM = layer_Import2OSM.selectedFeatureCount()
 
         # Iterates through XSD types
-        for type in PagLuxembourg.main.xsd_schema.types:
+        for type in Importer2OSMbasemap.main.xsd_schema.types:
             layer = project.getLayer(type)
 
             if layer is None:
@@ -72,7 +72,7 @@ class DataChecker(object):
             if len(fatal_errors)>0:
                 continue
 
-            layer_data_errors = self.checkLayerData(selection_PAG, layer, type)
+            layer_data_errors = self.checkLayerData(selection_Import2OSM, layer, type)
             data_errors.append(layer_data_errors)
 
         # Flatten data errors
@@ -84,18 +84,18 @@ class DataChecker(object):
         valid = (len(layer_structure_errors) + len(data_errors_flat)) == 0
 
         # Messages display for number of selected entities
-        if valid and entity_count_PAG == 1:
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker','Success'),
-                                                                       QCoreApplication.translate('DataChecker','No errors found on entities that intersect {} selected entity in MODIFICATION PAG layer').format(entity_count_PAG))
-        elif valid and entity_count_PAG == 0 :
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_no','Success'),
+        if valid and entity_count_Import2OSM == 1:
+            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker','Success'),
+                                                                       QCoreApplication.translate('DataChecker','No errors found on entities that intersect {} selected entity in MODIFICATION Import2OSM layer').format(entity_count_Import2OSM))
+        elif valid and entity_count_Import2OSM == 0 :
+            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_no','Success'),
                                                                        QCoreApplication.translate('DataChecker_no','No errors found'))
-        elif valid and entity_count_PAG > 1 :
-            PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-            PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_many','Success'),
-                                                                       QCoreApplication.translate('DataChecker_many','No errors found on entities that intersect {} selected entities in MODIFICATION PAG layer').format(entity_count_PAG))
+        elif valid and entity_count_Import2OSM > 1 :
+            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_many','Success'),
+                                                                       QCoreApplication.translate('DataChecker_many','No errors found on entities that intersect {} selected entities in MODIFICATION Import2OSM layer').format(entity_count_Import2OSM))
 
         else:
             self.dlg = ErrorSummaryDialog(layer_structure_errors, data_errors)
@@ -121,13 +121,13 @@ class DataChecker(object):
         :type layer: QgsVectorLayer
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: Import2OSMType
 
         :returns: A list of warning and fatal error
-        :rtype: Tuple : warning, fatal. Layer (QgsVectorLayer), field (PAGField), message (str, QString)
+        :rtype: Tuple : warning, fatal. Layer (QgsVectorLayer), field (Import2OSMField), message (str, QString)
         '''
 
-        native_fields = PagLuxembourg.main.current_project.getNativeFields(xsd_type)
+        native_fields = Importer2OSMbasemap.main.current_project.getNativeFields(xsd_type)
         warn_errors = list()
         fatal_errors = list()
 
@@ -169,43 +169,43 @@ class DataChecker(object):
 
         return None
 
-    def checkLayerData(self, selection_PAG, layer, xsd_type):
+    def checkLayerData(self, selection_Import2OSM, layer, xsd_type):
         '''
         Checks the data of a layer against the XSD type
 
-        :param selection_PAG: Selected features from the Modification PAG layer
-        :type selection_PAG: QgsFeatureList
+        :param selection_Import2OSM: Selected features from the Modification Import2OSM layer
+        :type selection_Import2OSM: QgsFeatureList
 
         :param layer: The vector layer to check
         :type layer: QgsVectorLayer
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: Import2OSMType
 
         :returns: A list of data error
-        :rtype: Tuples : Layer (QgsVectorLayer), list of tuple Feature (QgsFeature), field (PAGField), message (str, QString)
+        :rtype: Tuples : Layer (QgsVectorLayer), list of tuple Feature (QgsFeature), field (Import2OSMField), message (str, QString)
         '''
 
         errors = list()
         areas = []
 
-        # Check if a selection exists in 'MODIFICATION PAG'
-        if len(selection_PAG) > 0 :
+        # Check if a selection exists in 'MODIFICATION Import2OSM'
+        if len(selection_Import2OSM) > 0 :
 
-            # Selection by intersection with 'MODIFICATION PAG' layer
-            for PAG_feature in selection_PAG:
+            # Selection by intersection with 'MODIFICATION Import2OSM' layer
+            for Import2OSM_feature in selection_Import2OSM:
                 cands = layer.getFeatures()
                 for layer_features in cands:
-                    if PAG_feature.geometry().intersects(layer_features.geometry()):
+                    if Import2OSM_feature.geometry().intersects(layer_features.geometry()):
                         areas.append(layer_features.id())
 
             if layer.wkbType() == QgsWkbTypes.NoGeometry:
                 layer.selectAll()
             else:
                 layer.select(areas)
-            selection_entities_from_PAG = layer.selectedFeatures()
+            selection_entities_from_Import2OSM = layer.selectedFeatures()
 
-            for feature in selection_entities_from_PAG:
+            for feature in selection_entities_from_Import2OSM:
                 errors += self.checkFeatureData(feature, xsd_type)
 
         else:
@@ -223,10 +223,10 @@ class DataChecker(object):
         :type feature: QgsFeature
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: Import2OSMType
 
         :returns: A list of  error
-        :rtype: List of tuples : Feature (QgsFeature), field (PAGField), message (str, QString)
+        :rtype: List of tuples : Feature (QgsFeature), field (Import2OSMField), message (str, QString)
         '''
 
         errors = list()
@@ -254,10 +254,10 @@ class DataChecker(object):
         :type feature: QgsFeature
 
         :param xsd_field: XSD type field
-        :type xsd_field: PAGField
+        :type xsd_field: Import2OSMField
 
         :returns: A list of  error
-        :rtype: List of tuples : Feature (QgsFeature), field (PAGField), message (str, QString)
+        :rtype: List of tuples : Feature (QgsFeature), field (Import2OSMField), message (str, QString)
         '''
 
         errors = list()
@@ -313,7 +313,7 @@ class DataChecker(object):
         :type feature: QgsFeature
 
         :returns: A list of  error
-        :rtype: List of tuples : Feature (QgsFeature), field (PAGField), message (str, QString)
+        :rtype: List of tuples : Feature (QgsFeature), field (Import2OSMField), message (str, QString)
         '''
 
         errors = list()

@@ -3,7 +3,7 @@
 /***************************************************************************
  ErrorSummaryDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+ Gestion de Plans d'Aménagement Général du Grand-Duché de 
                              -------------------
         begin                : 2015-10-23
         git sha              : $Format:%H$
@@ -33,7 +33,7 @@ from qgis.PyQt.QtCore import QCoreApplication
 
 from qgis.core import *
 
-import PagLuxembourg.main
+import Importer2OSMbasemap.main
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'error_summary_dialog.ui'))
@@ -116,7 +116,7 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         layer, feature, field, message = self.data_errors[currentRow]
         #layer.setSelectedFeatures([feature.id()])
         layer.selectByIds([feature.id()])
-        PagLuxembourg.main.qgis_interface.mapCanvas().zoomToSelected(layer)
+        Importer2OSMbasemap.main.qgis_interface.mapCanvas().zoomToSelected(layer)
 
     def _tabDataErrorsCellDblClicked(self, row, column):
         # Deselect
@@ -126,14 +126,14 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         if not layer.isEditable():
             layer.startEditing()
 
-        #PagLuxembourg.main.qgis_interface.legendInterface().setCurrentLayer(layer)
-        PagLuxembourg.main.qgis_interface.setActiveLayer(layer)
+        #Importer2OSMbasemap.main.qgis_interface.legendInterface().setCurrentLayer(layer)
+        Importer2OSMbasemap.main.qgis_interface.setActiveLayer(layer)
 
 
         features = layer.getFeatures(QgsFeatureRequest(feature.id()))
 
         for feature in features:
-            PagLuxembourg.main.qgis_interface.openFeatureForm(layer, feature, showModal=False)
+            Importer2OSMbasemap.main.qgis_interface.openFeatureForm(layer, feature, showModal=False)
 
     def exportToCsv(self):
         # Select CSV file to export
@@ -181,6 +181,6 @@ class ErrorSummaryDialog(QDialog, FORM_CLASS):
         csvfile.close()
 
         # Success message
-        PagLuxembourg.main.qgis_interface.messageBar().clearWidgets()
-        PagLuxembourg.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ErrorSummaryDialog','Success'),
+        Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
+        Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ErrorSummaryDialog','Success'),
                                                                    QCoreApplication.translate('ErrorSummaryDialog','CSV export was successful'))

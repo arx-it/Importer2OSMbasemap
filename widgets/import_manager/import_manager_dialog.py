@@ -3,7 +3,7 @@
 /***************************************************************************
  ImportShpDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+ Gestion de Plans d'Aménagement Général du Grand-Duché de 
                              -------------------
         begin                : 2015-10-23
         git sha              : $Format:%H$
@@ -31,7 +31,7 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 
 from qgis.core import *
 
-import PagLuxembourg.main
+import Importer2OSMbasemap.main
 
 from . import import_manager
 
@@ -66,7 +66,7 @@ class ImportManagerDialog(QDialog, FORM_CLASS):
         self.tabImports.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
         # Load imports
-        layer = PagLuxembourg.main.current_project.getImportLogLayer()
+        layer = Importer2OSMbasemap.main.current_project.getImportLogLayer()
 
         if layer is None:
             return

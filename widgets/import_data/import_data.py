@@ -13,7 +13,7 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtCore import *
 
-import PagLuxembourg.main
+import Importer2OSMbasemap.main
 
 from .import_gml import ImportGML
 from .import_shp import ImportSHP
@@ -36,14 +36,14 @@ class ImportData(object):
         Runs the widget
         '''
 
-        if not PagLuxembourg.main.current_project.isPagProject():
+        if not Importer2OSMbasemap.main.current_project.isImport2OSMProject():
             return
 
         # Select file to import
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.ExistingFile)
         dialog.setOption(QFileDialog.ReadOnly)
-        dialog.setNameFilter('Vector file (*.gml *.shp *.geojson *.dxf)');
+        dialog.setNameFilter('Vector file ( *.shp *.geojson *.dxf)');
         dialog.setWindowTitle(QCoreApplication.translate('ImportData','Select the file to import'))
         dialog.setSizeGripEnabled(False)
         result = dialog.exec_()
@@ -58,7 +58,6 @@ class ImportData(object):
 
         # Dispatch to the right importer
         importers = {
-                    
                     'shp':ImportSHP,
                     'geojson': ImportGeoJSON,
                     'dxf':ImportDXF
