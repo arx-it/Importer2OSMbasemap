@@ -1,4 +1,4 @@
-# qgis-importer2osmbasemap-plugin
+# qgis-Importer2OSMbasemap-plugin
 Plugin QGIS
  
  
