@@ -11,6 +11,7 @@ import os.path
 import json
 from collections import OrderedDict
 import uuid
+import processing
 
 from qgis.PyQt.QtCore import QCoreApplication, QVariant, Qt, QDate, QDateTime, QSettings
 from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDoubleSpinBox, QDateTimeEdit, QLineEdit, QPushButton, QFileDialog, QMessageBox
@@ -174,10 +175,33 @@ class Importer(object):
 
         importid_index = dst_layer.fields().indexFromName(Importer2OSMbasemap.project.IMPORT_ID)
 
+        # Check on layers CRS
+        for layer in [dst_layer, src_layer]:
+            # If QGIS can not detect the layer initial CRS
+            if len(layer.crs().authid()) == 0:
+                # If no default CRS has been already chosen for this import
+                QMessageBox.information(None, 'Sélection Système Projection', 'Le système de projection pour la couche ' + ('source' if layer == src_layer else 'de destination') + ' est inconnu de QGIS. Veuillez en sélectionner un manuellement.\n\nSi d\'autres couches de cet ajout ont également ce problème, le système choisi sera alors utilisé.')
+                if self.projectionSelectionWidget is None:
+                    self.projectionSelectionWidget = QgsProjectionSelectionWidget(None)
+                    self.projectionSelectionWidget.setOptionVisible(QgsProjectionSelectionWidget.ProjectCrs, True)
+                self.projectionSelectionWidget.setCrs(layer.crs())
+                self.projectionSelectionWidget.setLayerCrs(layer.crs())
+                self.projectionSelectionWidget.selectCrs()
+                chosenCrs = self.projectionSelectionWidget.crs()
+                if len(chosenCrs.authid()) == 0:
+                    QMessageBox.critical(None, 'Erreur Système Projection', 'Le système de projection choisi est inconnu de QGIS.\nImport annulé.')
+                    return
+                layer.setCrs(chosenCrs)
+
+        # Reproject source layer if its CRS is different from the destination layer
+        if dst_layer.crs().authid() != src_layer.crs().authid():
+            src_layer = processing.run("native:reprojectlayer", {'INPUT': src_layer, 'TARGET_CRS' : dst_layer.crs().authid(), 'OUTPUT' : 'memory:temp'})['OUTPUT']
+            src_layer.setCrs(dst_layer.crs())
+
         if dst_layer.crs().authid() != src_layer.crs().authid():
            QMessageBox.information(self, 'Avertissement', 'le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer ')
-           #raise TypeError('le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer')
-           
+        #   raise TypeError('le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer')
+
         # Set layer filter if existing, for DXF
         if mapping.sourceLayerFilter() is None:
             feature_request = QgsFeatureRequest()
@@ -219,7 +243,7 @@ class Importer(object):
         for src_feature in source_features:
             dst_feature = QgsFeature(dst_layer_fields)
             for src_index, dst_index, constant_value, enabled, value_map in mapping.fieldMappings():
-                value = constant_value if src_index is None else src_feature[src_index]
+                value = constant_value if src_index == -1 else src_feature[src_index]
 
                 # Manage value map
                 for shp, qgis in value_map:
@@ -322,11 +346,11 @@ class Importer(object):
                 self._getCentroid(geometry)
             ))
             return None
-        
+
         errors = clean_geometry.validateGeometry()
 
         for error in errors:
-            
+
             self.features_errors.append((
                 layer_name,
                 feature_id,
@@ -334,7 +358,7 @@ class Importer(object):
                 error.where()
             ))
 
-        return clean_geometry if len(errors) == 0 else QMessageBox.information(self, 'Avertissement', 'le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer ')
+        return clean_geometry if len(errors) == 0 else QMessageBox.information(self, 'Avertissement', 'Le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer ')
 
     def _getCleanGeometry(self, geometry, simplify_tolerance=0):
         if geometry is None:
@@ -347,7 +371,7 @@ class Importer(object):
 
         if clean_geometry.isNull():
             return None
-        
+
         # Simplify seems to corrupt some geometries, so we have to recreate the geometry
         if geometry.type() == QgsWkbTypes.PointGeometry:
             return QgsGeometry.fromPointXY(clean_geometry.asPoint())
@@ -621,7 +645,7 @@ class Importer(object):
             elif type(child) is QComboBox:
                 index = child.currentIndex()
                 id =  child.itemData(index)
-                ct = child.currentText() 
+                ct = child.currentText()
                 return ct
             elif type(child) is SimpleFilenamePicker:
                 return child.value()
