@@ -1,4 +1,4 @@
-# qgis-pag-plugin
+# qgis-importer2osmbasemap-plugin
 Plugin QGIS
  
  
