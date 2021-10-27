@@ -134,6 +134,8 @@ class Project(QObject):
         # Save project and add to recent projects
         main.qgis_interface.actionSaveProject().trigger()
 
+        main.qgis_interface.mapCanvas().refresh()
+
         # Notify project is ready
         self.ready.emit()
 
@@ -559,7 +561,7 @@ class Project(QObject):
             main.qgis_interface.mapCanvas().refresh()
             main.qgis_interface.mapCanvas().waitWhileRendering()
             main.qgis_interface.mapCanvas().setExtent(QgsRectangle(-2700882.10577499028295279, 4585734.15003505628556013, 4035800.84770977031439543, 7215657.12002614419907331))
-            
+
 
     def getUriInfos(self, uri):
         '''
