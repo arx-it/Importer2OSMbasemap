@@ -192,7 +192,7 @@ class Project(QObject):
         '''
 
         if layer is None:
-            print('getLayerTableName :  layer is None')
+            #print('getLayerTableName :  layer is None')
             return None
         '''
         if not self.isImport2OSMLayer(layer):

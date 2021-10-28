@@ -71,7 +71,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         # Load the default mapping
         self.mapping = Mapping()
 
-        #self._loadLayersMapping()
+        self._loadLayersMapping()
 
     def _toggleLayersMappingCheckboxes(self):
         self._setTableCheckboxChecked(self.tabLayersMapping, 2, self.chkEnableAllLayersMapping.isChecked())
@@ -124,6 +124,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # Restore project settings
         settings.setValue( "/Projections/defaultBehaviour", oldProjValue )
+        print('self.dxf_layernames : ' + str(self.dxf_layernames))
 
     def _loadUniqueLayersNames(self, layer):
         '''
@@ -135,11 +136,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         dp = layer.dataProvider()
         dp_st=dp.crs().authid()
-        #print("systéme importé :"+ str(dp_st))
         '''
         if dp_st == '':
             QMessageBox.information(self, 'Avertissement', 'Veuillez vérifier l’emplacement de vos données ; si elles ne sont pas bien localisées, c’est qu’il faut que le système de coordonnées de la couche dans laquelle importer les données soit le même que celui du DXF')
-        '''   
+        '''
         layerfield_index = dp.fields().indexFromName('Layer')
 
         for feature in dp.getFeatures():
@@ -168,12 +168,12 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             layers[i]=layer.name()
             print('loop layers : ' + str(layers))
             #layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        
+
         print('before get combo box : ' + str(layers))
         return self._getCombobox(layers,
                                  primary_selected_value=selected_layer,
                                  currentindex_changed_callback=self._comboboxQgisLayersIndexChanged)
-                                 
+
 
     def _getLayerMappingFromSourceDxfLayer(self, dxf_layername):
         '''
@@ -212,7 +212,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             self.tabLayersMapping.setCellWidget(rowindex, 2, self._getCenteredCheckbox(layer_mapping.isEnabled())) # Enabled checkbox
 
             rowindex +=  1
-
 
         self.is_loading_mapping = False
 
@@ -258,7 +257,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             print('_loadCurrentFieldMapping')
             self._loadCurrentFieldMapping()
         '''
-        
+
 
 
     def _updateAndGetFieldsMapping(self, layersmapping_rowindex = None):
@@ -286,14 +285,14 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             print('mapping')
             destination_fields = qgis_layer.dataProvider().fields().toList()
             for field in destination_fields:
-                
+
                 # Skip PK field
                 if field.name() == Importer2OSMbasemap.project.PK:
                     continue
                 # Skip IMPORT_ID field
                 if field.name() == Importer2OSMbasemap.project.IMPORT_ID:
                     continue
-                
+
                 # Add or update mapping for every fields
                 source, destination, constant_value, enabled, valuemap = layer_mapping.getFieldMappingForDestination(field.name())
                 if destination is None:
@@ -302,7 +301,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         layer_mapping.setDestinationLayerName(qgis_tablename)
         '''
         return layer_mapping
-        
+
 
     def _getQgisLayerFromLayerName(self, layername):
         '''
@@ -424,7 +423,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         self._updateMappingFromUI()
 
         # Loop layer mappings to check whether it is valid
-        
+
         for layer_mapping in self.mapping.layerMappings():
             if layer_mapping.isEnabled() and not layer_mapping.isValid():
                 QMessageBox.critical(
@@ -433,7 +432,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
                     QCoreApplication.translate('ImportDxfDialog', 'Mapping for DXF layer {} is not valid, please check it again.').format(layer_mapping.sourceLayerName())
                 )
                 return False
-        
+
 
         return True
 
@@ -447,36 +446,36 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         self.close()
 
-        qgis_layer = self._getQgisLayerFromTableName(layer_mapping.destinationLayerName())
-        qgis_layer_fields = qgis_layer.fields()
-        qgis_layer_fields_set = {field.name() for field in qgis_layer_fields.toList()}
-        
-        if qgis_layer.type() == QgsWkbTypes.PointGeometry :
-            dist_layer = self.dxflayer_points
-        elif qgis_layer.type() == QgsWkbTypes.LineGeometry :
-            dist_layer = self.dxflayer_linestrings
-        else:
-            dist_layer = self.dxflayer_polygons
-        
-        qgis_layer.startEditing()
-        featureValues = {}
-        for index, field in enumerate(dist_layer.fields().toList()):
-            if self._getCellValue(self.tabFieldsMapping, index, 2):
-                fieldName = field.name()
-                if fieldName not in qgis_layer_fields_set:
-                    newField = QgsField(fieldName, field.type())
-                    qgis_layer.addAttribute(newField)
-                    qgis_layer_fields.append(newField)
-                featureValues[fieldName] =  self._getCellValue(self.tabFieldsMapping, index, 1)
-        
-        featureToAdd = QgsFeature(qgis_layer_fields)
-        for fieldName, fieldValue in featureValues.items():
-            featureToAdd[fieldName] = fieldValue
-            #featureToAdd.setAttribute(fieldName, fieldValue)
-        featureToAdd.setGeometry([f for f in dist_layer.getFeatures()][0].geometry())
-        qgis_layer.dataProvider().addFeatures([featureToAdd])
-        qgis_layer.commitchanges()
+        if False:
+            qgis_layer = self._getQgisLayerFromTableName(layer_mapping.destinationLayerName())
+            qgis_layer_fields = qgis_layer.fields()
+            qgis_layer_fields_set = {field.name() for field in qgis_layer_fields.toList()}
 
+            if qgis_layer.type() == QgsWkbTypes.PointGeometry :
+                dist_layer = self.dxflayer_points
+            elif qgis_layer.type() == QgsWkbTypes.LineGeometry :
+                dist_layer = self.dxflayer_linestrings
+            else:
+                dist_layer = self.dxflayer_polygons
+
+            qgis_layer.startEditing()
+            featureValues = {}
+            for index, field in enumerate(dist_layer.fields().toList()):
+                if self._getCellValue(self.tabFieldsMapping, index, 2):
+                    fieldName = field.name()
+                    if fieldName not in qgis_layer_fields_set:
+                        newField = QgsField(fieldName, field.type())
+                        qgis_layer.addAttribute(newField)
+                        qgis_layer_fields.append(newField)
+                    featureValues[fieldName] =  self._getCellValue(self.tabFieldsMapping, index, 1)
+
+            featureToAdd = QgsFeature(qgis_layer_fields)
+            for fieldName, fieldValue in featureValues.items():
+                featureToAdd[fieldName] = fieldValue
+                #featureToAdd.setAttribute(fieldName, fieldValue)
+            featureToAdd.setGeometry([f for f in dist_layer.getFeatures()][0].geometry())
+            qgis_layer.dataProvider().addFeatures([featureToAdd])
+            qgis_layer.commitchanges()
 
         # Progress bar + message
         progressMessageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))

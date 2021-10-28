@@ -165,9 +165,7 @@ class Importer(object):
         Launch the import
         '''
         src_dp = src_layer.dataProvider()
-        print("systéme source :"+ str(src_dp))
         dst_dp = dst_layer.dataProvider()
-        print("systéme importé :"+ str(dst_dp))
         dst_layer_fields = dst_dp.fields()
         newfeatures = list()
 
@@ -180,17 +178,16 @@ class Importer(object):
             # If QGIS can not detect the layer initial CRS
             if len(layer.crs().authid()) == 0:
                 # If no default CRS has been already chosen for this import
-                QMessageBox.information(None, 'Sélection Système Projection', 'Le système de projection pour la couche ' + ('source' if layer == src_layer else 'de destination') + ' est inconnu de QGIS. Veuillez en sélectionner un manuellement.\n\nSi d\'autres couches de cet ajout ont également ce problème, le système choisi sera alors utilisé.')
-                if self.projectionSelectionWidget is None:
-                    self.projectionSelectionWidget = QgsProjectionSelectionWidget(None)
-                    self.projectionSelectionWidget.setOptionVisible(QgsProjectionSelectionWidget.ProjectCrs, True)
-                self.projectionSelectionWidget.setCrs(layer.crs())
-                self.projectionSelectionWidget.setLayerCrs(layer.crs())
-                self.projectionSelectionWidget.selectCrs()
-                chosenCrs = self.projectionSelectionWidget.crs()
+                QMessageBox.information(None, 'Sélection Système Projection', 'Le système de projection pour la couche ' + ('source' if layer == src_layer else 'de destination') + ' est inconnu de QGIS. Veuillez en sélectionner un manuellement.')
+                projectionSelectionWidget = QgsProjectionSelectionWidget(None)
+                projectionSelectionWidget.setOptionVisible(QgsProjectionSelectionWidget.ProjectCrs, True)
+                projectionSelectionWidget.setCrs(layer.crs())
+                projectionSelectionWidget.setLayerCrs(layer.crs())
+                projectionSelectionWidget.selectCrs()
+                chosenCrs = projectionSelectionWidget.crs()
                 if len(chosenCrs.authid()) == 0:
                     QMessageBox.critical(None, 'Erreur Système Projection', 'Le système de projection choisi est inconnu de QGIS.\nImport annulé.')
-                    return
+                    raise TypeError('Le système de projection choisi est inconnu de QGIS. Import annulé.')
                 layer.setCrs(chosenCrs)
 
         # Reproject source layer if its CRS is different from the destination layer
@@ -482,7 +479,6 @@ class Importer(object):
         :returns: A combobox
         :rtype: QWidget
         '''
-        #print('ta mere')
         widget = QWidget()
         combobox = QComboBox()
         layout = QHBoxLayout(widget)
