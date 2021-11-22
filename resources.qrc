@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/Importer2OSMbasemap" >
+    <qresource prefix="/plugins/Importer2OSM" >
         <file>icon.png</file>
         <file>widgets/create_project/icon.png</file>
         <file>widgets/import_data/icon.png</file>

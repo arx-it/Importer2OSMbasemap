@@ -10,7 +10,7 @@ import os
 from qgis.core import *
 from qgis.PyQt.QtCore import QCoreApplication
 
-import Importer2OSMbasemap.main
+import Importer2OSM.main
 
 class StylizeProject(object):
     '''
@@ -29,7 +29,7 @@ class StylizeProject(object):
         Runs the widget
         '''
 
-        project = Importer2OSMbasemap.main.current_project
+        project = Importer2OSM.main.current_project
 
         if not project.isImport2OSMProject():
             return
@@ -38,7 +38,7 @@ class StylizeProject(object):
         maplayers = QgsProject.instance().mapLayers()
 
         # Iterates through XSD types
-        for type in Importer2OSMbasemap.main.xsd_schema.types:
+        for type in Importer2OSM.main.xsd_schema.types:
             if type.geometry_type is None:
                 continue
 
@@ -57,7 +57,7 @@ class StylizeProject(object):
 
             self.stylizeLayer(layer, type)
 
-        Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('StylizeProject','Success'),
+        Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('StylizeProject','Success'),
                                                                    QCoreApplication.translate('StylizeProject','The layers styling is finished.'))
 
     def stylizeLayer(self, layer, type):
@@ -68,10 +68,10 @@ class StylizeProject(object):
         :type layer: QgsVectorLayer
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
 
-        qml = os.path.join(Importer2OSMbasemap.main.plugin_dir,
+        qml = os.path.join(Importer2OSM.main.plugin_dir,
                                'styles',
                                '{}.qml'.format(type.name))
 

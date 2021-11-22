@@ -7,14 +7,14 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Importer2OSMbasemap
+name=Importer2OSM
 qgisMinimumVersion=3.0
 description=Import data into a QGIS Project, with OSM basemap
 version=1.0
 author=arx iT
-email=cgr@arxit.com
+email=pln@arxit.com
 
-about=Importer2OSMbasemap create a QGIS Project, with an OSM basemap. It allows to import data (SHP, DXF, geoJSON) 
+about=Importer2OSMbasemap create a QGIS Project, with an OSM basemap. It allows to import data (SHP, DXF, geoJSON)
 
 tracker=https://github.com/Geoportail-/qgis-Import2OSM-plugin/issues
 repository=https://github.com/Geoportail-/qgis-Import2OSM-plugin
@@ -26,7 +26,7 @@ repository=https://github.com/Geoportail-/qgis-Import2OSM-plugin
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=Import2OSM, , Landuse
+tags=Import2OSM, Landuse
 
 homeImport2OSMe=https://github.com/Geoportail-/qgis-Import2OSM-plugin
 category=Plugins
@@ -36,4 +36,3 @@ experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
-

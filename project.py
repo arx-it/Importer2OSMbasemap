@@ -18,9 +18,9 @@ from qgis.PyQt.QtCore import QFileInfo, QVariant, QObject, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QMessageBox
 
 from . import main
-from Importer2OSMbasemap.schema import *
-from Importer2OSMbasemap.widgets.stylize.stylize import *
-from Importer2OSMbasemap.widgets.topology.topology import *
+from Importer2OSM.schema import *
+from Importer2OSM.widgets.stylize.stylize import *
+from Importer2OSM.widgets.topology.topology import *
 import io
 
 FILENAME = 'project.qgs'
@@ -30,7 +30,7 @@ IMPORT_ID = 'id'
 
 class Project(QObject):
     '''
-    A class which represent a Import2OSM project
+    A class which represent a PAG project
     '''
 
     ready = pyqtSignal()
@@ -54,16 +54,19 @@ class Project(QObject):
         # QGIS emits projectRead when creating a new project
         if self.creation_mode:
             return
+
         # Setting
         filename = QgsProject.instance().fileName()
         self.folder = os.path.normpath(os.path.dirname(filename))
         self.filename = os.path.normpath(filename)
         self.database = os.path.join(self.folder, DATABASE)
 
-        # If not Import2OSM project return
+        # If not PAG project return
         if not self.isImport2OSMProject():
             self.ready.emit()
             return
+
+        main.qgis_interface.mapCanvas().setDestinationCrs(QgsCoordinateReferenceSystem(3857, QgsCoordinateReferenceSystem.EpsgCrsId)) # SRS 3857
 
         # Update database
         self._updateDatabase()
@@ -104,11 +107,9 @@ class Project(QObject):
         self.filename = os.path.join(self.folder, FILENAME)
         main.qgis_interface.newProject(True)
         main.qgis_interface.mapCanvas().setDestinationCrs(QgsCoordinateReferenceSystem(3857, QgsCoordinateReferenceSystem.EpsgCrsId)) # SRS 3857
-        #main.qgis_interface.mapCanvas().setExtent(QgsRectangle(-682171.0,5225596.0,1061986.0,6759818.0))
-
         QgsProject.instance().setFileName(self.filename) # Project filename
 
-        # Flag Import2OSM project
+        # Flag PAG project
         QgsProject.instance().writeEntry('Import2OSM', '/ProjetImport2OSM', True)
 
         QgsProject.instance().write()
@@ -133,8 +134,6 @@ class Project(QObject):
         # Save project and add to recent projects
         main.qgis_interface.actionSaveProject().trigger()
 
-        main.qgis_interface.mapCanvas().refresh()
-
         # Notify project is ready
         self.ready.emit()
 
@@ -152,7 +151,7 @@ class Project(QObject):
         Get the map layer corresponding to the type
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
 
         # Map layers in the TOC
@@ -168,9 +167,9 @@ class Project(QObject):
 
         return None
 
-    def isImport2OSMLayer(self, layer):
+    def isPagLayer(self, layer):
         '''
-        Checks if a layer is a Import2OSM layer
+        Checks if a layer is a PAG layer
 
         :param layer: Layer to check
         :type layer: QgsVectorLayer
@@ -185,25 +184,22 @@ class Project(QObject):
 
     def getLayerTableName(self, layer):
         '''
-        Returns the table name of the layer, only if it is a Import2OSM layer
+        Returns the table name of the layer, only if it is a PAG layer
 
         :param layer: Layer to check
         :type layer: QgsVectorLayer
         '''
 
         if layer is None:
-            #print('getLayerTableName :  layer is None')
             return None
-        '''
-        if not self.isImport2OSMLayer(layer):
-            print('getLayerTableName :  isImport2OSMLayer is None')
-            return None
-        '''
+
+        #if not self.isPagLayer(layer):
+        #    return None
 
         return self.getUriInfos(layer.source())[1]
 
     def getImportLogLayer(self):
-        logimport_table = Import2OSMType()
+        logimport_table = PAGType()
         logimport_table.name = 'ImportLog'
 
         uri = self.getTypeUri(logimport_table)
@@ -214,15 +210,15 @@ class Project(QObject):
 
         return layer
 
-    def getModificationImport2OSMLayer(self):
-        return self.getLayer(main.xsd_schema.getTypeFromTableName('Import2OSM.MODIFICATION_Import2OSM'))
+    def getModificationPagLayer(self):
+        return self.getLayer(main.xsd_schema.getTypeFromTableName('PAG.MODIFICATION_PAG'))
 
     def getNativeFields(self, type):
         '''
         Gets the native fields with type from database
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
 
         conn = self._getDbConnection()
@@ -270,7 +266,7 @@ class Project(QObject):
         Updates the project database
         '''
 
-        xsd_schema = main.xsd_schema
+        #xsd_schema = main.xsd_schema
         createdb = not os.path.isfile(self.database)
 
         conn = self._getDbConnection()
@@ -282,16 +278,16 @@ class Project(QObject):
             del cursor
 
         # Check and update tables
-        for type in xsd_schema.types:
-            uri = self.getTypeUri(type)
-            layer = QgsVectorLayer(uri, type.friendlyName(), 'spatialite')
+        #for type in xsd_schema.types:
+        #    uri = self.getTypeUri(type)
+        #    layer = QgsVectorLayer(uri, type.friendlyName(), 'spatialite')
 
-            # Create layer if not valid
-            if not layer.isValid():
-                self._createTable(conn, type)
-                layer = QgsVectorLayer(uri, type.friendlyName(), 'spatialite')
+        #    # Create layer if not valid
+        #    if not layer.isValid():
+        #        self._createTable(conn, type)
+        #        layer = QgsVectorLayer(uri, type.friendlyName(), 'spatialite')
 
-            self._updateTable(type, layer, True)
+        #    self._updateTable(type, layer, True)
 
         # Check and update the import log table
         self._updateImportLogTable(conn)
@@ -304,7 +300,7 @@ class Project(QObject):
         Gets a uri to the table according to the XSD
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
 
         uri = QgsDataSourceUri()
@@ -322,7 +318,7 @@ class Project(QObject):
         :type conn: Connection
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
 
         # Create table
@@ -363,32 +359,32 @@ class Project(QObject):
         '''
 
         # Log import table
-        logimport_table = Import2OSMType()
+        logimport_table = PAGType()
         logimport_table.name = 'ImportLog'
 
         # Import ID field
-        field = Import2OSMField()
+        field = PAGField()
         field.name = IMPORT_ID
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Date field
-        field = Import2OSMField()
+        field = PAGField()
         field.name = 'Date'
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Type field
-        field = Import2OSMField()
+        field = PAGField()
         field.name = 'Filename'
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Layers field
-        field = Import2OSMField()
+        field = PAGField()
         field.name = 'Layers'
         field.type = DataType.STRING
         field.nullable = True
@@ -410,7 +406,7 @@ class Project(QObject):
         Updates the layer's table according to the XSD
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
 
         :param layer: the QGIS vector layer object
         :type layer: QgsVectorLayer
@@ -422,7 +418,7 @@ class Project(QObject):
 
         # Add import id field
         if add_importid:
-            field = Import2OSMField()
+            field = PAGField()
             field.name = IMPORT_ID
             field.type = DataType.STRING
             field.nullable = True
@@ -434,21 +430,21 @@ class Project(QObject):
     # Mapping between XSD datatype and QGIS datatype
     datatypeMap = XSD_QGIS_DATATYPE_MAP
 
-    def _getField(self, Import2OSMfield):
+    def _getField(self, pagfield):
         '''
         Creates a QGIS Field according to the XSD
 
-        :param Import2OSMfield: XSD schema field
-        :type Import2OSMfield: Import2OSMField
+        :param pagfield: XSD schema field
+        :type pagfield: PAGField
 
         :returns: The corresponding QGIS Field
         :rtype: QgsField
         '''
 
-        return QgsField(Import2OSMfield.name,
-                        self.datatypeMap[Import2OSMfield.type],
-                        Import2OSMfield.type,
-                        int(Import2OSMfield.length) if Import2OSMfield.length is not None else 0)
+        return QgsField(pagfield.name,
+                        self.datatypeMap[pagfield.type],
+                        pagfield.type,
+                        int(pagfield.length) if pagfield.length is not None else 0)
 
     def _updateMapLayers(self):
         '''
@@ -456,25 +452,23 @@ class Project(QObject):
         '''
 
         # Get rules config
-        config_path = os.path.join(Importer2OSMbasemap.main.plugin_dir,
-                                   'assets',
-                                   'LayerTree.json')
-
-        f = io.open(config_path, mode='r', encoding="utf-8")
-        config_file = f.read()
-        config = json.loads(config_file)
-        f.close()
+        #config_path = os.path.join(Importer2OSM.main.plugin_dir, 'assets', 'LayerTree.json')
+        #f = io.open(config_path, mode='r', encoding="utf-8")
+        #config_file = f.read()
+        #config = json.loads(config_file)
+        #f.close()
 
         main.qgis_interface.messageBar().clearWidgets()
 
         # Process root node tree
-        self._updateLayerTreeNode(config, config)
+        #self._updateLayerTreeNode(config, config)
 
         # Add WMS basemap layer
+        #self._addOrthoBasemap()
         self._addStreetBasemap()
 
         # Add topology rules
-        TopologyChecker(None).updateProjectRules()
+        #TopologyChecker(None).updateProjectRules()
 
     def _updateLayerTreeNode(self, node, parentnode):
         '''
@@ -486,7 +480,7 @@ class Project(QObject):
         :param node: The parent node to update
         :type node: dict
         '''
-        """
+
         parent = QgsProject.instance().layerTreeRoot()
 
         if parentnode['Name'] != 'Root':
@@ -529,7 +523,6 @@ class Project(QObject):
                 # Activate the auto Show feature form on feature creation
                 #TODO QGIS 2 TO 3
                 #layer.setFeatureFormSuppress(QgsVectorLayer.SuppressOff)
-        """
 
     def _addOrthoBasemap(self):
         ortho_url = 'url=http://wmts1.geoportail.lu/opendata/service&SLegend=0&crs=EPSG:2169&dpiMode=7&featureCount=10&format=image/jpeg&layers=ortho_latest&styles='
@@ -549,7 +542,7 @@ class Project(QObject):
         map_url = 'type=xyz&url=https://tile.openstreetmap.org/%7Bz%7D/%7Bx%7D/%7By%7D.png&zmax=19&zmin=0'
         ortho_found = False
         for k, v in list(QgsProject.instance().mapLayers().items()):
-            if v.source() == map_url:
+            if 'tile.openstreetmap.org' in v.source():
                 ortho_found = True
                 break
 
@@ -557,10 +550,10 @@ class Project(QObject):
             map_layer = QgsRasterLayer(map_url, 'OpenStreetMap', 'wms')
             QgsProject.instance().addMapLayer(map_layer, False)
             QgsProject.instance().layerTreeRoot().addLayer(map_layer)
+            # Center on Europe
+            main.qgis_interface.mapCanvas().setExtent(QgsRectangle(-2235535.29208367830142379, 3965861.06231019366532564, 5932813.59994085878133774, 8436784.06231019273400307))
             main.qgis_interface.mapCanvas().refresh()
             main.qgis_interface.mapCanvas().waitWhileRendering()
-            main.qgis_interface.mapCanvas().setExtent(QgsRectangle(-2700882.10577499028295279, 4585734.15003505628556013, 4035800.84770977031439543, 7215657.12002614419907331))
-
 
     def getUriInfos(self, uri):
         '''
@@ -576,17 +569,11 @@ class Project(QObject):
         db = ''
         table = ''
         split = uri.split(' ')
-        #print(' -- split : ' + str(split))
         for kv in split:
-            #print(' -- kv : ' + str(kv))
             if kv.startswith('dbname'):
                 db = os.path.normpath(kv[8:-1])
-                #print(' -- db : ' + str(db))
             if kv.startswith('table'):
                 table = kv[7:-1]
-                #print(' -- table : ' + str(table))
-
-        #print('getUriInfos table finale : ' + str(table))
 
         return db, table
 
@@ -620,7 +607,7 @@ class Project(QObject):
         :type layer: QgsVectorLayer
 
         :param type: XSD schema type
-        :type type: Import2OSMType
+        :type type: PAGType
         '''
         # Hide fields
         hidden = [PK, IMPORT_ID]
@@ -645,8 +632,8 @@ class Project(QObject):
         '''
         Update the field editor
 
-        :param Import2OSMfield: XSD schema field
-        :type Import2OSMfield: Import2OSMField
+        :param pagfield: XSD schema field
+        :type pagfield: PAGField
 
         :param layer: The layer to update
         :type layer: QgsVectorLayer

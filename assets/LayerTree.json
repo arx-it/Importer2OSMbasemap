@@ -6,72 +6,72 @@
     {
       "Name": "PERIMETRE",
       "IsGroup": false,
-      "TableName": "Import2OSM.PERIMETRE",
+      "TableName": "PAG.PERIMETRE",
       "Nodes": []
     },
     {
-      "Name": "MODIFICATION Import2OSM",
+      "Name": "MODIFICATION PAG",
       "IsGroup": false,
-      "TableName": "Import2OSM.MODIFICATION_Import2OSM",
+      "TableName": "PAG.MODIFICATION_PAG",
       "Nodes": []
     },
     {
       "Name": "PAP_APPROUVE",
       "IsGroup": false,
-      "TableName": "Import2OSM.PAP_APPROUVE",
+      "TableName": "PAG.PAP_APPROUVE",
       "Nodes": []
     },
     {
       "Name": "ZONES_QE",
       "IsGroup": false,
-      "TableName": "Import2OSM.ZONES_QE",
+      "TableName": "PAG.ZONES_QE",
       "Nodes": []
     },
     {
-      "Name": "Import2OSM",
+      "Name": "PAG",
       "IsGroup": true,
       "TableName": "",
       "Nodes": [
         {
           "Name": "CONST_A_CONS_POINT",
           "IsGroup": false,
-          "TableName": "Import2OSM.CONST_A_CONS_POINT",
+          "TableName": "PAG.CONST_A_CONS_POINT",
           "Nodes": []
         },
          {
           "Name": "CONST_A_CONS_LIGNE",
           "IsGroup": false,
-          "TableName": "Import2OSM.CONST_A_CONS_LIGNE",
+          "TableName": "PAG.CONST_A_CONS_LIGNE",
           "Nodes": []
         },
         {
           "Name": "GABARIT_A_SAUV_POINT",
           "IsGroup": false,
-          "TableName": "Import2OSM.GABARIT_A_SAUV_POINT",
+          "TableName": "PAG.GABARIT_A_SAUV_POINT",
           "Nodes": []
         },
         {
           "Name": "GABARIT_A_SAUV_POLY",
           "IsGroup": false,
-          "TableName": "Import2OSM.GABARIT_A_SAUV_POLY",
+          "TableName": "PAG.GABARIT_A_SAUV_POLY",
           "Nodes": []
         },
         {
           "Name": "ALIGN_A_RESP",
           "IsGroup": false,
-          "TableName": "Import2OSM.ALIGN_A_RESP",
+          "TableName": "PAG.ALIGN_A_RESP",
           "Nodes": []
         },
         {
           "Name": "BATIMENTS",
           "IsGroup": false,
-          "TableName": "Import2OSM.BATIMENT",
+          "TableName": "PAG.BATIMENT",
           "Nodes": []
         },
         {
           "Name": "FOND_DE_PLAN",
           "IsGroup": false,
-          "TableName": "Import2OSM.FOND_DE_PLAN",
+          "TableName": "PAG.FOND_DE_PLAN",
           "Nodes": []
         },
         {
@@ -95,61 +95,61 @@
         {
           "Name": "COULOIRS_ET_ESP_RES",
           "IsGroup": false,
-          "TableName": "Import2OSM.COULOIRS_ET_ESP_RES",
+          "TableName": "PAG.COULOIRS_ET_ESP_RES",
           "Nodes": []
         },
         {
           "Name": "COULOIRS_ET_ESP_RES_PG",
           "IsGroup": false,
-          "TableName": "Import2OSM.COULOIRS_ET_ESP_RES_PG",
+          "TableName": "PAG.COULOIRS_ET_ESP_RES_PG",
           "Nodes": []
         },
         {
           "Name": "ZAD",
           "IsGroup": false,
-          "TableName": "Import2OSM.ZAD",
+          "TableName": "PAG.ZAD",
           "Nodes": []
         },
         {
           "Name": "NQ_PAP",
           "IsGroup": false,
-          "TableName": "Import2OSM.NQ_PAP",
+          "TableName": "PAG.NQ_PAP",
           "Nodes": []
         },
         {
           "Name": "ZONES_SUPERPOSEES",
           "IsGroup": false,
-          "TableName": "Import2OSM.ZONES_SUPERPOSEES",
+          "TableName": "PAG.ZONES_SUPERPOSEES",
           "Nodes": []
         },
         {
           "Name": "CONST_A_CONS_POLY",
           "IsGroup": false,
-          "TableName": "Import2OSM.CONST_A_CONS_POLY",
+          "TableName": "PAG.CONST_A_CONS_POLY",
           "Nodes": []
         },
         {
           "Name": "ZONE_SERV_URB",
           "IsGroup": false,
-          "TableName": "Import2OSM.ZONE_SERV_URB",
+          "TableName": "PAG.ZONE_SERV_URB",
           "Nodes": []
         },
         {
           "Name": "EMPLAC_STAT",
           "IsGroup": false,
-          "TableName": "Import2OSM.EMPLAC_STAT",
+          "TableName": "PAG.EMPLAC_STAT",
           "Nodes": []
         },
          {
           "Name": "LIMITES_COMMUNALES",
           "IsGroup": false,
-          "TableName": "Import2OSM.LIMITES_COMMUNALES",
+          "TableName": "PAG.LIMITES_COMMUNALES",
           "Nodes": []
         },
         {
           "Name": "ZONAGE",
           "IsGroup": false,
-          "TableName": "Import2OSM.ZONAGE",
+          "TableName": "PAG.ZONAGE",
           "Nodes": []
         }
       ]

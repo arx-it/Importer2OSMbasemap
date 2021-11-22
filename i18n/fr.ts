@@ -82,8 +82,8 @@
     </message>
     <message>
         <location filename="data_checker.py" line="86"/>
-        <source>No errors found on entities that intersect {} selected entity in MODIFICATION Import2OSM layer</source>
-        <translation>Aucune erreur trouvée sur les entités intersectant {} entité de la couche MODIFICATION Import2OSM</translation>
+        <source>No errors found on entities that intersect {} selected entity in MODIFICATION PAG layer</source>
+        <translation>Aucune erreur trouvée sur les entités intersectant {} entité de la couche MODIFICATION PAG</translation>
     </message>
 </context>
 <context>
@@ -95,8 +95,8 @@
     </message>
     <message>
         <location filename="data_checker.py" line="94"/>
-        <source>No errors found on entities that intersect {} selected entities in MODIFICATION Import2OSM layer</source>
-        <translation>Aucune erreur trouvée sur les entités intersectant {} entités de la couche MODIFICATION Import2OSM</translation>
+        <source>No errors found on entities that intersect {} selected entities in MODIFICATION PAG layer</source>
+        <translation>Aucune erreur trouvée sur les entités intersectant {} entités de la couche MODIFICATION PAG</translation>
     </message>
 </context>
 <context>
@@ -146,12 +146,12 @@
     </message>
     <message>
         <location filename="about_dialog.ui" line="46"/>
-        <source>A propos du plugin Import2OSM </source>
+        <source>A propos du plugin PAG Luxembourg</source>
         <translation></translation>
     </message>
     <message encoding="UTF-8">
         <location filename="about_dialog.ui" line="62"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Ce plugin permet d&apos;accomImport2OSMner les différents mandataires pour la gestion de Plans d&apos;Aménagements Généraux (Import2OSM) du Grand-Duché de . Il offre des outils d&apos;import, d&apos;export et de vérification de données, afin de fournir les plans selon les standards du Ministère de l&apos;Intérieur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Ce plugin permet d&apos;accompagner les différents mandataires pour la gestion de Plans d&apos;Aménagements Généraux (PAG) du Grand-Duché de Luxembourg. Il offre des outils d&apos;import, d&apos;export et de vérification de données, afin de fournir les plans selon les standards du Ministère de l&apos;Intérieur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message encoding="UTF-8">
@@ -332,8 +332,8 @@
     </message>
     <message>
         <location filename="export_gml.py" line="161"/>
-        <source>GML export was successful with 1 selected entity in MODIFICATION Import2OSM layer</source>
-        <translation>L&apos;export GML s&apos;est déroulé avec succès avec 1 entité sélectionnée dans la couche MODIFICATION Import2OSM</translation>
+        <source>GML export was successful with 1 selected entity in MODIFICATION PAG layer</source>
+        <translation>L&apos;export GML s&apos;est déroulé avec succès avec 1 entité sélectionnée dans la couche MODIFICATION PAG</translation>
     </message>
 </context>
 <context>
@@ -345,8 +345,8 @@
     </message>
     <message>
         <location filename="export_gml.py" line="169"/>
-        <source>GML export was successful with {} selected entities in MODIFICATION Import2OSM layer</source>
-        <translation>L&apos;export GML s&apos;est déroulé avec succès avec {} entités sélectionnées dans la couche MODIFICATION Import2OSM</translation>
+        <source>GML export was successful with {} selected entities in MODIFICATION PAG layer</source>
+        <translation>L&apos;export GML s&apos;est déroulé avec succès avec {} entités sélectionnées dans la couche MODIFICATION PAG</translation>
     </message>
 </context>
 <context>
@@ -358,8 +358,8 @@
     </message>
     <message>
         <location filename="export_gml.py" line="165"/>
-        <source>GML export was successful without selected entity in MODIFICATION Import2OSM layer</source>
-        <translation>L&apos;export GML s&apos;est déroulé avec succès sans entité sélectionnée dans la couche MODIFICATION Import2OSM</translation>
+        <source>GML export was successful without selected entity in MODIFICATION PAG layer</source>
+        <translation>L&apos;export GML s&apos;est déroulé avec succès sans entité sélectionnée dans la couche MODIFICATION PAG</translation>
     </message>
 </context>
 <context>
@@ -665,10 +665,10 @@
     </message>
 </context>
 <context>
-    <name>Importer2OSMbasemap</name>
+    <name>PAGLuxembourg</name>
     <message>
         <location filename="main.py" line="352"/>
-        <source>&amp;Import2OSM </source>
+        <source>&amp;PAG Luxembourg</source>
         <translation></translation>
     </message>
     <message>
@@ -678,8 +678,8 @@
     </message>
     <message>
         <location filename="main.py" line="200"/>
-        <source>Creates a new Import2OSM project</source>
-        <translation>Crée un nouveau projet Import2OSM</translation>
+        <source>Creates a new PAG project</source>
+        <translation>Crée un nouveau projet PAG</translation>
     </message>
     <message>
         <location filename="main.py" line="236"/>
@@ -698,8 +698,8 @@
     </message>
     <message>
         <location filename="main.py" line="299"/>
-        <source>About the Import2OSM plugin</source>
-        <translation>A propos du plugin Importer2OSMbasemap</translation>
+        <source>About the PAG plugin</source>
+        <translation>A propos du plugin PAGLuxembourg</translation>
     </message>
     <message>
         <location filename="main.py" line="209"/>
@@ -739,11 +739,11 @@
     <message>
         <location filename="main.py" line="277"/>
         <source>Check layers topology according to predefined rules</source>
-        <translation>Vérifier la topologie selon les règles prédéfinies du Import2OSM</translation>
+        <translation>Vérifier la topologie selon les règles prédéfinies du PAG</translation>
     </message>
     <message>
         <location filename="main.py" line="339"/>
-        <source>Import2OSM </source>
+        <source>PAG Luxembourg</source>
         <translation></translation>
     </message>
     <message>
@@ -778,8 +778,8 @@
     </message>
     <message>
         <location filename="main.py" line="339"/>
-        <source>&quot; plugin is required by the &quot;Import2OSM &quot; plugin, please install it and restart QGIS.</source>
-        <translation>&quot; est requis par le plugin &quot;Import2OSM &quot;, merci de l&apos;installer et de redémarrer QGIS.</translation>
+        <source>&quot; plugin is required by the &quot;PAG Luxembourg&quot; plugin, please install it and restart QGIS.</source>
+        <translation>&quot; est requis par le plugin &quot;PAG Luxembourg&quot;, merci de l&apos;installer et de redémarrer QGIS.</translation>
     </message>
 </context>
 <context>
@@ -857,18 +857,18 @@
     </message>
     <message>
         <location filename="topoclean.py" line="65"/>
-        <source>There is 1 selected entity in MODIFICATION Import2OSM layer. You can now check geometries</source>
-        <translation>Il y a 1 entité sélectionnée dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la géométrie</translation>
+        <source>There is 1 selected entity in MODIFICATION PAG layer. You can now check geometries</source>
+        <translation>Il y a 1 entité sélectionnée dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la géométrie</translation>
     </message>
     <message>
         <location filename="topoclean.py" line="68"/>
-        <source>There is no selected entity in MODIFICATION Import2OSM layer. You can now check geometries</source>
-        <translation>Il n&apos;y a pas d&apos;entité sélectionnée dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la géométrie</translation>
+        <source>There is no selected entity in MODIFICATION PAG layer. You can now check geometries</source>
+        <translation>Il n&apos;y a pas d&apos;entité sélectionnée dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la géométrie</translation>
     </message>
     <message>
         <location filename="topoclean.py" line="71"/>
-        <source>There are {} selected entities in MODIFICATION Import2OSM layer. You can now check geometries</source>
-        <translation>Il y a {} entités sélectionnées dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la géométrie</translation>
+        <source>There are {} selected entities in MODIFICATION PAG layer. You can now check geometries</source>
+        <translation>Il y a {} entités sélectionnées dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la géométrie</translation>
     </message>
 </context>
 <context>
@@ -880,8 +880,8 @@
     </message>
     <message>
         <location filename="topology.py" line="52"/>
-        <source>There is 1 selected entity in MODIFICATION Import2OSM layer. You can now check topology</source>
-        <translation>Il y a 1 entité sélectionnée dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la topologie</translation>
+        <source>There is 1 selected entity in MODIFICATION PAG layer. You can now check topology</source>
+        <translation>Il y a 1 entité sélectionnée dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la topologie</translation>
     </message>
 </context>
 <context>
@@ -893,8 +893,8 @@
     </message>
     <message>
         <location filename="topology.py" line="58"/>
-        <source>There are {} selected entities in MODIFICATION Import2OSM layer. You can now check topology</source>
-        <translation>Il y a {} entités sélectionnées dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la topologie</translation>
+        <source>There are {} selected entities in MODIFICATION PAG layer. You can now check topology</source>
+        <translation>Il y a {} entités sélectionnées dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la topologie</translation>
     </message>
 </context>
 <context>
@@ -906,8 +906,8 @@
     </message>
     <message>
         <location filename="topology.py" line="55"/>
-        <source>There is no selected entity in MODIFICATION Import2OSM layer. You can now check topology</source>
-        <translation>Il n&apos;y a pas d&apos;entité sélectionnée dans la couche MODIFICATION Import2OSM. Vous pouvez maintenant vérifier la topologie</translation>
+        <source>There is no selected entity in MODIFICATION PAG layer. You can now check topology</source>
+        <translation>Il n&apos;y a pas d&apos;entité sélectionnée dans la couche MODIFICATION PAG. Vous pouvez maintenant vérifier la topologie</translation>
     </message>
 </context>
 <context>

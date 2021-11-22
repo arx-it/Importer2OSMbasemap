@@ -9,15 +9,15 @@ from builtins import range
 import os
 
 from qgis.PyQt import QtGui, uic
-from qgis.PyQt.QtWidgets import * #QDialog, QFileDialog, QMessageBox, QTableWidgetItem, QHeaderView, QCheckBox, QWidget, QHBoxLayout, QComboBox, QProgressBar, QLabel
+from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableWidgetItem, QHeaderView, QCheckBox, QWidget, QHBoxLayout, QComboBox, QProgressBar
 from qgis.PyQt.QtGui import QColor
 from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant, QSettings
 
 from qgis.core import *
 from qgis.utils import *
 
-import Importer2OSMbasemap.main
-import Importer2OSMbasemap.project
+import Importer2OSM.main
+import Importer2OSM.project
 
 from .importer import *
 from collections import OrderedDict
@@ -31,6 +31,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
         Constructor.
         '''
+
         super(ImportDxfDialog, self).__init__(parent)
         Importer.__init__(self, filename)
         # Set up the user interface from Designer.
@@ -83,16 +84,15 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
         Loads the QGIS layers
         '''
-        self.qgislayers = list()
-        # Adds the Import2OSM map layers
-        layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in Importer2OSMbasemap.main.qgis_interface.legendInterface().layers():
-        for layer in layers:
-            #if isinstance(layer, QgsVectorLayer)
-            print(layer.name() + ' : ' + str(layer.type() == QgsMapLayer.VectorLayer) + ' and ' + str(Importer2OSMbasemap.main.current_project.isImport2OSMLayer(layer)))
-            if layer.type() == QgsMapLayer.VectorLayer: # and Importer2OSMbasemap.main.current_project.isImport2OSMLayer(layer):
-                self.qgislayers.append(layer)
 
+        self.qgislayers = list()
+
+        # Adds the PAG map layers
+        layers = [layer for layer in QgsProject.instance().mapLayers().values()]
+        #for layer in Importer2OSM.main.qgis_interface.legendInterface().layers():
+        for layer in layers:
+            if layer.type() == QgsMapLayer.VectorLayer: # and Importer2OSM.main.current_project.isPagLayer(layer):
+                self.qgislayers.append(layer)
 
     def _loadDxfLayers(self, filename):
         '''
@@ -124,7 +124,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # Restore project settings
         settings.setValue( "/Projections/defaultBehaviour", oldProjValue )
-        print('self.dxf_layernames : ' + str(self.dxf_layernames))
 
     def _loadUniqueLayersNames(self, layer):
         '''
@@ -135,11 +134,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
 
         dp = layer.dataProvider()
-        dp_st=dp.crs().authid()
-        '''
-        if dp_st == '':
-            QMessageBox.information(self, 'Avertissement', 'Veuillez vérifier l’emplacement de vos données ; si elles ne sont pas bien localisées, c’est qu’il faut que le système de coordonnées de la couche dans laquelle importer les données soit le même que celui du DXF')
-        '''
         layerfield_index = dp.fields().indexFromName('Layer')
 
         for feature in dp.getFeatures():
@@ -148,8 +142,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             if value not in self.dxf_layernames:
                 self.dxf_layernames.append(value)
 
-
-    def _getQgisLayersCombobox(self, selected_layer):
+    def _getQgisLayersCombobox(self, selected_layer = None):
         '''
         Get a combobox filled with the QGIS layers to insert in a table widget
 
@@ -159,25 +152,21 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         :returns: A combobox with the QGIS layer fields
         :rtype: QWidget
         '''
+
         layers = OrderedDict()
 
-        print('self.qgislayers : ' + str(self.qgislayers))
-        for i, layer in enumerate(self.qgislayers):
-            #print('layer : ' + str(layer) +  ' - ' + str(Importer2OSMbasemap.main.current_project.getLayerTableName(layer)) + ' ; ' + layer.name())
-            #layers[Importer2OSMbasemap.main.current_project.getLayerTableName(layer)]=layer.name()
-            layers[i]=layer.name()
-            print('loop layers : ' + str(layers))
-            #layers = [layer for layer in QgsProject.instance().mapLayers().values()]
+        for layer in self.qgislayers:
+            layers[Importer2OSM.main.current_project.getLayerTableName(layer)]=layer.name()
 
-        print('before get combo box : ' + str(layers))
         return self._getCombobox(layers,
                                  primary_selected_value=selected_layer,
                                  currentindex_changed_callback=self._comboboxQgisLayersIndexChanged)
 
-
     def _getLayerMappingFromSourceDxfLayer(self, dxf_layername):
         '''
+
         '''
+
         layer_mapping = self.mapping.getLayerMappingForSource(dxf_layername)
 
         if layer_mapping is None:
@@ -221,27 +210,12 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             return
 
         # Update mapping
-        #self._updateMappingFromUI(previousRow)
+        self._updateMappingFromUI(previousRow)
 
         # Load mapping into the table
-        #self._loadCurrentFieldMapping()
+        self._loadCurrentFieldMapping()
 
     def _comboboxQgisLayersIndexChanged(self, index):
-        '''
-        layer = self.qgislayers[index]
-        fields = layer.fields().toList()
-        self.tabFieldsMapping.clearContents()
-        self.tabFieldsMapping.setRowCount(len(fields))
-        for row, field in enumerate(fields):
-            self.tabFieldsMapping.setCellWidget(row, 0, QLabel(field.name()))
-            fieldType = field.type()
-            self.tabFieldsMapping.setCellWidget(row, 1, QSpinBox() if fieldType == QVariant.Int else (QDoubleSpinBox() if fieldType == QVariant.Double else (QTextEdit() if fieldType == QVariant.String else (QCheckBox() if fieldType == QVariant.bool else(QLineEdit if fieldType==QVariant.string else(QDateTimeEdit if fieldType==QVariant.DateTime else(SimpleFilenamePicker)))))))
-            myCheckBox=QCheckBox()
-            myCheckBox.setChecked(True)
-            self.tabFieldsMapping.setCellWidget(row, 2, myCheckBox)
-
-        '''
-        '''
         # Get the row of the combobox which changed
         rowindex = 0
 
@@ -250,47 +224,39 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
                 rowindex = i
 
         # Layer mapping corresponding to the selected row
-        print('_updateAndGetFieldsMapping')
         self._updateAndGetFieldsMapping(rowindex)
 
         if rowindex == self.tabLayersMapping.currentRow():
-            print('_loadCurrentFieldMapping')
             self._loadCurrentFieldMapping()
-        '''
-
-
 
     def _updateAndGetFieldsMapping(self, layersmapping_rowindex = None):
         '''
         Gets the current field mapping corresponding to the selected layers mapping
         '''
-        '''
+
         if layersmapping_rowindex is None:
             layersmapping_rowindex = self.tabLayersMapping.currentRow()
 
         dxf_layername = self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 0)
         qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 1))
-        qgis_tablename = qgis_layer.name()
+        qgis_tablename = Importer2OSM.main.current_project.getLayerTableName(qgis_layer)
 
         layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
         # Check whether the destination layer is the same
         if qgis_tablename is None or layer_mapping.destinationLayerName() != qgis_tablename:
-            print('check')
             layer_mapping.clearFieldMapping()
-            layer_mapping.setValid(True)
+            layer_mapping.setValid(False)
 
         # Add or update field mapping
         if qgis_layer is not None:
-            print('mapping')
-            destination_fields = qgis_layer.dataProvider().fields().toList()
+            destination_fields = qgis_layer.dataProvider().fields()
             for field in destination_fields:
-
                 # Skip PK field
-                if field.name() == Importer2OSMbasemap.project.PK:
+                if field.name() == Importer2OSM.project.PK:
                     continue
                 # Skip IMPORT_ID field
-                if field.name() == Importer2OSMbasemap.project.IMPORT_ID:
+                if field.name() == Importer2OSM.project.IMPORT_ID:
                     continue
 
                 # Add or update mapping for every fields
@@ -299,14 +265,14 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
                     layer_mapping.addFieldMapping(None, field.name(), None, True, valuemap)
 
         layer_mapping.setDestinationLayerName(qgis_tablename)
-        '''
-        return layer_mapping
 
+        return layer_mapping
 
     def _getQgisLayerFromLayerName(self, layername):
         '''
         Gets the layer from the layer name
         '''
+
         for layer in self.qgislayers:
             if layer.name() == layername:
                 return layer
@@ -317,8 +283,9 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
         Gets the layer from the table name
         '''
+
         for layer in self.qgislayers:
-            if layer.name()==tablename:
+            if Importer2OSM.main.current_project.getLayerTableName(layer) == tablename:
                 return layer
 
         return None
@@ -327,6 +294,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
         Loads the current field mapping corresponding to the selected layers mapping
         '''
+
         # Current field mapping
         layer_mapping = self._updateAndGetFieldsMapping()
 
@@ -336,30 +304,27 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         # If no destination layer, return
         if layer_mapping.destinationLayerName() is None:
-            print('return from _loadCurrentFieldMapping')
             return
 
         qgis_layer = self._getQgisLayerFromTableName(layer_mapping.destinationLayerName())
-        qgis_fields = qgis_layer.dataProvider().fields().toList()
+        qgis_fields = qgis_layer.dataProvider().fields()
 
         # Update label
         self.lblCurrentFieldMapping.setText(QCoreApplication.translate('ImportDxfDialog', 'Mapping for DXF layer "{}" to QGIS layer "{}"').format(layer_mapping.sourceLayerName(), qgis_layer.name()))
 
 
         self.tabFieldsMapping.setRowCount(len(layer_mapping.fieldMappings()))
-
         rowindex = 0
 
         # Fill layers mapping
         for field in qgis_fields:
-            '''
             # Skip PK field
-            if field.name() == Importer2OSMbasemap.project.PK:
+            if field.name() == Importer2OSM.project.PK:
                 continue
             # Skip IMPORT_ID field
-            if field.name() == Importer2OSMbasemap.project.IMPORT_ID:
+            if field.name() == Importer2OSM.project.IMPORT_ID:
                 continue
-            '''
+
             source, destination, constant_value, enabled, valuemap = layer_mapping.getFieldMappingForDestination(field.name())
 
             self.tabFieldsMapping.setItem(rowindex, 0, QTableWidgetItem(destination)) # QGIS field
@@ -370,9 +335,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         layer_mapping.setValid(True)
 
-
     def _updateMappingFromUI(self, layersmapping_rowindex = None):
-        '''
+
         if layersmapping_rowindex is None:
             layersmapping_rowindex = self.tabLayersMapping.currentRow()
 
@@ -385,7 +349,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
             qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layermapping_rowindex, 1))
-            qgis_tablename = qgis_layer.name()
+            qgis_tablename = Importer2OSM.main.current_project.getLayerTableName(qgis_layer)
 
             # Check whether the destination layer is the same
             if qgis_tablename is None or layer_mapping.destinationLayerName() != qgis_tablename:
@@ -410,7 +374,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         del self.mapping
         self.mapping = newmapping
-        '''
 
     def _validateMapping(self):
         '''
@@ -423,7 +386,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         self._updateMappingFromUI()
 
         # Loop layer mappings to check whether it is valid
-
         for layer_mapping in self.mapping.layerMappings():
             if layer_mapping.isEnabled() and not layer_mapping.isValid():
                 QMessageBox.critical(
@@ -433,7 +395,6 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
                 )
                 return False
 
-
         return True
 
     def _launchImport(self):
@@ -441,44 +402,13 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         Launch the import
         '''
 
-        #if not self._validateMapping():
-            #return
+        if not self._validateMapping():
+            return
 
         self.close()
 
-        if False:
-            qgis_layer = self._getQgisLayerFromTableName(layer_mapping.destinationLayerName())
-            qgis_layer_fields = qgis_layer.fields()
-            qgis_layer_fields_set = {field.name() for field in qgis_layer_fields.toList()}
-
-            if qgis_layer.type() == QgsWkbTypes.PointGeometry :
-                dist_layer = self.dxflayer_points
-            elif qgis_layer.type() == QgsWkbTypes.LineGeometry :
-                dist_layer = self.dxflayer_linestrings
-            else:
-                dist_layer = self.dxflayer_polygons
-
-            qgis_layer.startEditing()
-            featureValues = {}
-            for index, field in enumerate(dist_layer.fields().toList()):
-                if self._getCellValue(self.tabFieldsMapping, index, 2):
-                    fieldName = field.name()
-                    if fieldName not in qgis_layer_fields_set:
-                        newField = QgsField(fieldName, field.type())
-                        qgis_layer.addAttribute(newField)
-                        qgis_layer_fields.append(newField)
-                    featureValues[fieldName] =  self._getCellValue(self.tabFieldsMapping, index, 1)
-
-            featureToAdd = QgsFeature(qgis_layer_fields)
-            for fieldName, fieldValue in featureValues.items():
-                featureToAdd[fieldName] = fieldValue
-                #featureToAdd.setAttribute(fieldName, fieldValue)
-            featureToAdd.setGeometry([f for f in dist_layer.getFeatures()][0].geometry())
-            qgis_layer.dataProvider().addFeatures([featureToAdd])
-            qgis_layer.commitchanges()
-
         # Progress bar + message
-        progressMessageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))
+        progressMessageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportDxfDialog','Importing DXF'))
         progress = QProgressBar()
         progress.setMaximum(self._getEnabledLayerMappingCount())
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
@@ -487,13 +417,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         progress2.setMaximum(self.dxflayer_points.featureCount() + self.dxflayer_linestrings.featureCount() + self.dxflayer_polygons.featureCount())
         progress2.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
-        Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
+        Importer2OSM.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
         # Start import session
         self._startImportSession()
-        print('mapping :' + str(self.mapping.layerMappings()))
-        #mapping=self.mapping.layerMappings()
-        #for layer_mapping in self.mapping.layerMappings():
 
         for layer_mapping in self.mapping.layerMappings():
             # Skip if not enabled
@@ -506,17 +433,19 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             # QGIS layer
             qgis_layer = self._getQgisLayerFromTableName(layer_mapping.destinationLayerName())
 
-            layer_indexmapping = layer_mapping.asIndexFieldMappings(qgis_layer.fields())
+            layer_indexmapping = layer_mapping.asIndexFieldMappings(qgis_layer.dataProvider().fields())
 
             progress2.setValue(0)
 
             # Import features according to geometry type
-            if qgis_layer.type() == QgsWkbTypes.PointGeometry :
+            if qgis_layer.wkbType() == QgsWkbTypes.Point:
                 self._importLayer(self.dxflayer_points, qgis_layer, layer_indexmapping, progress2)
-            elif qgis_layer.type() == QgsWkbTypes.LineGeometry :
+            elif qgis_layer.wkbType() == QgsWkbTypes.LineGeometry:
                 self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
-            elif qgis_layer.typê() == QgsWkbTypes.PolygonGeometry :
-                #self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
+            elif qgis_layer.wkbType() == QgsWkbTypes.LineString:
+                self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
+            elif qgis_layer.wkbType() == QgsWkbTypes.Polygon:
+                self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
                 self._importLayer(self.dxflayer_polygons, qgis_layer, layer_indexmapping, progress2)
 
         # Commit import session
@@ -558,15 +487,15 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         # Load mapping
         self.mapping.parseJson(filename)
 
-        #self._loadLayersMapping()
+        self._loadLayersMapping()
 
     def _saveConfig(self):
         '''
         Save the configuration to JSON
         '''
 
-        #if not self._validateMapping():
-            #return
+        if not self._validateMapping():
+            return
 
         # Select json file to save
         dialog = QFileDialog()

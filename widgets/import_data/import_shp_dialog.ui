@@ -284,38 +284,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnSaveConfig</sender>
-   <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
-   <slot>_saveConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>108</x>
-     <y>415</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>196</x>
-     <y>373</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnLoadConfig</sender>
-   <signal>clicked()</signal>
-   <receiver>Dialog</receiver>
-   <slot>_loadConfig()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>81</x>
-     <y>370</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>176</x>
-     <y>348</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>chkEnableAllFieldsMapping</sender>
    <signal>clicked()</signal>
    <receiver>Dialog</receiver>
@@ -344,6 +312,38 @@
     <hint type="destinationlabel">
      <x>311</x>
      <y>639</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSaveConfig</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>_saveConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>108</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnLoadConfig</sender>
+   <signal>clicked()</signal>
+   <receiver>Dialog</receiver>
+   <slot>_loadConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>370</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>176</x>
+     <y>348</y>
     </hint>
    </hints>
   </connection>

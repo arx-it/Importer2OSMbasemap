@@ -3,7 +3,7 @@
 /***************************************************************************
  CreateProjectDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de 
+ Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
                              -------------------
         begin                : 2015-09-09
         git sha              : $Format:%H$
@@ -28,7 +28,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap, QDesktopServices
 from qgis.PyQt.QtCore import QCoreApplication, QUrl
 
-import Importer2OSMbasemap.main
+import Importer2OSM.main
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'about_dialog.ui'))
@@ -49,15 +49,15 @@ class AboutDialog(QDialog, FORM_CLASS):
         self.setupUi(self)
 
         logo_path = os.path.join(
-            Importer2OSMbasemap.main.plugin_dir,
+            Importer2OSM.main.plugin_dir,
             'widgets',
             'about',
-            'logo_Import2OSM.png')
+            'logo_pag.png')
         pixmap = QPixmap(logo_path)
         self.lblLogoPlugin.setPixmap(pixmap)
 
         logo_path = os.path.join(
-            Importer2OSMbasemap.main.plugin_dir,
+            Importer2OSM.main.plugin_dir,
             'widgets',
             'about',
             'logo_arxit.png')
@@ -66,7 +66,7 @@ class AboutDialog(QDialog, FORM_CLASS):
 
     def _showHelp(self):
         help_path = os.path.join(
-            Importer2OSMbasemap.main.plugin_dir,
+            Importer2OSM.main.plugin_dir,
             'help',
             'user',
             'index.html')

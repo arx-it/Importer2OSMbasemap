@@ -45,9 +45,9 @@ XSD_QGIS_GEOMETRYTYPE_MAP = {GeometryType.POINT:QgsWkbTypes.Point,
                              GeometryType.POLYLINE:QgsWkbTypes.LineString,
                              GeometryType.POLYGON:QgsWkbTypes.Polygon}
 
-class Import2OSMSchema(object):
+class OSMSchema(object):
     '''
-    The Import2OSM schema parsed from the XSD
+    The PAG schema parsed from the XSD
     '''
 
     def __init__(self):
@@ -64,7 +64,7 @@ class Import2OSMSchema(object):
         xsd_path = os.path.join(
             main.plugin_dir,
             'assets',
-            'Import2OSMschema.xsd')
+            'OSMschema.xsd')
 
         # Parse as QgsGmlSchema
         file = QFile(xsd_path)
@@ -78,7 +78,7 @@ class Import2OSMSchema(object):
         ns = {'xsd': 'http://www.w3.org/2001/XMLSchema'} # XSD namespace
         xsd = ET.parse(xsd_path)
 
-        topics = list() # Topics : Import2OSM, ARTIKEL17, GESTION
+        topics = list() # Topics : PAG, ARTIKEL17, GESTION
         concrete_typenames = list()
 
         # Loop GML schema type names
@@ -97,12 +97,12 @@ class Import2OSMSchema(object):
 
         self.types = list()
 
-        # Loop concrete type names and parse to Import2OSMType
+        # Loop concrete type names and parse to PAGType
         for typename in concrete_typenames:
             xml_element = xsd.getroot().find('xsd:complexType[@name="{}Type"]'.format(typename),ns)
-            Import2OSM_type = Import2OSMType()
-            Import2OSM_type.parse(typename, xml_element, ns)
-            self.types.append(Import2OSM_type)
+            pag_type = PAGType()
+            pag_type.parse(typename, xml_element, ns)
+            self.types.append(pag_type)
 
         # Add topic to types
         for topic, members in topics:
@@ -144,7 +144,7 @@ class Import2OSMSchema(object):
         '''
         Parse XML node
 
-        :param typename: The type name of the topic (ex : Import2OSMMemberType)
+        :param typename: The type name of the topic (ex : PAGMemberType)
         :type typename: str, QString
 
         :param ns: XSD namespaces
@@ -163,9 +163,9 @@ class Import2OSMSchema(object):
 
         return members
 
-class Import2OSMType(object):
+class PAGType(object):
     '''
-    A Import2OSM XSD type
+    A PAG XSD type
     '''
 
     def __init__(self):
@@ -210,9 +210,9 @@ class Import2OSMType(object):
 
             # Process field
             else:
-                Import2OSM_field = Import2OSMField()
-                Import2OSM_field.parse(element, ns)
-                self.fields.append(Import2OSM_field)
+                pag_field = PAGField()
+                pag_field.parse(element, ns)
+                self.fields.append(pag_field)
 
             self.ordered_field_names.append(element.get('name'))
 
@@ -256,9 +256,9 @@ class Import2OSMType(object):
 
         return None
 
-class Import2OSMField(object):
+class PAGField(object):
     '''
-    A Import2OSM XSD field
+    A PAG XSD field
     '''
 
     def __init__(self):

@@ -14,14 +14,14 @@ import uuid
 import processing
 
 from qgis.PyQt.QtCore import QCoreApplication, QVariant, Qt, QDate, QDateTime, QSettings
-from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDoubleSpinBox, QDateTimeEdit, QLineEdit, QPushButton, QFileDialog, QMessageBox
+from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDoubleSpinBox, QDateTimeEdit, QLineEdit, QPushButton, QFileDialog, QMessageBox, QSpinBox
 
 from qgis.core import *
 from qgis.gui import *
 
-import Importer2OSMbasemap.main
-import Importer2OSMbasemap.project
-from Importer2OSMbasemap.controls.filename import SimpleFilenamePicker
+import Importer2OSM.main
+import Importer2OSM.project
+from Importer2OSM.controls.filename import SimpleFilenamePicker
 
 class Importer(object):
     '''
@@ -38,7 +38,7 @@ class Importer(object):
         self.importid = str(uuid.uuid1())
         self.import_date = QDateTime.currentDateTime().toString('yyyy-MM-dd hh:mm:ss')
         self.imported_layers = set()
-        self.imported_extent = QgsRectangle(-682171,5225596,1061986,6759818)
+        self.imported_extent = None
         self.features_errors = []
         self.commit_errors = []
 
@@ -47,7 +47,7 @@ class Importer(object):
         Add to import log
         '''
 
-        importlog_layer = Importer2OSMbasemap.main.current_project.getImportLogLayer()
+        importlog_layer = Importer2OSM.main.current_project.getImportLogLayer()
         dst_feature = QgsFeature(importlog_layer.fields())
         dst_feature.setAttribute(1, self.importid)
         dst_feature.setAttribute(2, self.import_date)
@@ -65,44 +65,43 @@ class Importer(object):
         # Commit
         if not importlog_layer.commitChanges():
             importlog_layer.rollBack()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Commit error on layer {}').format(importlog_layer.name()))
             errors = importlog_layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'Import2OSM ', 2) # QGis.Critical = 2
-            Importer2OSMbasemap.main.qgis_interface.openMessageLog()
+                QgsMessageLog.logMessage(error, 'PAG Luxembourg', 2) # QGis.Critical = 2
+            Importer2OSM.main.qgis_interface.openMessageLog()
 
         '''
         Process import result
         '''
         # Zoom to selected
         if self.imported_extent is not None:
-            Importer2OSMbasemap.main.qgis_interface.mapCanvas().setDestinationCrs(QgsCoordinateReferenceSystem(3857, QgsCoordinateReferenceSystem.EpsgCrsId)) #SRS 3857
-            Importer2OSMbasemap.main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
+            Importer2OSM.main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
 
-        Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
+        Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
 
         # Display features errors
         if len(self.features_errors) > 0:
-            messageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
+            messageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
                                                                                       QCoreApplication.translate('Importer', 'Import was successful, but some features could not be imported'))
             btnExportCsv = QPushButton(QCoreApplication.translate('Importer', 'Export to CSV'))
             btnExportCsv.clicked.connect(self._exportErrorsToCsv)
             messageBar.layout().addWidget(btnExportCsv)
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
+            Importer2OSM.main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
 
         # Display commit errors
         for error in self.commit_errors:
-            messageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
+            messageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
                                                                                       error)
             btnOpenLog = QPushButton(QCoreApplication.translate('Importer', 'Open log'))
-            btnOpenLog.clicked.connect(Importer2OSMbasemap.main.qgis_interface.openMessageLog)
+            btnOpenLog.clicked.connect(Importer2OSM.main.qgis_interface.openMessageLog)
             messageBar.layout().addWidget(btnOpenLog)
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
+            Importer2OSM.main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
 
         # Display success message
         if (len(self.features_errors) + len(self.commit_errors)) == 0:
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                        QCoreApplication.translate('Importer', 'Import was successful'))
 
     def _exportErrorsToCsv(self):
@@ -151,13 +150,13 @@ class Importer(object):
             csvfile.close()
 
             # Success message
-            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                         QCoreApplication.translate('Importer', 'CSV export was successful'))
         except:
             # Error message
-            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Error writing CSV file'))
 
     def _importLayer(self, src_layer, dst_layer, mapping, progressbar = None):
@@ -171,10 +170,10 @@ class Importer(object):
 
         feature_request = None
 
-        importid_index = dst_layer.fields().indexFromName(Importer2OSMbasemap.project.IMPORT_ID)
+        #importid_index = dst_layer.fields().indexFromName(Importer2OSM.project.IMPORT_ID)
 
         # Check on layers CRS
-        for layer in [dst_layer, src_layer]:
+        '''for layer in [dst_layer, src_layer]:
             # If QGIS can not detect the layer initial CRS
             if len(layer.crs().authid()) == 0:
                 # If no default CRS has been already chosen for this import
@@ -193,11 +192,7 @@ class Importer(object):
         # Reproject source layer if its CRS is different from the destination layer
         if dst_layer.crs().authid() != src_layer.crs().authid():
             src_layer = processing.run("native:reprojectlayer", {'INPUT': src_layer, 'TARGET_CRS' : dst_layer.crs().authid(), 'OUTPUT' : 'memory:temp'})['OUTPUT']
-            src_layer.setCrs(dst_layer.crs())
-
-        if dst_layer.crs().authid() != src_layer.crs().authid():
-           QMessageBox.information(self, 'Avertissement', 'le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer ')
-        #   raise TypeError('le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer')
+            src_layer.setCrs(dst_layer.crs())'''
 
         # Set layer filter if existing, for DXF
         if mapping.sourceLayerFilter() is None:
@@ -240,7 +235,8 @@ class Importer(object):
         for src_feature in source_features:
             dst_feature = QgsFeature(dst_layer_fields)
             for src_index, dst_index, constant_value, enabled, value_map in mapping.fieldMappings():
-                value = constant_value if src_index == -1 else src_feature[src_index]
+                print(str([src_index, dst_index, constant_value, enabled, value_map]) + ' => ' + str(constant_value if src_index is None else src_feature[src_index]))
+                value = constant_value if src_index is None else src_feature[src_index]
 
                 # Manage value map
                 for shp, qgis in value_map:
@@ -301,7 +297,7 @@ class Importer(object):
 
 
             # Add import ID
-            dst_feature.setAttribute(importid_index, self.importid)
+            #dst_feature.setAttribute(importid_index, self.importid)
 
             # Add feature to new features list
             newfeatures.append(dst_feature)
@@ -318,8 +314,10 @@ class Importer(object):
         #dst_layer.addFeatures(newfeatures, True)
         dst_layer.addFeatures(newfeatures)
 
+        test = dst_layer.commitChanges()
+
         # Commit
-        if dst_layer.commitChanges():
+        if test:
             # Add layer to imported layers
             self.imported_layers.add(dst_layer.name())
         else:
@@ -331,6 +329,10 @@ class Importer(object):
 
         # Reload layer
         dst_layer.reload()
+        dst_layer.updateExtents()
+        Importer2OSM.main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
+        Importer2OSM.main.qgis_interface.mapCanvas().refresh()
+        Importer2OSM.main.qgis_interface.mapCanvas().waitWhileRendering()
 
     def _validateGeometry(self, layer_name, geometry, feature_id):
         clean_geometry = self._getCleanGeometry(geometry)
@@ -347,7 +349,6 @@ class Importer(object):
         errors = clean_geometry.validateGeometry()
 
         for error in errors:
-
             self.features_errors.append((
                 layer_name,
                 feature_id,
@@ -355,7 +356,7 @@ class Importer(object):
                 error.where()
             ))
 
-        return clean_geometry if len(errors) == 0 else QMessageBox.information(self, 'Avertissement', 'Le système de projection n’est pas le même entre la couche à importer et la couche dans laquelle importer ')
+        return clean_geometry if len(errors) == 0 else None
 
     def _getCleanGeometry(self, geometry, simplify_tolerance=0):
         if geometry is None:
@@ -417,17 +418,57 @@ class Importer(object):
         # Field editor is datetime
         elif layer.editorWidgetSetup(fieldIndex).type() == 'DateTime':
             config = layer.editorWidgetSetup(fieldIndex).config()
-            if "map" in config:
+            if "map" in config and 'display_format' in config["map"]:
                 return self._getCalendar(config["map"]['display_format'], value)
-            else:
+            elif 'display_format' in config:
                 return self._getCalendar(config['display_format'], value)
+            else:
+                return self._getCalendar('dd.MM.yyyy', value)
 
         # Field editor is simple filename
         elif layer.editorWidgetSetup(fieldIndex).type() == 'SimpleFilename':
             return self._getSimpleFilenamePicker(value)
 
         # Other editors
-        return self._getTextbox(value)
+        else:
+            widget = QWidget()
+            layout = QHBoxLayout(widget)
+            fieldType = layer.fields().toList()[fieldIndex].type()
+
+            #if fieldType == QVariant.Int:
+            if fieldType == 4:
+                spinBox = QSpinBox()
+                if value is not None:
+                    spinBox.setValue(value)
+                layout.addWidget(spinBox, 1)
+            #elif fieldType == QVariant.Double:
+            elif fieldType == 6:
+                doubleSpinBox = QDoubleSpinBox()
+                if value is not None:
+                    doubleSpinBox.setValue(value)
+                layout.addWidget(doubleSpinBox, 1)
+            #elif fieldType == QVariant.Bool:
+            elif fieldType == 2:
+                checkbox = QCheckBox()
+                if value is not None:
+                    checkbox.setChecked(value)
+                layout.addWidget(checkbox, 1)
+            #elif fieldType == QVariant.Date:
+            elif fieldType == 14:
+                calendar = QDateTimeEdit()
+                calendar.setCalendarPopup(True)
+                calendar.setDisplayFormat('dd.MM.yyyy')
+                calendar.setDate(QDate.fromString(value, 'dd.MM.yyyy') if value is not None else QDate.currentDate())
+                layout.addWidget(calendar, 1);
+            else:
+                textbox = QLineEdit()
+                textbox.setText(value)
+                layout.addWidget(textbox, 1)
+
+            layout.setAlignment(Qt.AlignCenter)
+            layout.setContentsMargins(5, 0, 5, 0)
+            widget.setLayout(layout)
+            return widget
 
     def _getCenteredCheckbox(self, checked=True):
         '''
@@ -479,6 +520,7 @@ class Importer(object):
         :returns: A combobox
         :rtype: QWidget
         '''
+
         widget = QWidget()
         combobox = QComboBox()
         layout = QHBoxLayout(widget)
@@ -490,10 +532,8 @@ class Importer(object):
         current_item_index = 0
         selected_index = 0
 
-        print('Total : ' + str(values))
         for key, value in list(values.items()):
             combobox.addItem(value, key)
-            print(str([key, value]))
 
             # Select value
             if key == secondary_selected_value and selected_index == 0:
@@ -639,16 +679,13 @@ class Importer(object):
             if type(child) is QCheckBox:
                 return child.isChecked()
             elif type(child) is QComboBox:
-                index = child.currentIndex()
-                id =  child.itemData(index)
-                ct = child.currentText()
-                return ct
+                return child.itemData(child.currentIndex())
             elif type(child) is SimpleFilenamePicker:
                 return child.value()
             elif type(child) is QLineEdit:
                 text = child.text().strip()
                 return text if not text == '' else None
-            elif type(child) is QDoubleSpinBox:
+            elif type(child) is QDoubleSpinBox or type(child) is QSpinBox:
                 value = child.value()
                 if value == child.minimum() and child.specialValueText() != '':
                     return None
@@ -657,7 +694,7 @@ class Importer(object):
             elif type(child) is QDateTimeEdit:
                 return child.date().toString(child.displayFormat())
 
-        #raise TypeError('No widget found')
+        raise TypeError('No widget found')
 
 class Mapping(object):
     '''
@@ -669,6 +706,7 @@ class Mapping(object):
         '''
         Constructor
         '''
+
         self._mappings = list()
 
     def layerMappings(self):
@@ -770,7 +808,7 @@ class LayerMapping(object):
 
     def getFieldMappingForDestination(self, destination_fieldname):
         for source, destination, constant_value, enabled, value_map in self._mapping['FieldMapping']:
-            #if destination == destination_fieldname:
+            if destination == destination_fieldname:
                 return source, destination, constant_value, enabled, value_map
 
         return None, None, None, None, None

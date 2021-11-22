@@ -12,8 +12,8 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QProgressBar
 from qgis.PyQt.QtCore import *
 
-import Importer2OSMbasemap.main
-from Importer2OSMbasemap.widgets.data_checker.data_checker import *
+import Importer2OSM.main
+from Importer2OSM.widgets.data_checker.data_checker import *
 
 from .importer import *
 
@@ -49,7 +49,7 @@ class ImportGML(Importer):
         gmlschema.guessSchema(gmlcontent)
 
         # XSD Schema
-        xsdschema = Importer2OSMbasemap.main.xsd_schema
+        xsdschema = Importer2OSM.main.xsd_schema
 
         unknowntypes = list()
 
@@ -57,7 +57,7 @@ class ImportGML(Importer):
         layer_structure_errors = list()
 
         # Progress bar + message
-        progressMessageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportGML', 'Importing GML'))
+        progressMessageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportGML', 'Importing GML'))
         progress = QProgressBar()
         progress.setMaximum(len(gmlschema.typeNames()))
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
@@ -65,7 +65,7 @@ class ImportGML(Importer):
         progress2 = QProgressBar()
         progress2.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress2)
-        Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # Qgis.Info = 0
+        Importer2OSM.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # Qgis.Info = 0
 
         # Start import session
         self._startImportSession()
@@ -104,10 +104,10 @@ class ImportGML(Importer):
         :type gml_layer: QgsVectorLayer
 
         :param xsdtype: XSD schema type
-        :type xsdtype: Import2OSMType
+        :type xsdtype: PAGType
         '''
 
-        xsd_layer = Importer2OSMbasemap.main.current_project.getLayer(xsdtype)
+        xsd_layer = Importer2OSM.main.current_project.getLayer(xsdtype)
 
         if xsd_layer is None:
             return

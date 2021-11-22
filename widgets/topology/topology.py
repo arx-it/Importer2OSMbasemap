@@ -16,7 +16,7 @@ from qgis.core import *
 import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
-import Importer2OSMbasemap.main
+import Importer2OSM.main
 
 TOPOL_SECTION = "Topol"
 
@@ -36,7 +36,7 @@ class TopologyChecker(object):
         Runs the widget
         '''
 
-        project = Importer2OSMbasemap.main.current_project
+        project = Importer2OSM.main.current_project
 
         if not project.isImport2OSMProject():
             return
@@ -44,24 +44,24 @@ class TopologyChecker(object):
         self.topology_action.trigger()
 
         # Zoom to selected onclick button
-        modification_Import2OSM_layer=project.getModificationImport2OSMLayer()
+        modification_pag_layer=project.getModificationPagLayer()
 
-        if modification_Import2OSM_layer is not None:
-            entity_count = modification_Import2OSM_layer.selectedFeatureCount()
+        if modification_pag_layer is not None:
+            entity_count = modification_pag_layer.selectedFeatureCount()
             canvas = qgis.utils.iface.mapCanvas()
-            canvas.zoomToSelected(modification_Import2OSM_layer)
+            canvas.zoomToSelected(modification_pag_layer)
             if entity_count==1:
-                Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-                Importer2OSMbasemap.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology','Information'),
-                                                                   QCoreApplication.translate('Topology','There is 1 selected entity in MODIFICATION Import2OSM layer. You can now check topology'))
+                Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+                Importer2OSM.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology','Information'),
+                                                                   QCoreApplication.translate('Topology','There is 1 selected entity in MODIFICATION PAG layer. You can now check topology'))
             elif entity_count==0:
-                Importer2OSMbasemap.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology_no','Information'),
-                                                                   QCoreApplication.translate('Topology_no','There is no selected entity in MODIFICATION Import2OSM layer. You can now check topology'))
+                Importer2OSM.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('Topology_no','Information'),
+                                                                   QCoreApplication.translate('Topology_no','There is no selected entity in MODIFICATION PAG layer. You can now check topology'))
             else:
                 qgis.utils.iface.messageBar().pushMessage(QCoreApplication.translate('Topology_many', 'Information'),
-                                                                   QCoreApplication.translate('Topology_many','There are {} selected entities in MODIFICATION Import2OSM layer. You can now check topology').format(entity_count))
+                                                                   QCoreApplication.translate('Topology_many','There are {} selected entities in MODIFICATION PAG layer. You can now check topology').format(entity_count))
         else :
-            qgis.utils.iface.messageBar().pushMessage("Error", "MODIFICATION Import2OSM layer is not correct")
+            qgis.utils.iface.messageBar().pushMessage("Error", "MODIFICATION PAG layer is not correct")
 
     def updateProjectRules(self):
         '''
@@ -69,7 +69,7 @@ class TopologyChecker(object):
         '''
 
         # Get rules config
-        config_path = os.path.join(Importer2OSMbasemap.main.plugin_dir,
+        config_path = os.path.join(Importer2OSM.main.plugin_dir,
                                'widgets',
                                'topology',
                                'config.json')
@@ -115,7 +115,7 @@ class TopologyChecker(object):
         layer1 = layer_registry.mapLayer(layer1Id)
         layer2 = layer_registry.mapLayer(layer2Id)
 
-        current_project = Importer2OSMbasemap.main.current_project
+        current_project = Importer2OSM.main.current_project
         layer1_table = current_project.getUriInfos(layer1.source())[1] if layer1 is not None else None
         layer2_table = current_project.getUriInfos(layer2.source())[1] if layer2 is not None else None
 
@@ -135,7 +135,7 @@ class TopologyChecker(object):
 
         # Get layer id from table name
         layer_registry = QgsProject.instance()
-        current_project = Importer2OSMbasemap.main.current_project
+        current_project = Importer2OSM.main.current_project
         for layerid, layer in list(layer_registry.mapLayers().items()):
             layer_table = current_project.getUriInfos(layer.source())[1]
             if rule.layer1 == layer_table:

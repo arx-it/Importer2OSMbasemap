@@ -43,7 +43,7 @@
     </font>
    </property>
    <property name="text">
-    <string>A propos du plugin Import2OSM </string>
+    <string>A propos du plugin PAG Luxembourg</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -59,7 +59,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Ce plugin permet d'accomImport2OSMner les différents mandataires pour la gestion de Plans d'Aménagements Généraux (Import2OSM) du Grand-Duché de . Il offre des outils d'import, d'export et de vérification de données, afin de fournir les plans selon les standards du Ministère de l'Intérieur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Ce plugin permet d'accompagner les différents mandataires pour la gestion de Plans d'Aménagements Généraux (PAG) du Grand-Duché de Luxembourg. Il offre des outils d'import, d'export et de vérification de données, afin de fournir les plans selon les standards du Ministère de l'Intérieur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="textFormat">
     <enum>Qt::RichText</enum>
@@ -131,7 +131,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>logo_Import2OSM.png</pixmap>
+    <pixmap>logo_pag.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

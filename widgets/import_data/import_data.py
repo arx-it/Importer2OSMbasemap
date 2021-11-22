@@ -10,10 +10,10 @@ import os
 
 from qgis.core import *
 from qgis.gui import *
-from qgis.PyQt.QtWidgets import QFileDialog
+from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.PyQt.QtCore import *
 
-import Importer2OSMbasemap.main
+import Importer2OSM.main
 
 from .import_gml import ImportGML
 from .import_shp import ImportSHP
@@ -36,14 +36,17 @@ class ImportData(object):
         Runs the widget
         '''
 
-        if not Importer2OSMbasemap.main.current_project.isImport2OSMProject():
+        if not Importer2OSM.main.current_project.isImport2OSMProject():
+            return
+        elif all(not isinstance(layer.layer(), QgsVectorLayer) for layer in QgsProject.instance().layerTreeRoot().findLayers()):
+            QMessageBox.critical(None, 'Erreur', QCoreApplication.translate('ImportData','No layer imported'))
             return
 
         # Select file to import
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.ExistingFile)
         dialog.setOption(QFileDialog.ReadOnly)
-        dialog.setNameFilter('Vector file ( *.shp *.geojson *.dxf)');
+        dialog.setNameFilter('Vector file (*.shp *.geojson *.dxf)');
         dialog.setWindowTitle(QCoreApplication.translate('ImportData','Select the file to import'))
         dialog.setSizeGripEnabled(False)
         result = dialog.exec_()
@@ -58,6 +61,7 @@ class ImportData(object):
 
         # Dispatch to the right importer
         importers = {
+                    #'gml':ImportGML,
                     'shp':ImportSHP,
                     'geojson': ImportGeoJSON,
                     'dxf':ImportDXF

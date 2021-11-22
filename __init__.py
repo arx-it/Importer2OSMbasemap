@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- Importer2OSMbasemap
+ Importer2OSM
                                  A QGIS plugin
- Gestion de Plans 
+ Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
                              -------------------
         begin                : 2015-08-25
         copyright            : (C) 2015 by arx iT
@@ -26,11 +26,11 @@ from __future__ import absolute_import
 
 # noinspection PyPep8Naming
 def classFactory(iface):  # pylint: disable=invalid-name
-    """Load Importer2OSMbasemap class from file Importer2OSMbasemap.
+    """Load Importer2OSM class from file Importer2OSM.
 
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
     #
-    from .main import Importer2OSMbasemap
-    return Importer2OSMbasemap(iface)
+    from .main import Importer2OSM
+    return Importer2OSM(iface)

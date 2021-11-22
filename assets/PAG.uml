@@ -31,7 +31,7 @@
 <NamespaceLink>3</NamespaceLink>
 <Name>11</Name>
 <Documentation>12</Documentation>
-<DefLangName>Import2OSM</DefLangName>
+<DefLangName>PAG</DefLangName>
 <OwnedElementLink>13</OwnedElementLink>
 </ch.ehi.interlis.modeltopicclass.INTERLIS2Def>
 <ch.ehi.uml1_4.foundation.core.ElementOwnership TID="13">
@@ -41,7 +41,7 @@
 <Specification>false</Specification>
 </ch.ehi.uml1_4.foundation.core.ElementOwnership>
 <ch.ehi.basics.types.NlsString TID="11">
-<Entry TID="15" language="en" translation="Import2OSM"/>
+<Entry TID="15" language="en" translation="PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.modeltopicclass.ModelDef TID="14">
 <Name>16</Name>
@@ -57,7 +57,7 @@
 <BaseLanguage>fr</BaseLanguage>
 <VersionComment>19</VersionComment>
 <Documentation>20</Documentation>
-<DefLangName>Import2OSM</DefLangName>
+<DefLangName>PAG</DefLangName>
 <OwnedElementLink>21</OwnedElementLink>
 <OwnedElementLink>22</OwnedElementLink>
 <OwnedElementLink>23</OwnedElementLink>
@@ -172,7 +172,7 @@
 <PropFinal>false</PropFinal>
 <Kind>1</Kind>
 <Documentation>53</Documentation>
-<DefLangName>Import2OSM</DefLangName>
+<DefLangName>PAG</DefLangName>
 <OwnedElementLink>54</OwnedElementLink>
 <OwnedElementLink>55</OwnedElementLink>
 <OwnedElementLink>56</OwnedElementLink>
@@ -276,7 +276,7 @@
 <ch.ehi.basics.types.NlsString TID="89">
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="16">
-<Entry TID="92" language="en" translation="Import2OSM"/>
+<Entry TID="92" language="en" translation="PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="8">
 </ch.ehi.basics.types.NlsString>
@@ -421,7 +421,7 @@
 <Entry TID="128" language="en" translation="libell&#233; du code"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="53">
-<Entry TID="129" language="en" translation="Contient les &#233;l&#233;ments relevant pour la cr&#233;ation du Import2OSM"/>
+<Entry TID="129" language="en" translation="Contient les &#233;l&#233;ments relevant pour la cr&#233;ation du PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.AttributeDef TID="84">
 <Name>130</Name>
@@ -980,7 +980,7 @@
 <Entry TID="391" language="en" translation="DATE"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="52">
-<Entry TID="392" language="en" translation="Import2OSM"/>
+<Entry TID="392" language="en" translation="PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.domainsandconstants.basetypes.EnumElement TID="150">
 <Name>393</Name>
@@ -996,7 +996,7 @@
 <Entry TID="397" language="en" translation="C028"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="28">
-<Entry TID="398" language="en" translation="Informations sur le Import2OSM concernant le transfert en cours"/>
+<Entry TID="398" language="en" translation="Informations sur le PAG concernant le transfert en cours"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="333">
 <Entry TID="399" language="en" translation="EnumElement162"/>
@@ -1418,7 +1418,7 @@
 <Presentation>527</Presentation>
 </ch.ehi.interlis.modeltopicclass.ClassDef>
 <ch.ehi.basics.types.NlsString TID="524">
-<Entry TID="528" language="en" translation="PCN ou fond de plan qui servait comme base &#224; l&apos;&#233;laboration du Import2OSM"/>
+<Entry TID="528" language="en" translation="PCN ou fond de plan qui servait comme base &#224; l&apos;&#233;laboration du PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.AttributeDef TID="525">
 <Name>529</Name>
@@ -2064,7 +2064,7 @@
 <DefLangName>NOM_FICHIER_EC</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="698">
-<Entry TID="699" language="en" translation="Nom du fichier pdf contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="699" language="en" translation="Nom du fichier pdf contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="695">
 <Entry TID="700" language="en" translation="NOM_FICHIER_EC"/>
@@ -4317,7 +4317,7 @@
 <DefLangName>NOM_FICHIER</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="1356">
-<Entry TID="1357" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="1357" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.foundation.core.ElementOwnership TID="836">
 <Namespace>704</Namespace>
@@ -4989,7 +4989,7 @@
 <Entry TID="1507" language="en" translation="OBJET"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="1427">
-<Entry TID="1508" language="en" translation="Nom du fichier pdf contenant la partie graphique du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="1508" language="en" translation="Nom du fichier pdf contenant la partie graphique du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="317">
 <Entry TID="1509" language="en" translation="EnumElement203"/>
@@ -5093,7 +5093,7 @@
 <Specification>false</Specification>
 </ch.ehi.uml1_4.foundation.core.ElementOwnership>
 <ch.ehi.basics.types.NlsString TID="1204">
-<Entry TID="1533" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="1533" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="1291">
 <Entry TID="1534" language="en" translation="URI"/>
@@ -5135,7 +5135,7 @@
 <Entry TID="1544" language="en" translation="Wincrange"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="282">
-<Entry TID="1545" language="en" translation=""/>
+<Entry TID="1545" language="en" translation="Luxembourg"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="474">
 <Entry TID="1546" language="en" translation="Bettendorf"/>
@@ -5626,7 +5626,7 @@
 <Entry TID="1666" language="en" translation="Lintgen"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="1417">
-<Entry TID="1667" language="en" translation="Date de mutation du PCN ou fond de plan qui servait comme base &#224; l&apos;&#233;laboration du Import2OSM (p.ex yyyy-mm-jj)"/>
+<Entry TID="1667" language="en" translation="Date de mutation du PCN ou fond de plan qui servait comme base &#224; l&apos;&#233;laboration du PAG (p.ex yyyy-mm-jj)"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.umleditor.umlpresentation.Class TID="1473">
 <ShowNamePrefix>0</ShowNamePrefix>
@@ -6042,7 +6042,7 @@
 <Multiplicity>1746</Multiplicity>
 </ch.ehi.uml1_4.implementation.UmlMultiplicityRange>
 <ch.ehi.basics.types.NlsString TID="1748">
-<Entry TID="1753" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="1753" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="1744">
 <Entry TID="1754" language="en" translation="g&#233;om&#233;trie du couloir&#10;"/>
@@ -6269,7 +6269,7 @@
 <DefLangName>NOM_FICHIER</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="1812">
-<Entry TID="1813" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="1813" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.DomainAttribute TID="1811">
 <Direct>1814</Direct>
@@ -7299,7 +7299,7 @@
 <ch.ehi.basics.types.NlsString TID="2045">
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="569">
-<Entry TID="2046" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2046" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.implementation.UmlMultiplicityRange TID="1862">
 <Lower>1</Lower>
@@ -7429,7 +7429,7 @@
 <DefLangName>GEOMETRIE</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="2071">
-<Entry TID="2076" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2076" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2064">
 <Entry TID="2077" language="en" translation="constructions &#224; conserver (point)"/>
@@ -7647,7 +7647,7 @@
 <DefLangName>NOM_FICHIER</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="2132">
-<Entry TID="2133" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2133" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2129">
 <Entry TID="2134" language="en" translation="NOM_FICHIER"/>
@@ -7698,7 +7698,7 @@
 <Presentation>1472</Presentation>
 </ch.ehi.interlis.modeltopicclass.ClassDef>
 <ch.ehi.basics.types.NlsString TID="2141">
-<Entry TID="2143" language="en" translation="g&#233;om&#233;trie (polygone) de la limte communale selon base cadastrale du Import2OSM "/>
+<Entry TID="2143" language="en" translation="g&#233;om&#233;trie (polygone) de la limte communale selon base cadastrale du PAG "/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2120">
 <Entry TID="2144" language="en" translation="UmlUsage67"/>
@@ -7748,7 +7748,7 @@
 <Entry TID="2153" language="en" translation="UmlUsage8"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="20">
-<Entry TID="2154" language="en" translation="Mod&#232;le de donn&#233;es pour l&apos;&#233;change de donn&#233;es entre les bureaux d&apos;&#233;tudes et le Minist&#232;re de l&apos;Int&#233;rieur. &#10;Chaque Import2OSM doit &#234;tre transmis &#224; l&apos;aide d&apos;un fichier GML conforme &#224; ce modele de donn&#233;es."/>
+<Entry TID="2154" language="en" translation="Mod&#232;le de donn&#233;es pour l&apos;&#233;change de donn&#233;es entre les bureaux d&apos;&#233;tudes et le Minist&#232;re de l&apos;Int&#233;rieur. &#10;Chaque PAG doit &#234;tre transmis &#224; l&apos;aide d&apos;un fichier GML conforme &#224; ce modele de donn&#233;es."/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="1302">
 <Entry TID="2155" language="en" translation="UmlUsage38"/>
@@ -7877,7 +7877,7 @@
 <DefLangName>NOM_FICHIER</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="2179">
-<Entry TID="2180" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2180" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.implementation.UmlMultiplicity TID="2177">
 <Range>2181</Range>
@@ -8066,7 +8066,7 @@
 <Red>255</Red>
 </ch.ehi.umleditor.umlpresentation.Color>
 <ch.ehi.basics.types.NlsString TID="1720">
-<Entry TID="2221" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2221" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.domainsandconstants.linetypes.IntersectionDef TID="1351">
 <Documentation>2222</Documentation>
@@ -8540,7 +8540,7 @@
 <Entry TID="2347" language="en" translation="zones tel que d&#233;fini dans le r&#232;glement grand-ducal du 8 mars 2017 concernant le contenu du plan d&apos;am&#233;nagement g&#233;n&#233;ral d&apos;une commune (art- 8-23 et 27)"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2342">
-<Entry TID="2348" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2348" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.implementation.UmlMultiplicityRange TID="2334">
 <Lower>1</Lower>
@@ -9564,16 +9564,16 @@
 <Optional>false</Optional>
 <HasNoStableOid>false</HasNoStableOid>
 <Documentation>2640</Documentation>
-<DefLangName>MODIFICATION_Import2OSM</DefLangName>
+<DefLangName>MODIFICATION_PAG</DefLangName>
 <Feature>2641</Feature>
 <Feature>2642</Feature>
 <Presentation>1475</Presentation>
 </ch.ehi.interlis.modeltopicclass.ClassDef>
 <ch.ehi.basics.types.NlsString TID="2639">
-<Entry TID="2643" language="en" translation="MODIFICATION_Import2OSM"/>
+<Entry TID="2643" language="en" translation="MODIFICATION_PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2640">
-<Entry TID="2644" language="en" translation="limites de la modification ponctuelle du Import2OSM"/>
+<Entry TID="2644" language="en" translation="limites de la modification ponctuelle du PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.AttributeDef TID="2642">
 <Name>2645</Name>
@@ -9595,7 +9595,7 @@
 <DefLangName>GEOMETRIE</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="2648">
-<Entry TID="2649" language="en" translation="limites de la modification Import2OSM"/>
+<Entry TID="2649" language="en" translation="limites de la modification PAG"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.DomainAttribute TID="2647">
 <Direct>2650</Direct>
@@ -10420,7 +10420,7 @@
 <Entry TID="2816" language="en" translation="CODE"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="769">
-<Entry TID="2817" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2817" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="898">
 <Entry TID="2818" language="en" translation="REFSYSTEM"/>
@@ -11037,7 +11037,7 @@
 <Entry TID="2970" language="en" translation="C004"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="645">
-<Entry TID="2971" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="2971" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.DomainAttribute TID="1719">
 <Direct>2972</Direct>
@@ -12001,7 +12001,7 @@
 <Multiplicity>370</Multiplicity>
 </ch.ehi.uml1_4.implementation.UmlMultiplicityRange>
 <ch.ehi.basics.types.NlsString TID="737">
-<Entry TID="3153" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;e"/>
+<Entry TID="3153" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;e"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.basics.types.NlsString TID="2495">
 <Entry TID="3154" language="en" translation="EnumElement107"/>
@@ -12056,7 +12056,7 @@
 <LineType>1349</LineType>
 </ch.ehi.interlis.domainsandconstants.linetypes.LineForm>
 <ch.ehi.basics.types.NlsString TID="1646">
-<Entry TID="3166" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="3166" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.implementation.UmlMultiplicity TID="1631">
 <Range>3167</Range>
@@ -12208,7 +12208,7 @@
 <DefLangName>NOM_FICHIER</DefLangName>
 </ch.ehi.interlis.attributes.AttributeDef>
 <ch.ehi.basics.types.NlsString TID="3194">
-<Entry TID="3195" language="en" translation="Nom du fichier word contenant la partie &#233;crite du Import2OSM de l&apos;article concern&#233;"/>
+<Entry TID="3195" language="en" translation="Nom du fichier word contenant la partie &#233;crite du PAG de l&apos;article concern&#233;"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.uml1_4.implementation.UmlMultiplicity TID="3192">
 <Range>3196</Range>

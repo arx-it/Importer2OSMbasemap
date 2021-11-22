@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsd:schema 
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns="http://www.interlis.ch/INTERLIS2.3/GML32/Import2OSM" 
-  targetNamespace="http://www.interlis.ch/INTERLIS2.3/GML32/Import2OSM" 
+  xmlns="http://www.interlis.ch/INTERLIS2.3/GML32/PAG" 
+  targetNamespace="http://www.interlis.ch/INTERLIS2.3/GML32/PAG" 
   elementFormDefault="qualified" 
   attributeFormDefault="unqualified"
   xmlns:gml="http://www.opengis.net/gml/3.2"
@@ -12,7 +12,7 @@
 <xsd:annotation>
   <xsd:appinfo source="http://www.interlis.ch/ili2c/ili2cversion">4.5.14-20150810</xsd:appinfo>
   <xsd:appinfo source="http://www.interlis.ch/ili2c">
-    <ili2c:model>Import2OSM</ili2c:model>
+    <ili2c:model>PAG</ili2c:model>
     <ili2c:modelVersion>2015-04-01</ili2c:modelVersion>
     <ili2c:modelAt>mailto:david.hottua@mi.etat.lu</ili2c:modelAt>
   </xsd:appinfo>
@@ -725,8 +725,8 @@
     </xsd:extension>
   </xsd:complexContent>
 </xsd:complexType>
-<xsd:element name="MODIFICATION_Import2OSM" type="MODIFICATION_Import2OSMType" substitutionGroup="gml:AbstractFeature"/>
-<xsd:complexType  name="MODIFICATION_Import2OSMType">
+<xsd:element name="MODIFICATION_PAG" type="MODIFICATION_PAGType" substitutionGroup="gml:AbstractFeature"/>
+<xsd:complexType  name="MODIFICATION_PAGType">
   <xsd:complexContent>
     <xsd:extension base="gml:AbstractFeatureType">
       <xsd:sequence>
@@ -1064,7 +1064,7 @@
     </xsd:extension>
   </xsd:complexContent>
 </xsd:complexType>
-<xsd:complexType name="Import2OSMMemberType">
+<xsd:complexType name="PAGMemberType">
   <xsd:complexContent>
     <xsd:extension base="gml:AbstractFeatureMemberType">
       <xsd:sequence>
@@ -1081,7 +1081,7 @@
           <xsd:element ref="GABARIT_A_SAUV_POINT"/>
           <xsd:element ref="GABARIT_A_SAUV_POLY"/>
           <xsd:element ref="LIMITES_COMMUNALES"/>
-          <xsd:element ref="MODIFICATION_Import2OSM"/>
+          <xsd:element ref="MODIFICATION_PAG"/>
           <xsd:element ref="NQ_PAP"/>
           <xsd:element ref="PAP_APPROUVE"/>
           <xsd:element ref="PERIMETRE"/>
@@ -1095,12 +1095,12 @@
     </xsd:extension>
   </xsd:complexContent>
 </xsd:complexType>
-<xsd:element name="Import2OSM" type="Import2OSMType" substitutionGroup="gml:AbstractFeature"/>
-<xsd:complexType name="Import2OSMType">
+<xsd:element name="PAG" type="PAGType" substitutionGroup="gml:AbstractFeature"/>
+<xsd:complexType name="PAGType">
   <xsd:complexContent>
     <xsd:extension base="gml:AbstractFeatureType">
       <xsd:sequence>
-        <xsd:element name="member" type="Import2OSMMemberType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="member" type="PAGMemberType" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attributeGroup ref="gml:AggregationAttributeGroup"/>
     </xsd:extension>

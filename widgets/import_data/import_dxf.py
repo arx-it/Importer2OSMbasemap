@@ -9,7 +9,7 @@ from builtins import object
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import *
 
-import Importer2OSMbasemap.main
+import Importer2OSM.main
 
 from .import_dxf_dialog import ImportDxfDialog
 
@@ -17,25 +17,25 @@ class ImportDXF(object):
     '''
     Main class for the DXF importer
     '''
-    
+
     def __init__(self, filename):
         '''
         Constructor
-        
+
         :param filename: The DXF filename
         :type filename: str, QString
         '''
         self.filename = filename
-    
+
     def runImport(self):
         '''
         Import a DXF file
         '''
-        
+
         self.dlg = ImportDxfDialog(self.filename)
-        
+
         if self.dlg.valid:
             self.dlg.show()
         else:
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportDXF','Error'),
+            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportDXF','Error'),
                                                                         QCoreApplication.translate('ImportDXF','DXF file is not valid'))

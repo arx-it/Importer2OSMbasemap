@@ -13,8 +13,8 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtCore import *
 
-import Importer2OSMbasemap.main
-import Importer2OSMbasemap.project
+import Importer2OSM.main
+import Importer2OSM.project
 
 from .import_manager_dialog import ImportManagerDialog
 
@@ -34,7 +34,7 @@ class ImportManager(object):
         Runs the widget
         '''
 
-        if not Importer2OSMbasemap.main.current_project.isImport2OSMProject():
+        if not Importer2OSM.main.current_project.isImport2OSMProject():
             return
 
         self.dlg = ImportManagerDialog()
@@ -45,25 +45,25 @@ class ImportManager(object):
 
         # Delete import from layers
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in Importer2OSMbasemap.main.qgis_interface.legendInterface().layers():
+        #for layer in Importer2OSM.main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if not (layer.type() == QgsMapLayer.VectorLayer):
+            if not (layer.type() == QgsMapLayer.VectorLayer): # and Importer2OSM.main.current_project.isPagLayer(layer)):
                 continue
 
             errors = errors or not self._deleteImportFromLayer(layer, id)
 
         # Delete entry in import log Table
-        layer = Importer2OSMbasemap.main.current_project.getImportLogLayer()
+        layer = Importer2OSM.main.current_project.getImportLogLayer()
         errors = errors or not self._deleteImportFromLayer(layer, id)
 
         if not errors:
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ImportManager', 'Success'),
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ImportManager', 'Success'),
                                                                        QCoreApplication.translate('ImportManager', 'Rollback was successful'))
 
     def _deleteImportFromLayer(self, layer, importid):
         fids = []
 
-        expr = QgsExpression('{}=\'{}\''.format(Importer2OSMbasemap.project.IMPORT_ID, importid))
+        expr = QgsExpression('{}=\'{}\''.format(Importer2OSM.project.IMPORT_ID, importid))
         feature_request = QgsFeatureRequest(expr)
 
         for feature in layer.getFeatures(feature_request):
@@ -79,13 +79,13 @@ class ImportManager(object):
         # Commit
         if not layer.commitChanges():
             layer.rollBack()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportManager','Error'),
+            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportManager','Error'),
                                                                         QCoreApplication.translate('ImportManager','Commit error on layer {}').format(layer.name()))
             errors = layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'Import2OSM ', QgsMessageLog.CRITICAL)
+                QgsMessageLog.logMessage(error, 'PAG Luxembourg', QgsMessageLog.CRITICAL)
 
-            Importer2OSMbasemap.main.qgis_interface.openMessageLog()
+            Importer2OSM.main.qgis_interface.openMessageLog()
             return False
 
         return True

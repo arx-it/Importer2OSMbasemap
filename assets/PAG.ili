@@ -1,9 +1,9 @@
 INTERLIS 2.3;
 
 /** Modèle de données pour l'échange de données entre les bureaux d'études et le Ministère de l'Intérieur. 
- * Chaque Import2OSM doit être transmis à l'aide d'un fichier GML conforme à ce modele de données.
+ * Chaque PAG doit être transmis à l'aide d'un fichier GML conforme à ce modele de données.
  */
-MODEL Import2OSM (fr)
+MODEL PAG (fr)
 AT "mailto:david.hottua@mi.etat.lu"
 VERSION "2015-04-01"  =
 
@@ -11,7 +11,7 @@ VERSION "2015-04-01"  =
 
     LUREF = COORD 45000 .. 110000, 55000.00 .. 140000.00 ,ROTATION 2 -> 1;
 
-  /** Informations sur le Import2OSM concernant le transfert en cours
+  /** Informations sur le PAG concernant le transfert en cours
    */
   TOPIC GESTION =
 
@@ -88,7 +88,7 @@ VERSION "2015-04-01"  =
         /** Hesperange
          */
         C024,
-        /** 
+        /** Luxembourg
          */
         C026,
         /** Junglinster
@@ -341,7 +341,7 @@ VERSION "2015-04-01"  =
       /** date de délivrance
        */
       DATE : MANDATORY FORMAT INTERLIS.XMLDate "2000-1-1" .. "2099-1-1";
-      /** Date de mutation du PCN ou fond de plan qui servait comme base à l'élaboration du Import2OSM (p.ex yyyy-mm-jj)
+      /** Date de mutation du PCN ou fond de plan qui servait comme base à l'élaboration du PAG (p.ex yyyy-mm-jj)
        */
       DATE_MUTATION_FOND_DE_PLAN : MANDATORY FORMAT INTERLIS.XMLDate "2004-1-1" .. "2018-8-28";
       OBJET (FINAL) : MANDATORY (
@@ -365,7 +365,7 @@ VERSION "2015-04-01"  =
     CLASS BIOTOPE_LIGNE =
       /** géométrie du biotope
        */
-      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX PAG.LUREF;
       /** code du type de biotope tel que defini dans Kurzanleitung zur Erfassung der nach Art. 17 des
        * luxemburgischen Naturschutzgesetzes
        * geschützten Biotope
@@ -413,7 +413,7 @@ VERSION "2015-04-01"  =
     CLASS BIOTOPE_POINT =
       /** géométrie du biotope
        */
-      GEOMETRIE : MANDATORY Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY PAG.LUREF;
       /** code du type de biotope tel que defini dans Kurzanleitung zur Erfassung der nach Art. 17 des
        * luxemburgischen Naturschutzgesetzes
        * geschützten Biotope
@@ -452,7 +452,7 @@ VERSION "2015-04-01"  =
     CLASS BIOTOPE_POLY =
       /** géometrie du biotope
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** code du type de biotope tel que défini dans Kurzanleitung zur Erfassung der nach Art. 17 des
        * luxemburgischen Naturschutzgesetzes
        * geschützten Biotope
@@ -602,7 +602,7 @@ VERSION "2015-04-01"  =
     CLASS INFO_SUPP_LIGNE =
       /** géométrie(ligne)
        */
-      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** Nom du fichier word contenant la partie écrite de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
@@ -614,7 +614,7 @@ VERSION "2015-04-01"  =
     CLASS INFO_SUPP_POINT =
       /** géométrie(point)
        */
-      GEOMETRIE : MANDATORY Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY PAG.LUREF;
       /** Nom du fichier word contenant la partie écrite de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
@@ -626,7 +626,7 @@ VERSION "2015-04-01"  =
     CLASS INFO_SUPP_POLY =
       /** géométrie(polygone)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** Nom du fichier word contenant la partie écrite de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
@@ -635,9 +635,9 @@ VERSION "2015-04-01"  =
 
   END INFORMATIONS_SUPPLEMENTAIRES;
 
-  /** Contient les éléments relevant pour la création du Import2OSM
+  /** Contient les éléments relevant pour la création du PAG
    */
-  TOPIC Import2OSM =
+  TOPIC PAG =
 
     /** alignement à respecter (ligne)
      */
@@ -645,18 +645,18 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie(ligne)
        */
-      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX PAG.LUREF;
     END ALIGN_A_RESP;
 
     /** inventaire de tous les bâtiments de la commune
      */
     CLASS BATIMENT =
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END BATIMENT;
 
     /** constructions à conserver (ligne)
@@ -665,12 +665,12 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (ligne)
        */
-      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX PAG.LUREF;
     END CONST_A_CONS_LIGNE;
 
     /** constructions à conserver (point)
@@ -679,12 +679,12 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (point)
        */
-      GEOMETRIE : MANDATORY Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY PAG.LUREF;
     END CONST_A_CONS_POINT;
 
     /** constructions à conserver (polygone)
@@ -693,12 +693,12 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (surface)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END CONST_A_CONS_POLY;
 
     /** couloirs et espaces réservés (art. 31) avec une largeur continue
@@ -723,12 +723,12 @@ VERSION "2015-04-01"  =
          */
         CP_R_EP
       );
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie du couloir
        */
-      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY POLYLINE WITH (STRAIGHTS) VERTEX PAG.LUREF;
       /** subdivision de la zone définie dans catégorie
        */
       GENRE : TEXT*10;
@@ -757,12 +757,12 @@ VERSION "2015-04-01"  =
          */
         CPMD
       );
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie du couloir
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** subdivision de la zone définie dans catégorie
        */
       GENRE : TEXT*10;
@@ -771,21 +771,21 @@ VERSION "2015-04-01"  =
     /** zone emplacement de stationnement
      */
     CLASS EMPLAC_STAT =
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie de la zone
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END EMPLAC_STAT;
 
-    /** PCN ou fond de plan qui servait comme base à l'élaboration du Import2OSM
+    /** PCN ou fond de plan qui servait comme base à l'élaboration du PAG
      */
     CLASS FOND_DE_PLAN =
       /** NUM_CADASTRAL/CODE_SUP
        */
       NUM_CADAST : MANDATORY TEXT*20;
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END FOND_DE_PLAN;
 
     /** gabarit à sauvegarder (point)
@@ -794,12 +794,12 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (point)
        */
-      GEOMETRIE : MANDATORY Import2OSM.LUREF;
+      GEOMETRIE : MANDATORY PAG.LUREF;
     END GABARIT_A_SAUV_POINT;
 
     /** gabarit à sauvegarder (polygone)
@@ -808,32 +808,32 @@ VERSION "2015-04-01"  =
       /** Texte explicatif
        */
       CATEGORIE : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (polygone)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END GABARIT_A_SAUV_POLY;
 
-    /** géométrie (polygone) de la limte communale selon base cadastrale du Import2OSM
+    /** géométrie (polygone) de la limte communale selon base cadastrale du PAG
      */
     CLASS LIMITES_COMMUNALES =
       /** géométrie (polygone)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END LIMITES_COMMUNALES;
 
-    /** limites de la modification ponctuelle du Import2OSM
+    /** limites de la modification ponctuelle du PAG
      */
-    CLASS MODIFICATION_Import2OSM =
+    CLASS MODIFICATION_PAG =
       /** Date de la modification
        */
       DATE_MODIF : MANDATORY FORMAT INTERLIS.XMLDate "2011-1-1" .. "2030-1-1";
-      /** limites de la modification Import2OSM
+      /** limites de la modification PAG
        */
-      GEOMETRIE : SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
-    END MODIFICATION_Import2OSM;
+      GEOMETRIE : SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
+    END MODIFICATION_PAG;
 
     /** Art.37 Zone soumise à un plan d'aménagement particulier "nouveau quartier"
      */
@@ -861,14 +861,14 @@ VERSION "2015-04-01"  =
       DL_MAX : 0.00 .. 1000.00;
       /** géométrie du quartier
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** Dénomination de la zone
        */
       DENOMINATION : TEXT*100;
       /** nom du fichier pdf du schéma directeur
        */
       NOM_FICHIER_SD_EC : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER_EC : MANDATORY TEXT*100;
       /** Nom du fichier pdf contenant la partie graphique du schéma directeur
@@ -879,16 +879,16 @@ VERSION "2015-04-01"  =
     /** PAP approuvés
      */
     CLASS PAP_APPROUVE =
-      /** Nom du fichier pdf contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier pdf contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER_EC : TEXT*100;
-      /** Nom du fichier pdf contenant la partie graphique du Import2OSM de l'article concerné
+      /** Nom du fichier pdf contenant la partie graphique du PAG de l'article concerné
        */
       NOM_FICHIER_GR : MANDATORY TEXT*100;
       /** géométrie du PAP
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : TEXT*100;
     END PAP_APPROUVE;
@@ -898,7 +898,7 @@ VERSION "2015-04-01"  =
     CLASS PERIMETRE =
       /** géométrie(surface)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END PERIMETRE;
 
     /** Art.28 Zone d'aménagement différé
@@ -906,8 +906,8 @@ VERSION "2015-04-01"  =
     CLASS ZAD =
       /** géométrie du quartier
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
     END ZAD;
@@ -1011,12 +1011,12 @@ VERSION "2015-04-01"  =
          */
         ECO_c3
       );
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (surface)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** subdivision de la zone définie dans la rubrique "catégorie"
        */
       GENRE : TEXT*10;
@@ -1031,12 +1031,12 @@ VERSION "2015-04-01"  =
       /** libellé du code
        */
       LIB : TEXT*100;
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concerné
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concerné
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie (surface)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END ZONE_SERV_URB;
 
     /** informations sur les quartiers existants
@@ -1053,7 +1053,7 @@ VERSION "2015-04-01"  =
       NOM_FICHIER_GR : TEXT*100;
       /** géométrie(surface)
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
     END ZONES_QE;
 
     /** informations concernant les zones définies dans le règlement grand-ducal du 8 mars 2017 art. 29;32-36
@@ -1093,17 +1093,17 @@ VERSION "2015-04-01"  =
          */
         ZUP
       );
-      /** Nom du fichier word contenant la partie écrite du Import2OSM de l'article concernée
+      /** Nom du fichier word contenant la partie écrite du PAG de l'article concernée
        */
       NOM_FICHIER : MANDATORY TEXT*100;
       /** géométrie de la zone
        */
-      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX Import2OSM.LUREF WITHOUT OVERLAPS>0.001;
+      GEOMETRIE : MANDATORY SURFACE WITH (STRAIGHTS) VERTEX PAG.LUREF WITHOUT OVERLAPS>0.001;
       /** subdivision de la zone définie dans la rubrique "catégorie"
        */
       GENRE : TEXT*10;
     END ZONES_SUPERPOSEES;
 
-  END Import2OSM;
+  END PAG;
 
-END Import2OSM.
+END PAG.

@@ -18,9 +18,9 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QProgressBar
 from qgis.PyQt.QtCore import *
 
-import Importer2OSMbasemap.main
-import Importer2OSMbasemap.project
-from Importer2OSMbasemap.widgets.data_checker.data_checker import *
+import Importer2OSM.main
+import Importer2OSM.project
+from Importer2OSM.widgets.data_checker.data_checker import *
 
 class ExportGML(object):
     '''
@@ -35,13 +35,13 @@ class ExportGML(object):
         '''
         pass
 
-    DEFAULT_XLMNS = 'http://www.interlis.ch/INTERLIS2.3/GML32/Import2OSM'
+    DEFAULT_XLMNS = 'http://www.interlis.ch/INTERLIS2.3/GML32/PAG'
 
     def run(self):
         '''
         Runs the widget
         '''
-        project = Importer2OSMbasemap.main.current_project
+        project = Importer2OSM.main.current_project
 
         if not project.isImport2OSMProject():
             return
@@ -76,12 +76,12 @@ class ExportGML(object):
         os.makedirs(temp_dir)
 
         # Progress bar
-        progressMessageBar = Importer2OSMbasemap.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ExportGML','Exporting to GML'))
+        progressMessageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ExportGML','Exporting to GML'))
         progress = QProgressBar()
         progress.setMaximum(len(QgsProject.instance().mapLayers()))
         progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
         progressMessageBar.layout().addWidget(progress)
-        Importer2OSMbasemap.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) #INFO=0
+        Importer2OSM.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) #INFO=0
 
         # Create final GML document
         gml = getDOMImplementation().createDocument('http://www.interlis.ch/INTERLIS2.3/GML32/INTERLIS', 'ili:TRANSFER', None)
@@ -90,25 +90,25 @@ class ExportGML(object):
         gml_root.setAttribute('xmlns:gml', 'http://www.opengis.net/gml/3.2')
         gml_root.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
         gml_root.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance')
-        gml_root.setAttribute('xmlns', 'http://www.interlis.ch/INTERLIS2.3/GML32/Import2OSM')
-        gml_root.setAttribute('xsi:schemaLocation', 'http://www.interlis.ch/INTERLIS2.3/GML32/Import2OSM Import2OSM.xsd')
+        gml_root.setAttribute('xmlns', 'http://www.interlis.ch/INTERLIS2.3/GML32/PAG')
+        gml_root.setAttribute('xsi:schemaLocation', 'http://www.interlis.ch/INTERLIS2.3/GML32/PAG PAG.xsd')
         gml_root.setAttribute('gml:id', 'x'+str(uuid.uuid1()))
 
         # Baskets topic
         topic_baskets = dict()
 
 
-        # 'MODIFICATION Import2OSM' layer definition
-        layer_Import2OSM = project.getModificationImport2OSMLayer()
+        # 'MODIFICATION PAG' layer definition
+        layer_PAG = project.getModificationPagLayer()
 
-        # 'MODIFICATION Import2OSM' selection definition
-        selection_Import2OSM = layer_Import2OSM.selectedFeatures()
+        # 'MODIFICATION PAG' selection definition
+        selection_PAG = layer_PAG.selectedFeatures()
 
-        # Counting number entities in 'MODIFICATION Import2OSM' selection
-        entity_count_Import2OSM = layer_Import2OSM.selectedFeatureCount()
+        # Counting number entities in 'MODIFICATION PAG' selection
+        entity_count_PAG = layer_PAG.selectedFeatureCount()
 
         # Iterates through XSD types
-        for type in Importer2OSMbasemap.main.xsd_schema.types:
+        for type in Importer2OSM.main.xsd_schema.types:
             layer = project.getLayer(type)
 
             if layer is None:
@@ -120,13 +120,13 @@ class ExportGML(object):
             filename = os.path.join(temp_dir,
                                     '{}.gml'.format(type.friendlyName()))
 
-            # Selection test in 'MODIFICATION Import2OSM'
+            # Selection test in 'MODIFICATION PAG'
             QgsVectorFileWriter.writeAsVectorFormat(layer,
                                                     filename,
                                                     'utf-8',
                                                     layer.crs(),
                                                     'GML',
-                                                    entity_count_Import2OSM > 0,
+                                                    entity_count_PAG > 0,
                                                     datasourceOptions=['FORMAT=GML3.2',
                                                                        'TARGET_NAMESPACE={}'.format(self.DEFAULT_XLMNS),
                                                                        'GML3_LONGSRS=YES',
@@ -159,18 +159,18 @@ class ExportGML(object):
         shutil.rmtree(temp_dir)
 
         # Messages display for number of selected entities
-        if entity_count_Import2OSM == 1 :
-            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML','Success'),
-                                                                       QCoreApplication.translate('ExportGML','GML export was successful with 1 selected entity in MODIFICATION Import2OSM layer'))
-        elif entity_count_Import2OSM == 0 :
-            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_without','Success'),
-                                                                       QCoreApplication.translate('ExportGML_without','GML export was successful without selected entity in MODIFICATION Import2OSM layer'))
+        if entity_count_PAG == 1 :
+            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML','Success'),
+                                                                       QCoreApplication.translate('ExportGML','GML export was successful with 1 selected entity in MODIFICATION PAG layer'))
+        elif entity_count_PAG == 0 :
+            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_without','Success'),
+                                                                       QCoreApplication.translate('ExportGML_without','GML export was successful without selected entity in MODIFICATION PAG layer'))
         else :
-            Importer2OSMbasemap.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSMbasemap.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_many','Success'),
-                                                                       QCoreApplication.translate('ExportGML_many','GML export was successful with {} selected entities in MODIFICATION Import2OSM layer').format(entity_count_Import2OSM))
+            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('ExportGML_many','Success'),
+                                                                       QCoreApplication.translate('ExportGML_many','GML export was successful with {} selected entities in MODIFICATION PAG layer').format(entity_count_PAG))
 
 
     def _getXsdCompliantGml(self, filename, gml, xsdtype):

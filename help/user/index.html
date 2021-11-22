@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aide plugin Import2OSM </title>
+    <title>Aide plugin PAG Luxembourg</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
@@ -41,7 +41,7 @@
         <nav id="navbar" class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Aide Import2OSM </a>
+                    <a class="navbar-brand" href="#">Aide PAG Luxembourg</a>
                 </div>
 
                 <div class="collapse navbar-collapse">
@@ -107,10 +107,10 @@
             </div>
         </nav>
 
-        <h1 id="create"><img src="images/create.png" /> Créer un nouveau projet Import2OSM</h1>
+        <h1 id="create"><img src="images/create.png" /> Créer un nouveau projet PAG</h1>
 
         <p>
-            Cet outil permet de créer un projet Import2OSM. Cliquer sur l'icône pour ouvrir la boite de dialogue.
+            Cet outil permet de créer un projet PAG. Cliquer sur l'icône pour ouvrir la boite de dialogue.
         </p>
 
         <p>
@@ -132,7 +132,7 @@
         </div>
 
         <p>
-            L'ouverture d'un projet Import2OSM se fait via l'outil classique de QGIS : <img src="images/create2.png" />. Ouvrir le fichier <i><b>project.qgs</b></i> du répertoire de projet.
+            L'ouverture d'un projet PAG se fait via l'outil classique de QGIS : <img src="images/create2.png" />. Ouvrir le fichier <i><b>project.qgs</b></i> du répertoire de projet.
         </p>
 
         <p>
@@ -148,7 +148,7 @@
         </p>
 
         <div class="alert alert-warning" role="alert">
-            <b>Attention : </b>Il faut obligatoirement créer ou ouvrir un projet Import2OSM pour accéder aux autres outils du plugin!
+            <b>Attention : </b>Il faut obligatoirement créer ou ouvrir un projet PAG pour accéder aux autres outils du plugin!
         </div>
 
         <h1 id="import"><img src="images/import.png" /> Importer des données</h1>
@@ -168,7 +168,7 @@
         <h4 id="import-gml">Import d'un fichier GML</h4>
 
         <p>
-            L'import du fichier GML est direct, sans intervention de l'utilisateur, car il est au même format qu'un projet Import2OSM.
+            L'import du fichier GML est direct, sans intervention de l'utilisateur, car il est au même format qu'un projet PAG.
         </p>
 
         <p>
@@ -341,7 +341,7 @@
         </p>
 		
         <p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION Import2OSM', l'outil effectue l'export seulement sur les objets intersectant ces polygones.
+            Si une sélection est faite au sein de la couche 'MODIFICATION PAG', l'outil effectue l'export seulement sur les objets intersectant ces polygones.
         </p>
 
         <p>
@@ -349,7 +349,7 @@
         </p>
 		
 		<p>
-			Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION Import2OSM', l'export s'effectue sur l'ensemble des données.
+			Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION PAG', l'export s'effectue sur l'ensemble des données.
         </p>
 		
         <div class="alert alert-info" role="alert">
@@ -374,7 +374,7 @@
         <h1 id="topoclean"><img src="images/topoclean.png" /> Vérifier la géométrie</h1>
         
         <p>
-            Cet outil est natif de QGIS, il permet d'effectuer un certain nombre de vérifications et de corrections de géométrie. Cliquez sur l'outil. Si un polygone est sélectionné dans la couche "MODIFICATION_Import2OSM", toutes les entités se trouvant dans ce polygone seront alors sélectionnées, pour permettre d'effectuer les validations seulement sur ces dernières.
+            Cet outil est natif de QGIS, il permet d'effectuer un certain nombre de vérifications et de corrections de géométrie. Cliquez sur l'outil. Si un polygone est sélectionné dans la couche "MODIFICATION_PAG", toutes les entités se trouvant dans ce polygone seront alors sélectionnées, pour permettre d'effectuer les validations seulement sur ces dernières.
         </p>
 		
 		<p>
@@ -413,7 +413,7 @@
         </p>
 		
 		<p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION Import2OSM', l'outil zoom automatiquement sur l'emprise des entités sélectionnées.
+            Si une sélection est faite au sein de la couche 'MODIFICATION PAG', l'outil zoom automatiquement sur l'emprise des entités sélectionnées.
 			Ceci permet de limiter la vérification topologique à l'étendue affichée, via le bouton adéquat.
         </p>
 
@@ -422,7 +422,7 @@
         </p>
 
 		<p>
-            Si aucune sélection n'est faite au sein de la couche 'MODIFICATION Import2OSM', l'outil n'aura aucune action de zoom.
+            Si aucune sélection n'est faite au sein de la couche 'MODIFICATION PAG', l'outil n'aura aucune action de zoom.
         </p>		
 		
         <h1 id="check"><img src="images/check.png" /> Valider les données</h1>
@@ -459,14 +459,14 @@
         </div>
 		
 		<p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION Import2OSM', l'outil effectue la vérification seulement sur les objets intersectant ces polygones.
+            Si une sélection est faite au sein de la couche 'MODIFICATION PAG', l'outil effectue la vérification seulement sur les objets intersectant ces polygones.
         </p>
 
         <p>
             <img src="images/check4.png" />
         </p>
 		<p>
-            Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION Import2OSM', le traitement s'effectue sur l'ensemble des données.
+            Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION PAG', le traitement s'effectue sur l'ensemble des données.
         </p>
 		
         <script src="js/jquery-1.11.3.min.js"></script>
