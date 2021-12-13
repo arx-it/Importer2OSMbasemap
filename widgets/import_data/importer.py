@@ -173,7 +173,7 @@ class Importer(object):
         #importid_index = dst_layer.fields().indexFromName(Importer2OSM.project.IMPORT_ID)
 
         # Check on layers CRS
-        '''for layer in [dst_layer, src_layer]:
+        for layer in [dst_layer, src_layer]:
             # If QGIS can not detect the layer initial CRS
             if len(layer.crs().authid()) == 0:
                 # If no default CRS has been already chosen for this import
@@ -192,7 +192,7 @@ class Importer(object):
         # Reproject source layer if its CRS is different from the destination layer
         if dst_layer.crs().authid() != src_layer.crs().authid():
             src_layer = processing.run("native:reprojectlayer", {'INPUT': src_layer, 'TARGET_CRS' : dst_layer.crs().authid(), 'OUTPUT' : 'memory:temp'})['OUTPUT']
-            src_layer.setCrs(dst_layer.crs())'''
+            src_layer.setCrs(dst_layer.crs())
 
         # Set layer filter if existing, for DXF
         if mapping.sourceLayerFilter() is None:
@@ -328,8 +328,8 @@ class Importer(object):
                 QgsMessageLog.logMessage(error, 'Import {}'.format(self.import_filename), 2) # Qgis.Critical = 2
 
         # Reload layer
-        dst_layer.reload()
         dst_layer.updateExtents()
+        dst_layer.reload()
         Importer2OSM.main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
         Importer2OSM.main.qgis_interface.mapCanvas().refresh()
         Importer2OSM.main.qgis_interface.mapCanvas().waitWhileRendering()
