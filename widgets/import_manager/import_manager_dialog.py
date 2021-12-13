@@ -31,7 +31,7 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 
 from qgis.core import *
 
-import Importer2OSM.main
+from ...main import *
 
 from . import import_manager
 

@@ -10,7 +10,7 @@ import os
 from qgis.core import *
 from qgis.PyQt.QtCore import QCoreApplication
 
-import Importer2OSM.main
+from ...main import *
 
 class StylizeProject(object):
     '''

@@ -19,8 +19,8 @@ import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
 
-from Importer2OSM.schema import *
-import Importer2OSM.main
+from ...schema import *
+from ...main import *
 
 from .error_summary_dialog import ErrorSummaryDialog
 

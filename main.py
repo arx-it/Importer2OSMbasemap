@@ -42,8 +42,8 @@ from .widgets.import_manager.import_manager import *
 #from .widgets.about.about import *
 #from .editor import simple_filename, precise_range
 # Schema
-from Importer2OSM.schema import *
-from Importer2OSM.project import *
+from .schema import *
+from .project import *
 
 # Global variables
 plugin_dir = os.path.dirname(__file__)

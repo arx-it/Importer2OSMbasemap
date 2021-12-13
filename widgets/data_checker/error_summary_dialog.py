@@ -33,7 +33,7 @@ from qgis.PyQt.QtCore import QCoreApplication
 
 from qgis.core import *
 
-import Importer2OSM.main
+from ...main import *
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'error_summary_dialog.ui'))

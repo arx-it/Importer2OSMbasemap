@@ -16,8 +16,8 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant, QSettings
 from qgis.core import *
 from qgis.utils import *
 
-import Importer2OSM.main
-import Importer2OSM.project
+from ...main import *
+from ...project import *
 
 from .importer import *
 from collections import OrderedDict

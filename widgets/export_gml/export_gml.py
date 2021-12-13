@@ -18,9 +18,9 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox, QProgressBar
 from qgis.PyQt.QtCore import *
 
-import Importer2OSM.main
-import Importer2OSM.project
-from Importer2OSM.widgets.data_checker.data_checker import *
+from ...main import *
+from ...project import *
+from .widgets.data_checker.data_checker import *
 
 class ExportGML(object):
     '''

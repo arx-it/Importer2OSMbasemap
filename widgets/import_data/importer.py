@@ -19,9 +19,9 @@ from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDou
 from qgis.core import *
 from qgis.gui import *
 
-import Importer2OSM.main
-import Importer2OSM.project
-from Importer2OSM.controls.filename import SimpleFilenamePicker
+from ...main import *
+from ...project import *
+from ...controls.filename import SimpleFilenamePicker
 
 class Importer(object):
     '''

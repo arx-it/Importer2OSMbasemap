@@ -16,7 +16,7 @@ from qgis.core import *
 import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
-import Importer2OSM.main
+from ...main import *
 
 TOPOL_SECTION = "Topol"
 

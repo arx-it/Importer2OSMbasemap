@@ -18,9 +18,9 @@ from qgis.PyQt.QtCore import QFileInfo, QVariant, QObject, pyqtSignal, QSettings
 from qgis.PyQt.QtWidgets import QMessageBox
 
 from . import main
-from Importer2OSM.schema import *
-from Importer2OSM.widgets.stylize.stylize import *
-from Importer2OSM.widgets.topology.topology import *
+from .schema import *
+from .widgets.stylize.stylize import *
+from .widgets.topology.topology import *
 import io
 
 FILENAME = 'project.qgs'

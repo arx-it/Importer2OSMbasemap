@@ -28,7 +28,7 @@ from qgis.PyQt.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qgis.PyQt.QtGui import QPixmap, QDesktopServices
 from qgis.PyQt.QtCore import QCoreApplication, QUrl
 
-import Importer2OSM.main
+from ...main import *
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'about_dialog.ui'))

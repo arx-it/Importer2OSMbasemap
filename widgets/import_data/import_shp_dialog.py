@@ -33,8 +33,8 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 from qgis.core import *
 from qgis.gui import *
 
-import Importer2OSM.main
-import Importer2OSM.project
+from ...main import *
+from ...project import *
 
 from .importer import *
 

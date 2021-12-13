@@ -13,7 +13,7 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.PyQt.QtCore import *
 
-import Importer2OSM.main
+from ...main import *
 
 from .import_gml import ImportGML
 from .import_shp import ImportSHP

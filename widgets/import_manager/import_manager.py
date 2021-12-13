@@ -13,8 +13,8 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog
 from qgis.PyQt.QtCore import *
 
-import Importer2OSM.main
-import Importer2OSM.project
+from ...main import *
+from ...project import *
 
 from .import_manager_dialog import ImportManagerDialog
 

@@ -9,7 +9,7 @@ from builtins import object
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import *
 
-import Importer2OSM.main
+from ...main import *
 
 from .import_dxf_dialog import ImportDxfDialog
 
