@@ -13,7 +13,7 @@ from qgis.gui import *
 from qgis.PyQt.QtWidgets import QFileDialog, QMessageBox
 from qgis.PyQt.QtCore import *
 
-from ...main import *
+from ... import main
 
 from .import_gml import ImportGML
 from .import_shp import ImportSHP
@@ -36,7 +36,7 @@ class ImportData(object):
         Runs the widget
         '''
 
-        if not Importer2OSM.main.current_project.isImport2OSMProject():
+        if not main.current_project.isImport2OSMProject():
             return
         elif all(not isinstance(layer.layer(), QgsVectorLayer) for layer in QgsProject.instance().layerTreeRoot().findLayers()):
             QMessageBox.critical(None, 'Erreur', QCoreApplication.translate('ImportData','No layer imported'))

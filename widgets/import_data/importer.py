@@ -19,8 +19,8 @@ from qgis.PyQt.QtWidgets import QCheckBox, QWidget, QHBoxLayout, QComboBox, QDou
 from qgis.core import *
 from qgis.gui import *
 
-from ...main import *
-from ...project import *
+from ... import main
+from ... import project
 from ...controls.filename import SimpleFilenamePicker
 
 class Importer(object):
@@ -47,7 +47,7 @@ class Importer(object):
         Add to import log
         '''
 
-        importlog_layer = Importer2OSM.main.current_project.getImportLogLayer()
+        importlog_layer = main.current_project.getImportLogLayer()
         dst_feature = QgsFeature(importlog_layer.fields())
         dst_feature.setAttribute(1, self.importid)
         dst_feature.setAttribute(2, self.import_date)
@@ -65,43 +65,43 @@ class Importer(object):
         # Commit
         if not importlog_layer.commitChanges():
             importlog_layer.rollBack()
-            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Commit error on layer {}').format(importlog_layer.name()))
             errors = importlog_layer.commitErrors()
             for error in errors:
                 QgsMessageLog.logMessage(error, 'PAG Luxembourg', 2) # QGis.Critical = 2
-            Importer2OSM.main.qgis_interface.openMessageLog()
+            main.qgis_interface.openMessageLog()
 
         '''
         Process import result
         '''
         # Zoom to selected
         if self.imported_extent is not None:
-            Importer2OSM.main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
+            main.qgis_interface.mapCanvas().setExtent(self.imported_extent)
 
-        Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
+        main.qgis_interface.messageBar().clearWidgets()
 
         # Display features errors
         if len(self.features_errors) > 0:
-            messageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
+            messageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Warning'),
                                                                                       QCoreApplication.translate('Importer', 'Import was successful, but some features could not be imported'))
             btnExportCsv = QPushButton(QCoreApplication.translate('Importer', 'Export to CSV'))
             btnExportCsv.clicked.connect(self._exportErrorsToCsv)
             messageBar.layout().addWidget(btnExportCsv)
-            Importer2OSM.main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
+            main.qgis_interface.messageBar().pushWidget(messageBar, 1) # Qgis.Warning = 1
 
         # Display commit errors
         for error in self.commit_errors:
-            messageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
+            messageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('Importer', 'Error'),
                                                                                       error)
             btnOpenLog = QPushButton(QCoreApplication.translate('Importer', 'Open log'))
-            btnOpenLog.clicked.connect(Importer2OSM.main.qgis_interface.openMessageLog)
+            btnOpenLog.clicked.connect(main.qgis_interface.openMessageLog)
             messageBar.layout().addWidget(btnOpenLog)
-            Importer2OSM.main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
+            main.qgis_interface.messageBar().pushWidget(messageBar, 2) # Qgis.Critical = 2
 
         # Display success message
         if (len(self.features_errors) + len(self.commit_errors)) == 0:
-            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                        QCoreApplication.translate('Importer', 'Import was successful'))
 
     def _exportErrorsToCsv(self):
@@ -150,13 +150,13 @@ class Importer(object):
             csvfile.close()
 
             # Success message
-            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Importer', 'Success'),
                                                                         QCoreApplication.translate('Importer', 'CSV export was successful'))
         except:
             # Error message
-            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSM.main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('Importer', 'Error'),
                                                                         QCoreApplication.translate('Importer', 'Error writing CSV file'))
 
     def _importLayer(self, src_layer, dst_layer, mapping, progressbar = None):
@@ -170,7 +170,7 @@ class Importer(object):
 
         feature_request = None
 
-        #importid_index = dst_layer.fields().indexFromName(Importer2OSM.project.IMPORT_ID)
+        #importid_index = dst_layer.fields().indexFromName(project.IMPORT_ID)
 
         # Check on layers CRS
         for layer in [dst_layer, src_layer]:
@@ -330,9 +330,9 @@ class Importer(object):
         # Reload layer
         dst_layer.updateExtents()
         dst_layer.reload()
-        Importer2OSM.main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
-        Importer2OSM.main.qgis_interface.mapCanvas().refresh()
-        Importer2OSM.main.qgis_interface.mapCanvas().waitWhileRendering()
+        main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
+        main.qgis_interface.mapCanvas().refresh()
+        main.qgis_interface.mapCanvas().waitWhileRendering()
 
     def _validateGeometry(self, layer_name, geometry, feature_id):
         clean_geometry = self._getCleanGeometry(geometry)

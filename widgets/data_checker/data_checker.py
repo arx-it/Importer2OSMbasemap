@@ -20,7 +20,7 @@ from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
 
 from ...schema import *
-from ...main import *
+from ... import main
 
 from .error_summary_dialog import ErrorSummaryDialog
 
@@ -42,7 +42,7 @@ class DataChecker(object):
         :rtype: Boolean
         '''
 
-        project = Importer2OSM.main.current_project
+        project = main.current_project
 
         if not project.isImport2OSMProject():
             return
@@ -60,7 +60,7 @@ class DataChecker(object):
         entity_count_PAG = layer_PAG.selectedFeatureCount()
 
         # Iterates through XSD types
-        for type in Importer2OSM.main.xsd_schema.types:
+        for type in main.xsd_schema.types:
             layer = project.getLayer(type)
 
             if layer is None:
@@ -85,16 +85,16 @@ class DataChecker(object):
 
         # Messages display for number of selected entities
         if valid and entity_count_PAG == 1:
-            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker','Success'),
                                                                        QCoreApplication.translate('DataChecker','No errors found on entities that intersect {} selected entity in MODIFICATION PAG layer').format(entity_count_PAG))
         elif valid and entity_count_PAG == 0 :
-            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_no','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_no','Success'),
                                                                        QCoreApplication.translate('DataChecker_no','No errors found'))
         elif valid and entity_count_PAG > 1 :
-            Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-            Importer2OSM.main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_many','Success'),
+            main.qgis_interface.messageBar().clearWidgets()
+            main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('DataChecker_many','Success'),
                                                                        QCoreApplication.translate('DataChecker_many','No errors found on entities that intersect {} selected entities in MODIFICATION PAG layer').format(entity_count_PAG))
 
         else:
@@ -127,7 +127,7 @@ class DataChecker(object):
         :rtype: Tuple : warning, fatal. Layer (QgsVectorLayer), field (PAGField), message (str, QString)
         '''
 
-        native_fields = Importer2OSM.main.current_project.getNativeFields(xsd_type)
+        native_fields = main.current_project.getNativeFields(xsd_type)
         warn_errors = list()
         fatal_errors = list()
 

@@ -33,8 +33,8 @@ from qgis.PyQt.QtCore import QCoreApplication, Qt, QVariant
 from qgis.core import *
 from qgis.gui import *
 
-from ...main import *
-from ...project import *
+from ... import main
+from ... import project
 
 from .importer import *
 
@@ -88,7 +88,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # If not valid, don't show the dialog
         if not self.shplayer.isValid():
-            Importer2OSM.main.qgis_interface.messageBar().pushCritical(
+            main.qgis_interface.messageBar().pushCritical(
                 QCoreApplication.translate('ImportShpDialog', 'Error'),
                 QCoreApplication.translate('ImportShpDialog', 'Shapefile is not valid')
             )
@@ -123,9 +123,9 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Adds the map layers with same geometry type to the combobox
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
-        #for layer in Importer2OSM.main.qgis_interface.legendInterface().layers():
+        #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if layer.type() == QgsMapLayer.VectorLayer and (self.shplayer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() == self.shplayer.geometryType()): # and Importer2OSM.main.current_project.isPagLayer(layer):
+            if layer.type() == QgsMapLayer.VectorLayer and (self.shplayer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() == self.shplayer.geometryType()): # and main.current_project.isPagLayer(layer):
                 self.qgislayers.append(layer)
                 self.cbbLayers.addItem(layer.name(), layer.id())
         if self.cbbLayers.count () == 0:
@@ -156,7 +156,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Gets the mapping destination layer
         for layer in self.qgislayers:
-            if Importer2OSM.main.current_project.getLayerTableName(layer) == self.mapping.destinationLayerName():
+            if main.current_project.getLayerTableName(layer) == self.mapping.destinationLayerName():
                 qgis_layer = layer
 
         if self.mapping.destinationLayerName() is not None and qgis_layer is None:
@@ -175,17 +175,17 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
 
         # Clear the table
         self.tabMapping.clearContents()
-        self.tabMapping.setRowCount(len(qgis_fields) - len([field for field in qgis_fields if field.name() == Importer2OSM.project.PK or field.name() == Importer2OSM.project.IMPORT_ID]))
+        self.tabMapping.setRowCount(len(qgis_fields) - len([field for field in qgis_fields if field.name() == project.PK or field.name() == project.IMPORT_ID]))
 
         rowindex = 0
 
         # Fill mapping
         for field in qgis_fields:
             # Skip PK field
-            if field.name() == Importer2OSM.project.PK:
+            if field.name() == project.PK:
                 continue
             # Skip IMPORT_ID field
-            if field.name() == Importer2OSM.project.IMPORT_ID:
+            if field.name() == project.IMPORT_ID:
                 continue
 
             source, destination, constant_value, enabled, value_map = self.mapping.getFieldMappingForDestination(field.name())
@@ -366,7 +366,7 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         qgis_layer = self.qgislayers[self.cbbLayers.currentIndex()]
 
         newmapping = LayerMapping()
-        newmapping.setDestinationLayerName(Importer2OSM.main.current_project.getLayerTableName(qgis_layer))
+        newmapping.setDestinationLayerName(main.current_project.getLayerTableName(qgis_layer))
 
         for rowindex in range(self.tabMapping.rowCount()):
             qgis_field = self._getCellValue(self.tabMapping, rowindex, 0)
@@ -423,12 +423,12 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
             self.close()
 
             # Progress bar + message
-            progressMessageBar = Importer2OSM.main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportShpDialog', 'Importing {}').format(self.shplayer.source()))
+            progressMessageBar = main.qgis_interface.messageBar().createMessage(QCoreApplication.translate('ImportShpDialog', 'Importing {}').format(self.shplayer.source()))
             progress = QProgressBar()
             progress.setMaximum(self.shplayer.featureCount())
             progress.setAlignment(Qt.AlignLeft|Qt.AlignVCenter)
             progressMessageBar.layout().addWidget(progress)
-            Importer2OSM.main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
+            main.qgis_interface.messageBar().pushWidget(progressMessageBar, 0) # QGis.Info = 0
 
             # Start import session
             self._startImportSession()

@@ -452,7 +452,7 @@ class Project(QObject):
         '''
 
         # Get rules config
-        #config_path = os.path.join(Importer2OSM.main.plugin_dir, 'assets', 'LayerTree.json')
+        #config_path = os.path.join(main.plugin_dir, 'assets', 'LayerTree.json')
         #f = io.open(config_path, mode='r', encoding="utf-8")
         #config_file = f.read()
         #config = json.loads(config_file)
@@ -547,13 +547,19 @@ class Project(QObject):
                 break
 
         if not ortho_found:
+            main.qgis_interface.mapCanvas().extentsChanged.connect(self.centerOnEurope)
             map_layer = QgsRasterLayer(map_url, 'OpenStreetMap', 'wms')
             QgsProject.instance().addMapLayer(map_layer, False)
             QgsProject.instance().layerTreeRoot().addLayer(map_layer)
-            # Center on Europe
-            main.qgis_interface.mapCanvas().setExtent(QgsRectangle(-2235535.29208367830142379, 3965861.06231019366532564, 5932813.59994085878133774, 8436784.06231019273400307))
-            main.qgis_interface.mapCanvas().refresh()
-            main.qgis_interface.mapCanvas().waitWhileRendering()
+
+    # Center on Europe
+    def centerOnEurope(self):
+        mapCanvas = main.qgis_interface.mapCanvas()
+        mapCanvas.extentsChanged.disconnect(self.centerOnEurope)
+        mapCanvas.waitWhileRendering()
+        mapCanvas.setExtent(QgsRectangle(-2235535.29208367830142379, 3965861.06231019366532564, 5932813.59994085878133774, 8436784.06231019273400307))
+        mapCanvas.refresh()
+        mapCanvas.waitWhileRendering()
 
     def getUriInfos(self, uri):
         '''

@@ -11,7 +11,8 @@ from qgis.core import *
 import qgis.utils
 from qgis.PyQt.QtWidgets import QAction
 from qgis.PyQt.QtCore import QCoreApplication
-from ...main import *
+
+from ... import main
 
 class TopoClean(object):
     '''
@@ -29,7 +30,7 @@ class TopoClean(object):
         Runs the widget
         '''
 
-        project = Importer2OSM.main.current_project
+        project = main.current_project
 
         if not project.isImport2OSMProject():
             return
@@ -45,7 +46,7 @@ class TopoClean(object):
 
             # Selection by intersection with 'MODIFICATION PAG' layer
             for k,layer in list(maplayers.items()):
-                if layer.type() != QgsMapLayer.VectorLayer: # or not Importer2OSM.main.current_project.isPagLayer(layer):
+                if layer.type() != QgsMapLayer.VectorLayer: # or not main.current_project.isPagLayer(layer):
                     continue
 
                 areas = []
@@ -62,11 +63,11 @@ class TopoClean(object):
             canvas.zoomToSelected(modification_pag_layer)
             if entity_count==1:
 
-                Importer2OSM.main.qgis_interface.messageBar().clearWidgets()
-                Importer2OSM.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('TopoClean','Information'),
+                main.qgis_interface.messageBar().clearWidgets()
+                main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('TopoClean','Information'),
                                                                    QCoreApplication.translate('TopoClean','There is 1 selected entity in MODIFICATION PAG layer. You can now check geometries'))
             elif entity_count==0:
-                Importer2OSM.main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('TopoClean','Information'),
+                main.qgis_interface.messageBar().pushMessage(QCoreApplication.translate('TopoClean','Information'),
                                                                    QCoreApplication.translate('TopoClean','There is no selected entity in MODIFICATION PAG layer. You can now check geometries'))
             else:
                 qgis.utils.iface.messageBar().pushMessage(QCoreApplication.translate('TopoClean', 'Information'),
