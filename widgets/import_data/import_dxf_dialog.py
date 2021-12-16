@@ -57,7 +57,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         self.tabFieldsMapping.setColumnWidth(1, 460)
 
         # Load dxf layers
-        self._loadDxfLayers(filename)
+        if not self._loadDxfLayers(filename):
+            self.valid = False
 
         # If DXF is not valid, return
         if not self.valid :
@@ -116,14 +117,25 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         if not self.valid:
             return
 
-        self.dxf_layernames = list()
+        self.dxf_layernames = {}
+        ignored = False
 
-        self._loadUniqueLayersNames(self.dxflayer_points)
-        self._loadUniqueLayersNames(self.dxflayer_linestrings)
-        self._loadUniqueLayersNames(self.dxflayer_polygons)
+        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_points)
+        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_linestrings)
+        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_polygons)
+
+        if len(self.dxf_layernames) == 0:
+            QMessageBox.critical(self, 'Aucune action', 'Aucune sous-couche de la couche DXF importée ayant au moins une couche du projet lui correspondant.')
+            self.close()
+            return False
 
         # Restore project settings
         settings.setValue( "/Projections/defaultBehaviour", oldProjValue )
+
+        if ignored:
+            QMessageBox.warning(self, 'Sous-couche ignorée', 'Une ou plusieurs sous-couche de la couche DXF importée a été ignorée car aucune couche du projet ne lui correspondait.')
+
+        return True
 
     def _loadUniqueLayersNames(self, layer):
         '''
@@ -135,14 +147,20 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         dp = layer.dataProvider()
         layerfield_index = dp.fields().indexFromName('Layer')
+        geometryType = layer.geometryType()
+        noGeometry = geometryType in {QgsWkbTypes.NullGeometry,  QgsWkbTypes.UnknownGeometry}
+        count = 0
+        for qgisLayer in QgsProject.instance().mapLayers().values():
+            if qgisLayer.isEditable() and (noGeometry or qgisLayer.geometryType() == geometryType):
+                count += 1
 
-        for feature in dp.getFeatures():
-            value = feature[layerfield_index]
+        if count > 0:
+            for feature in dp.getFeatures():
+                self.dxf_layernames[feature[layerfield_index]] = layer
 
-            if value not in self.dxf_layernames:
-                self.dxf_layernames.append(value)
+        return count == 0
 
-    def _getQgisLayersCombobox(self, selected_layer = None):
+    def _getQgisLayersCombobox(self, selected_layer = None, geometryType = QgsWkbTypes.NullGeometry):
         '''
         Get a combobox filled with the QGIS layers to insert in a table widget
 
@@ -155,8 +173,11 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         layers = OrderedDict()
 
+        noGeometry = geometryType in {QgsWkbTypes.NullGeometry,  QgsWkbTypes.UnknownGeometry}
         for layer in self.qgislayers:
-            layers[main.current_project.getLayerTableName(layer)]=layer.name()
+            #layers[main.current_project.getLayerTableName(layer)]=layer.name()
+            if layer.isEditable() and (noGeometry or layer.geometryType() == geometryType):
+                layers[layer.name()] = layer.name()
 
         return self._getCombobox(layers,
                                  primary_selected_value=selected_layer,
@@ -193,11 +214,11 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         rowindex = 0
 
         # Fill layers mapping
-        for dxf_layername in self.dxf_layernames:
+        for dxf_layername, layer in self.dxf_layernames.items():
             layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
             self.tabLayersMapping.setItem(rowindex, 0, QTableWidgetItem(dxf_layername)) # DXF layer name
-            self.tabLayersMapping.setCellWidget(rowindex, 1, self._getQgisLayersCombobox(layer_mapping.destinationLayerName())) # QGIS layers
+            self.tabLayersMapping.setCellWidget(rowindex, 1, self._getQgisLayersCombobox(layer_mapping.destinationLayerName(), layer.geometryType())) # QGIS layers
             self.tabLayersMapping.setCellWidget(rowindex, 2, self._getCenteredCheckbox(layer_mapping.isEnabled())) # Enabled checkbox
 
             rowindex +=  1
@@ -239,7 +260,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         dxf_layername = self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 0)
         qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layersmapping_rowindex, 1))
-        qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
+        #qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
+        qgis_tablename = qgis_layer.name()
 
         layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
@@ -285,7 +307,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         '''
 
         for layer in self.qgislayers:
-            if main.current_project.getLayerTableName(layer) == tablename:
+            #if main.current_project.getLayerTableName(layer) == tablename:
+            if layer.name() == tablename:
                 return layer
 
         return None
@@ -349,7 +372,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             layer_mapping = self._getLayerMappingFromSourceDxfLayer(dxf_layername)
 
             qgis_layer = self._getQgisLayerFromTableName(self._getCellValue(self.tabLayersMapping, layermapping_rowindex, 1))
-            qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
+            #qgis_tablename = main.current_project.getLayerTableName(qgis_layer)
+            qgis_tablename = qgis_layer.name()
 
             # Check whether the destination layer is the same
             if qgis_tablename is None or layer_mapping.destinationLayerName() != qgis_tablename:
@@ -438,6 +462,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             progress2.setValue(0)
 
             # Import features according to geometry type
+            '''
             if qgis_layer.wkbType() == QgsWkbTypes.Point:
                 self._importLayer(self.dxflayer_points, qgis_layer, layer_indexmapping, progress2)
             elif qgis_layer.wkbType() == QgsWkbTypes.LineGeometry:
@@ -445,6 +470,14 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             elif qgis_layer.wkbType() == QgsWkbTypes.LineString:
                 self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
             elif qgis_layer.wkbType() == QgsWkbTypes.Polygon:
+                self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
+                self._importLayer(self.dxflayer_polygons, qgis_layer, layer_indexmapping, progress2)
+            '''
+            if qgis_layer.geometryType() == QgsWkbTypes.PointGeometry :
+                self._importLayer(self.dxflayer_points, qgis_layer, layer_indexmapping, progress2)
+            elif qgis_layer.geometryType() == QgsWkbTypes.LineGeometry :
+                self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
+            elif qgis_layer.geometryType() == QgsWkbTypes.PolygonGeometry :
                 self._importLayer(self.dxflayer_linestrings, qgis_layer, layer_indexmapping, progress2)
                 self._importLayer(self.dxflayer_polygons, qgis_layer, layer_indexmapping, progress2)
 
