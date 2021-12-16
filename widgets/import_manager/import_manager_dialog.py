@@ -79,7 +79,7 @@ class ImportManagerDialog(QDialog, FORM_CLASS):
             self.tabImports.setItem(rowindex, 0, self._getCenteredTableWidgetItem(feature[1]))
             self.tabImports.setItem(rowindex, 1, self._getCenteredTableWidgetItem(feature[2]))
             self.tabImports.setItem(rowindex, 2, self._getCenteredTableWidgetItem(feature[3]))
-            self.tabImports.setItem(rowindex, 3, self._getCenteredTableWidgetItem(feature[4].replace('|','\n')))
+            self.tabImports.setItem(rowindex, 3, self._getCenteredTableWidgetItem(str(feature[4]).replace('|','\n')))
 
             rowindex +=1
 
