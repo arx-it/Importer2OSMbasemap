@@ -163,14 +163,6 @@ class Importer(object):
         '''
         Launch the import
         '''
-        src_dp = src_layer.dataProvider()
-        dst_dp = dst_layer.dataProvider()
-        dst_layer_fields = dst_dp.fields()
-        newfeatures = list()
-
-        feature_request = None
-
-        #importid_index = dst_layer.fields().indexFromName(project.IMPORT_ID)
 
         # Check on layers CRS
         for layer in [dst_layer, src_layer]:
@@ -192,7 +184,16 @@ class Importer(object):
         # Reproject source layer if its CRS is different from the destination layer
         if dst_layer.crs().authid() != src_layer.crs().authid():
             src_layer = processing.run("native:reprojectlayer", {'INPUT': src_layer, 'TARGET_CRS' : dst_layer.crs().authid(), 'OUTPUT' : 'memory:temp'})['OUTPUT']
-            src_layer.setCrs(dst_layer.crs())
+            #src_layer.setCrs(dst_layer.crs())
+
+        src_dp = src_layer.dataProvider()
+        dst_dp = dst_layer.dataProvider()
+        dst_layer_fields = dst_dp.fields()
+        newfeatures = list()
+
+        feature_request = None
+
+        #importid_index = dst_layer.fields().indexFromName(project.IMPORT_ID)
 
         # Set layer filter if existing, for DXF
         if mapping.sourceLayerFilter() is None:
@@ -235,7 +236,7 @@ class Importer(object):
         for src_feature in source_features:
             dst_feature = QgsFeature(dst_layer_fields)
             for src_index, dst_index, constant_value, enabled, value_map in mapping.fieldMappings():
-                print(str([src_index, dst_index, constant_value, enabled, value_map]) + ' => ' + str(constant_value if src_index is None else src_feature[src_index]))
+                #print(str([src_index, dst_index, constant_value, enabled, value_map]) + ' => ' + str(constant_value if src_index is None else src_feature[src_index]))
                 value = constant_value if src_index is None else src_feature[src_index]
 
                 # Manage value map
@@ -262,6 +263,8 @@ class Importer(object):
 
                     if src_polyline[0] == src_polyline[-1]:
                         # It's a closed polyline
+                        src_geometry = QgsGeometry.fromPolygonXY([src_polyline])
+                        '''
                         src_polygon = QgsGeometry.fromPolygonXY([src_polyline])
                         src_geometry = self._validateGeometry(
                             mapping.sourceLayerName(),
@@ -271,6 +274,7 @@ class Importer(object):
                         if src_geometry is None:
                             del dst_feature
                             continue
+                        '''
 
                         dst_feature.setGeometry(src_geometry)
                     else:
@@ -278,6 +282,8 @@ class Importer(object):
                         del dst_feature
                         continue
                 else:
+                    src_geometry = src_feature.geometry()
+                    '''
                     src_geometry = self._validateGeometry(
                         mapping.sourceLayerName() if mapping.sourceLayerName() is not None else src_layer.name(),
                         src_feature.geometry(),
@@ -286,6 +292,7 @@ class Importer(object):
                     if src_geometry is None:
                         del dst_feature
                         continue
+                    '''
 
                     dst_feature.setGeometry(src_geometry)
 
@@ -307,13 +314,13 @@ class Importer(object):
                 progressbar.setValue(progressbar.value() + 1)
 
         # Start editing session
-        if not dst_layer.isEditable():
-            dst_layer.startEditing()
+        dst_layer.startEditing()
+        #if not dst_layer.isEditable():
+        #    dst_layer.startEditing()
 
         # Add features
         #dst_layer.addFeatures(newfeatures, True)
-        dst_layer.addFeatures(newfeatures)
-
+        dst_dp.addFeatures(newfeatures)
         test = dst_layer.commitChanges()
 
         # Commit
@@ -328,11 +335,13 @@ class Importer(object):
                 QgsMessageLog.logMessage(error, 'Import {}'.format(self.import_filename), 2) # Qgis.Critical = 2
 
         # Reload layer
-        dst_layer.updateExtents()
         dst_layer.reload()
-        main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
-        main.qgis_interface.mapCanvas().refresh()
+        '''
+        dst_layer.updateExtents()
         main.qgis_interface.mapCanvas().waitWhileRendering()
+        main.qgis_interface.mapCanvas().mapCanvas().setExtent(dst_layer.extent())
+        main.qgis_interface.mapCanvas().waitWhileRendering()
+        '''
 
     def _validateGeometry(self, layer_name, geometry, feature_id):
         clean_geometry = self._getCleanGeometry(geometry)
