@@ -118,11 +118,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             return
 
         self.dxf_layernames = {}
-        ignored = False
 
-        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_points)
-        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_linestrings)
-        ignored = ignored or self._loadUniqueLayersNames(self.dxflayer_polygons)
+        ignored = self._loadUniqueLayersNames(self.dxflayer_points)
+        ignored = self._loadUniqueLayersNames(self.dxflayer_linestrings) or ignored
+        ignored = self._loadUniqueLayersNames(self.dxflayer_polygons) or ignored
 
         if len(self.dxf_layernames) == 0:
             QMessageBox.critical(self, 'Aucune action', 'Aucune sous-couche de la couche DXF importée ayant au moins une couche du projet lui correspondant.')
@@ -151,7 +150,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         noGeometry = geometryType in {QgsWkbTypes.NullGeometry,  QgsWkbTypes.UnknownGeometry}
         count = 0
         for qgisLayer in QgsProject.instance().mapLayers().values():
-            if qgisLayer.isEditable() and (noGeometry or qgisLayer.geometryType() == geometryType):
+            if qgisLayer.type() == QgsMapLayer.VectorLayer and (noGeometry or qgisLayer.geometryType() == geometryType) and qgisLayer.startEditing():
+                qgisLayer.rollBack()
                 count += 1
 
         if count > 0:
@@ -176,7 +176,8 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         noGeometry = geometryType in {QgsWkbTypes.NullGeometry,  QgsWkbTypes.UnknownGeometry}
         for layer in self.qgislayers:
             #layers[main.current_project.getLayerTableName(layer)]=layer.name()
-            if layer.isEditable() and (noGeometry or layer.geometryType() == geometryType):
+            if (noGeometry or layer.geometryType() == geometryType) and layer.startEditing():
+                layer.rollBack()
                 layers[layer.name()] = layer.name()
 
         return self._getCombobox(layers,
