@@ -125,7 +125,8 @@ class ImportShpDialog(QDialog, FORM_CLASS, Importer):
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
         #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if layer.isEditable() and layer.type() == QgsMapLayer.VectorLayer and (self.shplayer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() == self.shplayer.geometryType()): # and main.current_project.isPagLayer(layer):
+            if layer.type() == QgsMapLayer.VectorLayer and (self.shplayer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() in [QgsWkbTypes.UnknownGeometry, QgsWkbTypes.NullGeometry] or layer.geometryType() == self.shplayer.geometryType()) and layer.startEditing(): # and main.current_project.isPagLayer(layer):
+                layer.rollBack()
                 self.qgislayers.append(layer)
                 self.cbbLayers.addItem(layer.name(), layer.id())
         if self.cbbLayers.count () == 0:
