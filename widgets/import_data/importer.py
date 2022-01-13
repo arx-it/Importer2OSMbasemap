@@ -297,10 +297,10 @@ class Importer(object):
                     dst_feature.setGeometry(src_geometry)
 
                 # Update imported extent
-                if self.imported_extent is None:
-                    self.imported_extent = src_geometry.boundingBox()
-                else:
-                    self.imported_extent.combineExtentWith(src_geometry.boundingBox())
+                # if self.imported_extent is None:
+                #     self.imported_extent = src_geometry.boundingBox()
+                # else:
+                #     self.imported_extent.combineExtentWith(src_geometry.boundingBox())
 
 
             # Add import ID
@@ -327,6 +327,9 @@ class Importer(object):
         if test:
             # Add layer to imported layers
             self.imported_layers.add(dst_layer.name())
+
+            # dst_layer.updateExtents(True)
+            # main.qgis_interface.mapCanvas().setExtent(dst_layer.extent())
         else:
             dst_layer.rollBack()
             self.commit_errors.append(QCoreApplication.translate('Importer', 'Commit error on layer {}').format(dst_layer.name()))
@@ -336,12 +339,6 @@ class Importer(object):
 
         # Reload layer
         dst_layer.reload()
-        '''
-        dst_layer.updateExtents()
-        main.qgis_interface.mapCanvas().waitWhileRendering()
-        main.qgis_interface.mapCanvas().mapCanvas().setExtent(dst_layer.extent())
-        main.qgis_interface.mapCanvas().waitWhileRendering()
-        '''
 
     def _validateGeometry(self, layer_name, geometry, feature_id):
         clean_geometry = self._getCleanGeometry(geometry)
