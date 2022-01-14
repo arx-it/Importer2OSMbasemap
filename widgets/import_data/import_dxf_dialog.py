@@ -57,8 +57,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
         self.tabFieldsMapping.setColumnWidth(1, 460)
 
         # Load dxf layers
-        if not self._loadDxfLayers(filename):
-            self.valid = False
+        self.valid = self._loadDxfLayers(filename)
 
         # If DXF is not valid, return
         if not self.valid :
@@ -119,9 +118,10 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         self.dxf_layernames = {}
 
-        ignored = self._loadUniqueLayersNames(self.dxflayer_points)
-        ignored = self._loadUniqueLayersNames(self.dxflayer_linestrings) or ignored
-        ignored = self._loadUniqueLayersNames(self.dxflayer_polygons) or ignored
+        ignored = False
+        for layer in [self.dxflayer_points, self.dxflayer_linestrings, self.dxflayer_polygons]:
+            if layer.featureCount() > 0:
+                ignored = self._loadUniqueLayersNames(layer) or ignored
 
         if len(self.dxf_layernames) == 0:
             QMessageBox.critical(self, 'Aucune action', 'Aucune sous-couche de la couche DXF importée ayant au moins une couche du projet lui correspondant.')
@@ -129,7 +129,7 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
             return False
 
         # Restore project settings
-        settings.setValue( "/Projections/defaultBehaviour", oldProjValue )
+        settings.setValue( "/Projections/defaultBehaviour", oldProjValue)
 
         if ignored:
             QMessageBox.warning(self, 'Sous-couche ignorée', 'Une ou plusieurs sous-couche de la couche DXF importée a été ignorée car aucune couche du projet ne lui correspondait.')

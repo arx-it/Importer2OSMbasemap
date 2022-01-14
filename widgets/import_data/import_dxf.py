@@ -36,6 +36,6 @@ class ImportDXF(object):
 
         if self.dlg.valid:
             self.dlg.show()
-        else:
+        elif self.dlg.dxf_layernames is None:
             main.qgis_interface.messageBar().pushCritical(QCoreApplication.translate('ImportDXF','Error'),
                                                                         QCoreApplication.translate('ImportDXF','DXF file is not valid'))
