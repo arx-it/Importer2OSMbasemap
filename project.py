@@ -429,6 +429,7 @@ class Project(QObject):
 
     # Mapping between XSD datatype and QGIS datatype
     datatypeMap = XSD_QGIS_DATATYPE_MAP
+    print('')
 
     def _getField(self, pagfield):
         '''
