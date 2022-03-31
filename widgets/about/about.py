@@ -1,5 +1,5 @@
 '''
-Created on 09 nov. 2015
+Created on 09 nov. 2022
 
 @author: arxit
 '''
@@ -20,12 +20,12 @@ class About(object):
         '''
         Constructor
         '''
-        
+
         self.dlg = AboutDialog()
-    
+
     def run(self):
         '''
         Runs the widget
         '''
-        
+
         self.dlg.show()

@@ -5,9 +5,9 @@
                                  A QGIS plugin
  Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
                              -------------------
-        begin                : 2015-08-25
-        copyright            : (C) 2015 by arx iT
-        email                : mba@arxit.com
+        begin                : 2022-08-25
+        copyright            : (C) 2022 by arx iT
+        email                : pln@arxit.com
         git sha              : $Format:%H$
  ***************************************************************************/
 

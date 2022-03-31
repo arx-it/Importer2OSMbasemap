@@ -1,5 +1,5 @@
 '''
-Created on 17 sept. 2015
+Created on 17 sept. 2022
 
 @author: arxit
 '''
@@ -20,13 +20,13 @@ class CreateProject(object):
         '''
         Constructor
         '''
-        
+
         self.dlg = CreateProjectDialog()
-    
+
     def run(self):
         '''
         Runs the widget
         '''
-        
+
         self.dlg.clear()
         self.dlg.show()
