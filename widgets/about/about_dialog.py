@@ -3,7 +3,7 @@
 /***************************************************************************
  CreateProjectDialog
                                  A QGIS plugin
- Gestion de Plans d'Aménagement Général du Grand-Duché de Luxembourg
+
                              -------------------
         begin                : 2022-09-09
         git sha              : $Format:%H$

@@ -150,11 +150,6 @@
         <translation></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="about_dialog.ui" line="62"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;Ce plugin permet d&apos;accompagner les différents mandataires pour la gestion de Plans d&apos;Aménagements Généraux (PAG) du Grand-Duché de Luxembourg. Il offre des outils d&apos;import, d&apos;export et de vérification de données, afin de fournir les plans selon les standards du Ministère de l&apos;Intérieur.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
-    <message encoding="UTF-8">
         <location filename="about_dialog.ui" line="106"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Développé par arx iT - &lt;a href=&quot;http://www.arxit.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;www.arxit.com&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
