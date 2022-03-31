@@ -113,7 +113,7 @@
 <Presentation>40</Presentation>
 </ch.ehi.interlis.modeltopicclass.ClassDef>
 <ch.ehi.basics.types.NlsString TID="18">
-<Entry TID="41" language="en" translation="mailto:david.hottua@mi.etat.lu"/>
+<Entry TID="41" language="en" translation="mailto:info@arxit.com"/>
 </ch.ehi.basics.types.NlsString>
 <ch.ehi.interlis.attributes.AttributeDef TID="38">
 <Name>42</Name>

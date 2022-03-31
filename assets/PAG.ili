@@ -1,10 +1,10 @@
 INTERLIS 2.3;
 
-/** Modèle de données pour l'échange de données entre les bureaux d'études et le Ministère de l'Intérieur. 
+/** Modèle de données pour l'échange de données entre les bureaux d'études et le Ministère de l'Intérieur.
  * Chaque PAG doit être transmis à l'aide d'un fichier GML conforme à ce modele de données.
  */
 MODEL PAG (fr)
-AT "mailto:david.hottua@mi.etat.lu"
+AT "mailto:info@arxit.com"
 VERSION "2015-04-01"  =
 
   DOMAIN
