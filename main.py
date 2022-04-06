@@ -88,7 +88,7 @@ class Importer2OSM(object):
 
         # Declare instance attributes
         self.actions = []
-        self.pag_actions = [] #Importer2OSM actions, disabled if the project is not PAG
+        self.pag_actions = [] #Importer2OSM actions
         self.menu = self.tr(u'&Importer2OSM')
 
         # Toolbar initialization
