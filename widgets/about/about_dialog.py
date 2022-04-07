@@ -52,14 +52,6 @@ class AboutDialog(QDialog, FORM_CLASS):
             main.plugin_dir,
             'widgets',
             'about',
-            'logo_pag.png')
-        pixmap = QPixmap(logo_path)
-        self.lblLogoPlugin.setPixmap(pixmap)
-
-        logo_path = os.path.join(
-            main.plugin_dir,
-            'widgets',
-            'about',
             'logo_arxit.png')
         pixmap = QPixmap(logo_path)
         self.lblLogoArxit.setPixmap(pixmap)

@@ -45,7 +45,7 @@ XSD_QGIS_GEOMETRYTYPE_MAP = {GeometryType.POINT:QgsWkbTypes.Point,
                              GeometryType.POLYLINE:QgsWkbTypes.LineString,
                              GeometryType.POLYGON:QgsWkbTypes.Polygon}
 
-class PAGType(object):
+class PluginType(object):
     '''
     A plugin XSD type
     '''
@@ -92,9 +92,9 @@ class PAGType(object):
 
             # Process field
             else:
-                pag_field = PAGField()
-                pag_field.parse(element, ns)
-                self.fields.append(pag_field)
+                plugin_Field = PluginField()
+                plugin_Field.parse(element, ns)
+                self.fields.append(plugin_Field)
 
             self.ordered_field_names.append(element.get('name'))
 
@@ -138,7 +138,7 @@ class PAGType(object):
 
         return None
 
-class PAGField(object):
+class PluginField(object):
     '''
     A plugin XSD field
     '''

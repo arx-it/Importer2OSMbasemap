@@ -147,7 +147,7 @@ class Project(QObject):
         Get the map layer corresponding to the type
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
         '''
 
         # Map layers in the TOC
@@ -164,19 +164,7 @@ class Project(QObject):
         return None
 
     def isPluginLayer(self, layer):
-        '''
-        Checks if a layer is a plugin layer
-
-        :param layer: Layer to check
-        :type layer: QgsVectorLayer
-        '''
-
-        for type in main.xsd_schema.types:
-            uri = self.getTypeUri(type)
-            if self.compareURIs(layer.source(), uri):
-                return True
-
-        return False
+        return True
 
     def getLayerTableName(self, layer):
         '''
@@ -195,7 +183,7 @@ class Project(QObject):
         return self.getUriInfos(layer.source())[1]
 
     def getImportLogLayer(self):
-        logimport_table = PAGType()
+        logimport_table = PluginType()
         logimport_table.name = 'ImportLog'
 
         uri = self.getTypeUri(logimport_table)
@@ -206,15 +194,12 @@ class Project(QObject):
 
         return layer
 
-    def getModificationPagLayer(self):
-        return self.getLayer(main.xsd_schema.getTypeFromTableName('plugin.MODIFICATION_PAG'))
-
     def getNativeFields(self, type):
         '''
         Gets the native fields with type from database
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
         '''
 
         conn = self._getDbConnection()
@@ -296,7 +281,7 @@ class Project(QObject):
         Gets a uri to the table according to the XSD
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
         '''
 
         uri = QgsDataSourceUri()
@@ -314,7 +299,7 @@ class Project(QObject):
         :type conn: Connection
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
         '''
 
         # Create table
@@ -355,32 +340,32 @@ class Project(QObject):
         '''
 
         # Log import table
-        logimport_table = PAGType()
+        logimport_table = PluginType()
         logimport_table.name = 'ImportLog'
 
         # Import ID field
-        field = PAGField()
+        field = PluginField()
         field.name = IMPORT_ID
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Date field
-        field = PAGField()
+        field = PluginField()
         field.name = 'Date'
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Type field
-        field = PAGField()
+        field = PluginField()
         field.name = 'Filename'
         field.type = DataType.STRING
         field.nullable = False
         logimport_table.fields.append(field)
 
         # Layers field
-        field = PAGField()
+        field = PluginField()
         field.name = 'Layers'
         field.type = DataType.STRING
         field.nullable = True
@@ -402,7 +387,7 @@ class Project(QObject):
         Updates the layer's table according to the XSD
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
 
         :param layer: the QGIS vector layer object
         :type layer: QgsVectorLayer
@@ -414,7 +399,7 @@ class Project(QObject):
 
         # Add import id field
         if add_importid:
-            field = PAGField()
+            field = PluginField()
             field.name = IMPORT_ID
             field.type = DataType.STRING
             field.nullable = True
@@ -427,21 +412,21 @@ class Project(QObject):
     datatypeMap = XSD_QGIS_DATATYPE_MAP
     print('')
 
-    def _getField(self, pagfield):
+    def _getField(self, pluginField):
         '''
         Creates a QGIS Field according to the XSD
 
-        :param pagfield: XSD schema field
-        :type pagfield: PAGField
+        :param pluginField: XSD schema field
+        :type pluginField: PluginField
 
         :returns: The corresponding QGIS Field
         :rtype: QgsField
         '''
 
-        return QgsField(pagfield.name,
-                        self.datatypeMap[pagfield.type],
-                        pagfield.type,
-                        int(pagfield.length) if pagfield.length is not None else 0)
+        return QgsField(pluginField.name,
+                        self.datatypeMap[pluginField.type],
+                        pluginField.type,
+                        int(pluginField.length) if pluginField.length is not None else 0)
 
     def _updateMapLayers(self):
         '''
@@ -556,7 +541,7 @@ class Project(QObject):
         :type layer: QgsVectorLayer
 
         :param type: XSD schema type
-        :type type: PAGType
+        :type type: PluginType
         '''
         # Hide fields
         hidden = [PK, IMPORT_ID]
@@ -581,8 +566,8 @@ class Project(QObject):
         '''
         Update the field editor
 
-        :param pagfield: XSD schema field
-        :type pagfield: PAGField
+        :param pluginField: XSD schema field
+        :type pluginField: PluginField
 
         :param layer: The layer to update
         :type layer: QgsVectorLayer

@@ -42,7 +42,6 @@ from .widgets.import_manager.import_manager import *
 #from .widgets.about.about import *
 #from .editor import simple_filename, precise_range
 # Schema
-from .schema import *
 from .project import *
 
 # Global variables
@@ -87,7 +86,7 @@ class Importer2OSM(object):
 
         # Declare instance attributes
         self.actions = []
-        self.pag_actions = [] #Importer2OSM actions
+        self.plugin_actions = [] #Importer2OSM actions
         self.menu = self.tr(u'&Importer2OSM')
 
         # Toolbar initialization
@@ -208,7 +207,7 @@ class Importer2OSM(object):
 
         # Import data
         self.import_data_widget = ImportData()
-        self.pag_actions.append(self.add_action(
+        self.plugin_actions.append(self.add_action(
             ':/plugins/Importer2OSM/widgets/import_data/icon.png',
             text=self.tr(u'Import data'),
             callback=self.import_data_widget.run,
@@ -217,7 +216,7 @@ class Importer2OSM(object):
 
         # Import manager
         self.import_manager_widget = ImportManager()
-        self.pag_actions.append(self.add_action(
+        self.plugin_actions.append(self.add_action(
             ':/plugins/Importer2OSM/widgets/import_manager/icon.png',
             text=self.tr(u'Import manager'),
             callback=self.import_manager_widget.run,
@@ -235,7 +234,7 @@ class Importer2OSM(object):
         enabled = current_project.isImport2OSMProject()
         #enabled = True
 
-        for action in self.pag_actions:
+        for action in self.plugin_actions:
                 action.setEnabled(enabled)
 
     def _showMissingTopolPluginMessage(self):
