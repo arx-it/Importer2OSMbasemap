@@ -45,127 +45,9 @@ XSD_QGIS_GEOMETRYTYPE_MAP = {GeometryType.POINT:QgsWkbTypes.Point,
                              GeometryType.POLYLINE:QgsWkbTypes.LineString,
                              GeometryType.POLYGON:QgsWkbTypes.Polygon}
 
-class OSMSchema(object):
-    '''
-    The PAG schema parsed from the XSD
-    '''
-
-    def __init__(self):
-        '''
-        Constructor
-        '''
-        self.parseXSD()
-
-    def parseXSD(self):
-        '''
-        Parses the XSD
-        '''
-
-        xsd_path = os.path.join(
-            main.plugin_dir,
-            'assets',
-            'OSMschema.xsd')
-
-        # Parse as QgsGmlSchema
-        file = QFile(xsd_path)
-        file.open(QIODevice.ReadOnly)
-        xsdcontent = file.readAll()
-
-        schema = QgsGmlSchema()
-        schema.parseXSD(xsdcontent)
-
-        #Parse as XML
-        ns = {'xsd': 'http://www.w3.org/2001/XMLSchema'} # XSD namespace
-        xsd = ET.parse(xsd_path)
-
-        topics = list() # Topics : PAG, ARTIKEL17, GESTION
-        concrete_typenames = list()
-
-        # Loop GML schema type names
-        for typename in schema.typeNames():
-            # Remove GEOMETRIE types
-            if '.' in typename:
-                continue
-
-            # Topics ILI
-            if len(schema.fields(typename)) == 1 and schema.fields(typename)[0].name() == 'member':
-                topics.append((typename, self._getTopicMembers(schema.fields(typename)[0].typeName(), xsd.getroot(), ns)))
-                continue
-
-            # Concretes types
-            concrete_typenames.append(typename)
-
-        self.types = list()
-
-        # Loop concrete type names and parse to PAGType
-        for typename in concrete_typenames:
-            xml_element = xsd.getroot().find('xsd:complexType[@name="{}Type"]'.format(typename),ns)
-            pag_type = PAGType()
-            pag_type.parse(typename, xml_element, ns)
-            self.types.append(pag_type)
-
-        # Add topic to types
-        for topic, members in topics:
-            for member in members:
-                for type in self.types:
-                    if type.name == member:
-                        type.name = '{}.{}'.format(topic, member)
-                        break
-
-    def getType(self, typename):
-        '''
-        Get a type from the name
-
-        :param typename: The type name (ex : BIOTOPE_LIGNE)
-        :type typename: str, QString
-        '''
-
-        for type in self.types:
-            if type.friendlyName() == typename:
-                return type
-
-        return None
-
-    def getTypeFromTableName(self, tablename):
-        '''
-        Get a type from the table name
-
-        :param tablename: The table name (ex : ARTIKEL17.BIOTOPE_LIGNE)
-        :type tablename: str, QString
-        '''
-
-        for type in self.types:
-            if type.name == tablename:
-                return type
-
-        return None
-
-    def _getTopicMembers(self, typename, xml_root, ns):
-        '''
-        Parse XML node
-
-        :param typename: The type name of the topic (ex : PAGMemberType)
-        :type typename: str, QString
-
-        :param ns: XSD namespaces
-        :type ns: dict
-        '''
-
-        xml_element = xml_root.find('xsd:complexType[@name="{}"]'.format(typename), ns)
-        members_elements = xml_element.findall('.//xsd:choice/xsd:element', ns)
-
-        members = list()
-
-        for element in members_elements:
-            name = element.get('ref')
-            if '.' not in name: # Remove geometrie type
-                members.append(name)
-
-        return members
-
 class PAGType(object):
     '''
-    A PAG XSD type
+    A plugin XSD type
     '''
 
     def __init__(self):
@@ -258,7 +140,7 @@ class PAGType(object):
 
 class PAGField(object):
     '''
-    A PAG XSD field
+    A plugin XSD field
     '''
 
     def __init__(self):

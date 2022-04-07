@@ -3,8 +3,6 @@ Created on 18 sept. 2022
 
 @author: arxit
 '''
-from __future__ import absolute_import
-
 from builtins import range
 import os
 import os.path
@@ -19,8 +17,6 @@ from qgis.PyQt.QtWidgets import QMessageBox
 
 from . import main
 from .schema import *
-from .widgets.stylize.stylize import *
-from .widgets.topology.topology import *
 import io
 
 FILENAME = 'project.qgs'
@@ -30,7 +26,7 @@ IMPORT_ID = 'id'
 
 class Project(QObject):
     '''
-    A class which represent a PAG project
+    A class which represent a plugin project
     '''
 
     ready = pyqtSignal()
@@ -61,7 +57,7 @@ class Project(QObject):
         self.filename = os.path.normpath(filename)
         self.database = os.path.join(self.folder, DATABASE)
 
-        # If not PAG project return
+        # If not plugin project return
         if not self.isImport2OSMProject():
             self.ready.emit()
             return
@@ -109,7 +105,7 @@ class Project(QObject):
         main.qgis_interface.mapCanvas().setDestinationCrs(QgsCoordinateReferenceSystem(3857, QgsCoordinateReferenceSystem.EpsgCrsId)) # SRS 3857
         QgsProject.instance().setFileName(self.filename) # Project filename
 
-        # Flag PAG project
+        # Flag plugin project
         QgsProject.instance().writeEntry('Import2OSM', '/ProjetImport2OSM', True)
 
         QgsProject.instance().write()
@@ -167,9 +163,9 @@ class Project(QObject):
 
         return None
 
-    def isPagLayer(self, layer):
+    def isPluginLayer(self, layer):
         '''
-        Checks if a layer is a PAG layer
+        Checks if a layer is a plugin layer
 
         :param layer: Layer to check
         :type layer: QgsVectorLayer
@@ -184,7 +180,7 @@ class Project(QObject):
 
     def getLayerTableName(self, layer):
         '''
-        Returns the table name of the layer, only if it is a PAG layer
+        Returns the table name of the layer, only if it is a plugin layer
 
         :param layer: Layer to check
         :type layer: QgsVectorLayer
@@ -193,7 +189,7 @@ class Project(QObject):
         if layer is None:
             return None
 
-        #if not self.isPagLayer(layer):
+        #if not self.isPluginLayer(layer):
         #    return None
 
         return self.getUriInfos(layer.source())[1]
@@ -211,7 +207,7 @@ class Project(QObject):
         return layer
 
     def getModificationPagLayer(self):
-        return self.getLayer(main.xsd_schema.getTypeFromTableName('PAG.MODIFICATION_PAG'))
+        return self.getLayer(main.xsd_schema.getTypeFromTableName('plugin.MODIFICATION_PAG'))
 
     def getNativeFields(self, type):
         '''
@@ -470,60 +466,6 @@ class Project(QObject):
 
         # Add topology rules
         #TopologyChecker(None).updateProjectRules()
-
-    def _updateLayerTreeNode(self, node, parentnode):
-        '''
-        Update a layer tree node, a lyer group
-
-        :param node: The current node to update
-        :type node: dict
-
-        :param node: The parent node to update
-        :type node: dict
-        '''
-
-        parent = QgsProject.instance().layerTreeRoot()
-
-        if parentnode['Name'] != 'Root':
-            parent = parent.findGroup(parentnode['Name'])
-
-        treenode = parent.findGroup(node['Name']) if node['Name'] != 'Root' else QgsProject.instance().layerTreeRoot()
-
-        if treenode is None:
-            treenode = parent.addGroup(node['Name'])
-
-        stylize = StylizeProject()
-
-        for child in node['Nodes']:
-            if child['IsGroup']:
-                self._updateLayerTreeNode(child, node)
-            else:
-                xsd_type = main.xsd_schema.getTypeFromTableName(child['TableName'])
-
-                # Type not found in XSD
-                if xsd_type is None:
-                    main.qgis_interface.messageBar().pushSuccess(QCoreApplication.translate('Project', 'Error'),
-                                                                 QCoreApplication.translate('Project', ' Type not found in XSD : {}').format(child['TableName']))
-                    continue
-
-                layer = self.getLayer(xsd_type)
-
-                # Layer is in the TOC
-                if layer is None:
-                    uri = self.getTypeUri(xsd_type)
-                    layer = QgsVectorLayer(uri, child['Name'], 'spatialite')
-                    QgsProject.instance().addMapLayer(layer, False)
-                    treenode.addLayer(layer)
-
-                # Updates layers style
-                stylize.stylizeLayer(layer, xsd_type)
-
-                # Update attributes editors
-                self._updateLayerEditors(layer, xsd_type)
-
-                # Activate the auto Show feature form on feature creation
-                #TODO QGIS 2 TO 3
-                #layer.setFeatureFormSuppress(QgsVectorLayer.SuppressOff)
 
     def _addOrthoBasemap(self):
         ortho_url = 'url=http://wmts1.geoportail.lu/opendata/service&SLegend=0&crs=EPSG:2169&dpiMode=7&featureCount=10&format=image/jpeg&layers=ortho_latest&styles='

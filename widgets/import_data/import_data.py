@@ -15,7 +15,6 @@ from qgis.PyQt.QtCore import *
 
 from ... import main
 
-from .import_gml import ImportGML
 from .import_shp import ImportSHP
 from .import_geojson import ImportGeoJSON
 from .import_dxf import ImportDXF
@@ -61,7 +60,6 @@ class ImportData(object):
 
         # Dispatch to the right importer
         importers = {
-                    #'gml':ImportGML,
                     'shp':ImportSHP,
                     'geojson': ImportGeoJSON,
                     'dxf':ImportDXF

@@ -47,7 +47,7 @@ class ImportManager(object):
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
         #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if not (layer.type() == QgsMapLayer.VectorLayer): # and main.current_project.isPagLayer(layer)):
+            if not (layer.type() == QgsMapLayer.VectorLayer): # and main.current_project.isPluginLayer(layer)):
                 continue
 
             errors = errors or not self._deleteImportFromLayer(layer, id)
@@ -83,7 +83,7 @@ class ImportManager(object):
                                                                         QCoreApplication.translate('ImportManager','Commit error on layer {}').format(layer.name()))
             errors = layer.commitErrors()
             for error in errors:
-                QgsMessageLog.logMessage(error, 'PAG Luxembourg', QgsMessageLog.CRITICAL)
+                QgsMessageLog.logMessage(error, 'arx iT', QgsMessageLog.CRITICAL)
 
             main.qgis_interface.openMessageLog()
             return False

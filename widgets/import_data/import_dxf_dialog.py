@@ -87,11 +87,11 @@ class ImportDxfDialog(QDialog, FORM_CLASS, Importer):
 
         self.qgislayers = list()
 
-        # Adds the PAG map layers
+        # Adds the plugin map layers
         layers = [layer for layer in QgsProject.instance().mapLayers().values()]
         #for layer in main.qgis_interface.legendInterface().layers():
         for layer in layers:
-            if layer.type() == QgsMapLayer.VectorLayer: # and main.current_project.isPagLayer(layer):
+            if layer.type() == QgsMapLayer.VectorLayer: # and main.current_project.isPluginLayer(layer):
                 self.qgislayers.append(layer)
 
     def _loadDxfLayers(self, filename):

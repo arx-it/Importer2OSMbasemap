@@ -47,7 +47,6 @@ from .project import *
 
 # Global variables
 plugin_dir = os.path.dirname(__file__)
-xsd_schema = OSMSchema()
 qgis_interface = None
 current_project = Project()
 
@@ -116,7 +115,7 @@ class Importer2OSM(object):
         :rtype: QString
         '''
         # noinspection PyTypeChecker,PyArgumentList,PyCallByClass
-        return QCoreApplication.translate('PAGLuxembourg', message)
+        return QCoreApplication.translate('arx iT', message)
 
 
     def add_action(
@@ -204,7 +203,7 @@ class Importer2OSM(object):
             ':/plugins/Importer2OSM/widgets/create_project/icon.png',
             text=self.tr(u'New project'),
             callback=self.create_project_widget.run,
-            status_tip=self.tr(u'Creates a new PAG project'),
+            status_tip=self.tr(u'Creates a new plugin project'),
             parent=self.iface.mainWindow())
 
         # Import data
@@ -257,7 +256,7 @@ class Importer2OSM(object):
         '''
         Display a message to prompt the user to install the geometry checker plugin
         '''
-        widget = self.iface.messageBar().createMessage(self.tr(u'PAG Luxembourg'), self.tr(u'The "') + plugin + self.tr(u'" plugin is required by the "PAG Luxembourg" plugin, please install it and restart QGIS.'))
+        widget = self.iface.messageBar().createMessage(self.tr(u'arx iT'), self.tr(u'The "') + plugin + self.tr(u'" plugin is required by the "arx iT" plugin, please install it and restart QGIS.'))
         button = QPushButton(widget)
         button.setText(self.tr(u'Show plugin manager'),)
         button.pressed.connect(self.iface.actionManagePlugins().trigger)
@@ -271,7 +270,7 @@ class Importer2OSM(object):
 
         for action in self.actions:
             self.iface.removePluginMenu(
-                self.tr(u'&PAG Luxembourg'),
+                self.tr(u'&arx iT'),
                 action)
             self.iface.removeToolBarIcon(action)
 
