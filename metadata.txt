@@ -16,9 +16,9 @@ email=pln@arxit.com
 
 about=Importer2OSMbasemap create a QGIS Project, with an OSM basemap. It allows to import data (SHP, DXF, geoJSON)
 
+homepage=https://github.com/arx-it/Importer2OSMbasemap
 tracker=https://github.com/arx-it/Importer2OSMbasemap/issues
 repository=https://github.com/arx-it/Importer2OSMbasemap
-metadata=https://github.com/arx-it/Importer2OSMbasemap/blob/main/metadata.txt
 # End of mandatory metadata
 
 # Recommended items:
