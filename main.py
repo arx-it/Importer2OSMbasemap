@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 '''
 /***************************************************************************
- Importer2OSM
+ Importer2OSMbasemap
                                  A QGIS plugin
 
                               -------------------
-        begin                : 2022-08-25
+        begin                : 2022-03-03
         git sha              : $Format:%H$
         copyright            : (C) 2022 by arx iT
         email                : pln@arxit.com
