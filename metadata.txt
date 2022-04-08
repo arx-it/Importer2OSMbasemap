@@ -29,7 +29,7 @@ metadata=https://github.com/arx-it/Importer2OSMbasemap/blob/main/metadata.txt
 # Tags are comma separated with spaces allowed
 tags=Import2OSM, Landuse
 
-homeImport2OSMe=https://github.com/Geoportail-/qgis-Import2OSM-plugin
+homeImport2OSMe=https://github.com/arx-it/Importer2OSMbasemap
 category=Plugins
 icon=icon.png
 # experimental flag
