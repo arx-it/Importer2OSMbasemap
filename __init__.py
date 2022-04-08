@@ -4,7 +4,7 @@
  Importer2OSM
                                  A QGIS plugin
                              -------------------
-        begin                : 2022-08-25
+        begin                : 2022-03-03
         copyright            : (C) 2022 by arx iT
         email                : pln@arxit.com
         git sha              : $Format:%H$
