@@ -8,7 +8,7 @@
 
 [general]
 name=Importer2OSM
-qgisMinimumVersion=3.0
+qgisMinimumVersion=3.16
 description=Import data into a QGIS Project, with OSM basemap
 version=1.0
 author=arx iT
@@ -16,8 +16,9 @@ email=pln@arxit.com
 
 about=Importer2OSMbasemap create a QGIS Project, with an OSM basemap. It allows to import data (SHP, DXF, geoJSON)
 
-tracker=https://github.com/Geoportail-/qgis-Import2OSM-plugin/issues
-repository=https://github.com/Geoportail-/qgis-Import2OSM-plugin
+tracker=https://github.com/arx-it/Importer2OSMbasemap/issues
+repository=https://github.com/arx-it/Importer2OSMbasemap
+metadata=https://github.com/arx-it/Importer2OSMbasemap/blob/main/metadata.txt
 # End of mandatory metadata
 
 # Recommended items:
