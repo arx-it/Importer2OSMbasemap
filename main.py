@@ -250,6 +250,7 @@ class Importer2OSM(object):
         '''
 
         self._showMissingPluginMessage(u'Geometry Checker')
+		#test
 
     def _showMissingPluginMessage(self, plugin):
         '''
