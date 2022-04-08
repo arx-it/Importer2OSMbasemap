@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aide plugin arx iT</title>
+    <title>Aide Plugin Importer2OSMbasemap</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 
@@ -41,7 +41,7 @@
         <nav id="navbar" class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Aide arx iT</a>
+                    <a class="navbar-brand" href="#">Aide Plugin Importer2OSMbasemap</a>
                 </div>
 
                 <div class="collapse navbar-collapse">
@@ -67,50 +67,15 @@
                                 Gestionnaire d'imports
                             </a>
                         </li>
-                        <li>
-                            <a href="#export">
-                                <img src="images/export.png" />
-                                <br />
-                                Exporter
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#stylize">
-                                <img src="images/stylize.png" />
-                                <br />
-                                Symboliser
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#topoclean">
-                                <img src="images/topoclean.png" />
-                                <br />
-                                Vérifier la géométrie
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#topology">
-                                <img src="images/topology.png" />
-                                <br />
-                                Topologie
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#check">
-                                <img src="images/check.png" />
-                                <br />
-                                Valider
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <h1 id="create"><img src="images/create.png" /> Créer un nouveau projet </h1>
+        <h1 id="create"><img src="images/create.png" /> Créer un nouveau projet QGIS</h1>
 
         <p>
-            Cet outil permet de créer un projet . Cliquer sur l'icône pour ouvrir la boite de dialogue.
+            Cet outil permet de créer un projet QGIS. Cliquer sur l'icône pour ouvrir la boite de dialogue.
         </p>
 
         <p>
@@ -132,7 +97,7 @@
         </div>
 
         <p>
-            L'ouverture d'un projet  se fait via l'outil classique de QGIS : <img src="images/create2.png" />. Ouvrir le fichier <i><b>project.qgs</b></i> du répertoire de projet.
+            L'ouverture d'un projet QGIS se fait via l'outil classique de QGIS : <img src="images/create2.png" />. Ouvrir le fichier <i><b>project.qgs</b></i> du répertoire de projet.
         </p>
 
         <p>
@@ -140,7 +105,7 @@
         </p>
 
         <p>
-            Une fois le projet créé, l'interface s'affiche avec la liste des couches à gauche.
+            Une fois le projet créé, l'interface s'affiche avec le fond de carte OpenStreetMap. Des couches de données peuvent alors être ajoutées, en vue d'importer plusieurs entités dans une même couche.
         </p>
 
         <p>
@@ -148,49 +113,31 @@
         </p>
 
         <div class="alert alert-warning" role="alert">
-            <b>Attention : </b>Il faut obligatoirement créer ou ouvrir un projet  pour accéder aux autres outils du plugin!
+            <b>Attention : </b>Il faut obligatoirement créer ou ouvrir un projet QGIS pour accéder aux autres outils du plugin
         </div>
 
         <h1 id="import"><img src="images/import.png" /> Importer des données</h1>
 
         <p>
-            Cet outil permet d'importer des données depuis un fichier <a href="#import-gml">GML</a>, <a href="#import-shp">SHP</a> ou <a href="#import-dxf">DXF</a>. Cliquez sur l'outil pour ouvrir la fenêtre de sélection du fichier à importer.
+            Cet outil permet d'importer des données depuis un fichier <a href="#import-shp">SHP</a>, <a href="#import-shp">GeoJSON</a>, ou <a href="#import-dxf">DXF</a>. Cliquez sur l'outil pour ouvrir la fenêtre de sélection du fichier à importer.
+        </p>
+        <p>
+            Si les systèmes de coordonnées ne sont pas les mêmes, une reprojection est automatiquement appliquée.
         </p>
 
         <p>
             <img src="images/import1.png" />
         </p>
 
+        <br>
         <p>
             La suite l'import dépend du type de fichier à importer :
         </p>
 
-        <h4 id="import-gml">Import d'un fichier GML</h4>
+        <h4 id="import-shp">Import d'un fichier SHP (Shapefile ESRI) ou GeoJSON</h4>
 
         <p>
-            L'import du fichier GML est direct, sans intervention de l'utilisateur, car il est au même format qu'un projet .
-        </p>
-
-        <p>
-            Une barre de progression indique l'avancement de l'import.
-        </p>
-
-        <p>
-            <img src="images/import2.png" />
-        </p>
-
-        <p>
-            Un message indique la fin de l'import, et la carte zoom sur les entités importées.
-        </p>
-
-        <p>
-            <img src="images/import3.png" />
-        </p>
-
-        <h4 id="import-shp">Import d'un fichier SHP (Shapefile ESRI)</h4>
-
-        <p>
-            L'import du fichier SHP nécessite une configuration préalable, appelée mapping. Après sélection d'un fichier SHP, la fenêtre de configuration s'ouvre.
+            L'import du fichier SHP, ou GeoJSON, nécessite une configuration préalable, appelée mapping. Après sélection d'un fichier SHP ou GeoJSON, la fenêtre de configuration s'ouvre.
         </p>
 
         <p>
@@ -198,7 +145,7 @@
         </p>
 
         <p>
-            Dans la première liste déroulante, sélectionnez la couche QGIS dans laquelle importer le fichier SHP.
+            Dans la première liste déroulante, sélectionnez la couche QGIS dans laquelle importer le fichier SHP ou GeoJSON.
         </p>
 
         <p>
@@ -206,27 +153,26 @@
         </p>
 
         <p>
-            La seconde étape consiste soit à assigner un attribut QGIS à chaque attribut SHP, soit assigner directement une valeur constante.
-            Lors de l'importation, le contenu de l'attribut SHP, ou la constante seront alors copiés dans l'attribut QGIS correspondant.
+            La seconde étape consiste soit à assigner un attribut QGIS à chaque attribut, soit assigner directement une valeur constante.
+            Lors de l'importation, le contenu de l'attribut SHP ou GeoJSON, ou la constante seront alors copiés dans l'attribut QGIS correspondant.
             Une fois la couche QGIS sélectionnée, la liste des attributs de cette couche (attributs QGIS) est disponible dans les différentes boites déroulantes.
-            Si le nom de l'attribut QGIS est le même que le nom de l'attribut SHP, le plugin le proposera par défaut.
-            Vous pouvez choisir l'attribut QGIS qui correspond à l'attribut SHP source.
-            Il est possible de désactiver un mapping si vous ne souhaitez pas importer un attribut SHP.
+            Si le nom de l'attribut QGIS est le même que le nom de l'attribut SHP ou GeoJSON, le plugin le proposera par défaut.
+            Vous pouvez choisir l'attribut QGIS qui correspond à l'attribut SHP ou GeoJSON source.
+            Il est possible de désactiver un mapping si vous ne souhaitez pas importer un attribut SHP ou GeoJSON.
         </p>
 
         <p>
             <img src="images/import6.png" />
         </p>
-
+        
         <div class="alert alert-warning" role="alert">
-            <b>Note : </b>Si un attribut SHP et une valeur sont définis pour un même attribut QGIS, l'import utilisera l'attribut SHP.
+            <b>Note : </b>Si un attribut SHP ou GeoJSON et une valeur sont définis pour un même attribut QGIS, l'import utilisera l'attribut SHP ou GeoJSON.
         </div>
-
+        
         <p>
-            La troisième étape est optionnelle et concerne les attributs QGIS rattachés à une liste de valeur.
+            La troisième étape est optionnelle (et expérimentale !) et concerne les attributs QGIS rattachés à une liste de valeur.
             En cliquant sur la ligne de l'attribut en question, il est possible de définir un mapping de valeurs.
-            Il arrive parfois que la valeur contenue dans un attribut SHP ne soit pas exactement celle attendue dans la liste de valeurs (ex. hab-1 au lieu de hab_1).
-            Ce mapping de valeur permet d'associer directement les valeurs SHP aux bonnes valeurs QGIS.
+            Ce mapping de valeur permet d'associer directement les valeurs SHP ou GeoJSON aux bonnes valeurs QGIS.
             <br />
             Cliquez sur importer.
         </p>
@@ -247,11 +193,11 @@
             <b>Note : </b>Il est possible de sauvegarder et de charger une configuration de mapping via les boutons éponymes.
         </div>
 
-        <h4 id="import-dxf">Import d'un fichier DXF (Autocad)</h4>
+        <h4 id="import-dxf">Import d'un fichier DXF (AutoCAD)</h4>
 
         <p>
-            Comme l'import SHP, l'import du fichier DXF nécessite une configuration préalable, légèrement plus complexe, appelée mapping.
-            En effet, contrairement à un fichier SHP, un calque DXF peut contenir plusieurs types de géométries.
+            Comme l'import SHP / GeoJSON, l'import du fichier DXF nécessite une configuration préalable, légèrement plus complexe, appelée mapping.
+            En effet, contrairement à un fichier SHP / GeoJSON, un calque DXF peut contenir plusieurs types de géométries.
             Après sélection d'un fichier DXF, la fenêtre de configuration s'ouvre.
         </p>
 
@@ -291,7 +237,22 @@
         </p>
 
         <p>
-            Un message indique la fin de l'import, et la carte zoom sur les entités importées.
+            Si le système de coordonnées du fichier DXF est inconnu, le message suivant apparaît.
+        </p>
+
+        <p>
+            <img src="images/import11a.png" />
+        </p>
+
+            Il est alors possible de sélectionner un système de coordonnées, afin que les données DXF soient correctement géolocalisées dans la couche dans laquelle importer.
+        </p>
+
+        <p>
+            <img src="images/import11b.png" />
+        </p>
+
+        <p>
+            Un message indique la fin de l'import ; et la carte zoome sur les entités importées.
         </p>
 
         <p>
@@ -303,172 +264,26 @@
         </div>
 
         <h1 id="import-manager"><img src="images/importmanager.png" /> Gestionnaire d'import</h1>
-
+        
         <p>
             Cet outil permet d'annuler un import en cas d'erreur par exemple. Cliquer sur l'outil pour ouvrir la fenêtre.
         </p>
-
+        
         <p>
             <img src="images/importmanager1.png" />
         </p>
-
+        
         <p>
             Un tableau liste les imports effectués, on y trouve l'identifiant de l'import, la date, le nom du fichier importé et les couches importées.
             <br/>
             Cliquer sur annuler l'import pour supprimer tous les objets rattachés à cet import sur toutes les couches.
         </p>
-
+        
         <p>
             Un message indique la fin de la suppression.
         </p>
 
-        <h1 id="export"><img src="images/export.png" /> Exporter le projet en GML</h1>
-
-        <p>
-            Cet outil permet d'exporter le projet actuel au format GML pour transmission au Ministère de l'Intérieur. Cliquez sur l'outil pour sélectionner le fichier GML de destination.
-        </p>
-
-        <p>
-            <img src="images/export1.png" />
-        </p>
-
-        <p>
-            Un message indique la fin de l'export de la totalité des données.
-        </p>
-
-        <p>
-            <img src="images/export2.png" />
-        </p>
-
-        <p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION_Plugin', l'outil effectue l'export seulement sur les objets intersectant ces polygones.
-        </p>
-
-        <p>
-            <img src="images/export3.png" />
-        </p>
-
-		<p>
-			Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION_Plugin', l'export s'effectue sur l'ensemble des données.
-        </p>
-
-        <div class="alert alert-info" role="alert">
-            <b>Note : </b>Une vérification des données est automatiquement effectuée avant l'export.
-        </div>
-
-        <h1 id="stylize"><img src="images/stylize.png" /> Symboliser le projet</h1>
-
-        <p>
-            Cet outil sert à symboliser les différentes couches du projet selon la configuration fournie par le Ministère de l'Intérieur.
-            Cliquez sur l'outil pour lancer la symbolisation.
-        </p>
-
-        <p>
-            Un message indique la fin de la symbolisation des couches.
-        </p>
-
-        <p>
-            <img src="images/stylize1.png" />
-        </p>
-
-        <h1 id="topoclean"><img src="images/topoclean.png" /> Vérifier la géométrie</h1>
-
-        <p>
-            Cet outil est natif de QGIS, il permet d'effectuer un certain nombre de vérifications et de corrections de géométrie. Cliquez sur l'outil. Si un polygone est sélectionné dans la couche "MODIFICATION_Plugin", toutes les entités se trouvant dans ce polygone seront alors sélectionnées, pour permettre d'effectuer les validations seulement sur ces dernières.
-        </p>
-
-		<p>
-            Veuillez consulter l'aide officielle pour plus de détails : <a href="http://docs.qgis.org/2.14/en/docs/user_manual/plugins/plugins_geometry_checker.html">Aide QGIS</a>
-        </p>
-
-        <h1 id="topology"><img src="images/topology.png" /> Vérifier la topologie</h1>
-
-        <p>
-            Cet outil lance une vérification de la topologie des données, trous entre les polygones, superposition de polygones....
-            Le plugin va en fait configurer le plugin de vérification topologique intégré à QGIS.
-            Cliquez sur l'outil pour ouvrir le plugin <i><b>Topology Checker</b></i>.
-        </p>
-
-        <p>
-            <img src="images/topology1.png" />
-        </p>
-
-        <p>
-            La liste des règles peut-être visualisée en cliquant sur <i><b>Configuration</b></i>.
-        </p>
-
-        <p>
-            <img src="images/topology2.png" />
-        </p>
-
-        <p>
-            Lancer la validation en cliquant sur <i><b>Valider tout</b></i>.
-        </p>
-        <p>
-            La liste des erreurs apparait alors dans le tableau. Cliquer sur l'erreur pour zoomer dessus, vous permettant de la corriger.
-        </p>
-
-        <p>
-            <img src="images/topology3.png" />
-        </p>
-
-		<p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION_Plugin', l'outil zoom automatiquement sur l'emprise des entités sélectionnées.
-			Ceci permet de limiter la vérification topologique à l'étendue affichée, via le bouton adéquat.
-        </p>
-
-        <p>
-            <img src="images/topology4.png" />
-        </p>
-
-		<p>
-            Si aucune sélection n'est faite au sein de la couche 'MODIFICATION_Plugin', l'outil n'aura aucune action de zoom.
-        </p>
-
-        <h1 id="check"><img src="images/check.png" /> Valider les données</h1>
-
-        <p>
-            Cet outil lance une vérification de la structure des données ainsi que des données elles-mêmes.
-            Cliquez sur l'outil pour lancer la vérification.
-        </p>
-
-        <p>
-            <img src="images/check1.png" />
-        </p>
-
-        <p>
-            Le premier cadre liste les erreurs de structure de données, type de géométrie, type d'attribut.
-            Ce genre d'erreur ne devrait pas survenir, dans tous les cas, il faut recréer la couche pour les corriger.
-        </p>
-
-        <p>
-            <img src="images/check2.png" />
-        </p>
-
-        <p>
-            Le second cadre liste les erreurs de données, valeur absente d'une liste, valeur requise, longueur maximale dépassée...
-            Cliquer la ligne correspondante pour zoomer sur l'entité en question. Double cliquer pour l'éditer avec les outils de QGIS.
-        </p>
-
-        <p>
-            <img src="images/check3.png" />
-        </p>
-
-        <div class="alert alert-info" role="alert">
-            <b>Note : </b>Penser à sauvegarder l'édition avant relancer la vérification des données.
-        </div>
-
-		<p>
-            Si une sélection est faite au sein de la couche 'MODIFICATION_Plugin', l'outil effectue la vérification seulement sur les objets intersectant ces polygones.
-        </p>
-
-        <p>
-            <img src="images/check4.png" />
-        </p>
-		<p>
-            Si aucun polygone n'est sélectionné dans la couche 'MODIFICATION_Plugin', le traitement s'effectue sur l'ensemble des données.
-        </p>
-
+		
         <script src="js/jquery-1.11.3.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script type="text/javascript">
