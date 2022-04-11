@@ -7,7 +7,7 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Importer2OSM
+name=Importer2OSMbasemap
 qgisMinimumVersion=3.16
 description=Import data into a QGIS Project, with OSM basemap
 version=1.0
